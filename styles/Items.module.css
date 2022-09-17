@@ -1,0 +1,309 @@
+.main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.searchForm {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    display: flex;
+    flex-direction: column;
+}
+
+.checkboxes {
+    display: flex;
+    flex-direction: column;
+}
+
+.checkboxSubgroup {
+    display: flex;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.itemTile {
+    font-size: 1em;
+    line-height: 1.3;
+    width: 280px;
+    box-sizing: border-box;
+    margin: 15px 0;
+    background: #110110;
+    border: 3px solid #2c0860;
+    box-shadow: 4px 0 0 #110110, -4px 0 #110110, 0 4px 0 #110110, 0 -4px 0 #110110;
+    color: #aaa;
+    text-shadow: 1px 1px 0 #2a2a2a;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+}
+
+.checkboxWithLabel {
+    outline: 1px solid gray;
+    background-color: darkslategrey;
+    padding: 2px;
+    margin: 2px;
+    width: fit-content;
+}
+
+.submitButton {
+    width: 70%;
+    background-color: darkslateblue;
+    border-color: darkslateblue;
+}
+
+.warningButton {
+    width: 30%;
+    background-color: crimson;
+    border-color: crimson;
+}
+
+.imageIcon {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.itemsContainer {
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+}
+
+.enchants {
+    display: flex;
+    flex-direction: column;
+}
+
+.tier1, .tier2, .tier3, .tier4, .tier5, .infoText {
+    color: #545454;
+}
+
+.uncommon {
+    color: #bebebe;
+}
+
+.unique {
+    color: #c6a0c6;
+}
+
+.rare {
+    color: #49c0e2;
+}
+
+.artifact {
+    color: #ce2d27;
+}
+
+.speed, .armorAttribrutes, .positiveStat {
+    color: #5454fc;
+}
+
+.weaponBaseStats {
+    color: #00a800;
+}
+
+.armor, .agility {
+    color: #32cafc;
+}
+
+.name {
+    font-weight: bold;
+}
+
+.name.tier1, .name.tier2, .name.tier3, .name.tier4, .name.tier5 {
+    font-weight: normal !important;
+}
+
+.name.tier5 {
+    color: #54fc54;
+}
+
+.name.epic {
+    text-decoration: underline;
+}
+
+.epic {
+    color: #fcd400;
+    font-weight: bold;
+}
+
+.curses, .negativeStat {
+    color: #fc5454;
+}
+
+.orange {
+    color: rgb(255, 239, 222);
+}
+
+.magenta {
+    color: rgb(241, 227, 233);
+}
+
+.lightBlue {
+    color: rgb(238, 247, 254);
+}
+
+.lime {
+    color: rgb(243, 255, 240);
+}
+
+.pink {
+    color: rgb(255, 247, 254);
+}
+
+.gray {
+    color: rgb(213, 213, 213);
+}
+
+.lightGray {
+    color: rgb(234, 234, 234);
+}
+
+.cyan {
+    color: rgb(222, 240, 243);
+}
+
+.purple {
+    color: rgb(246, 242, 255);
+}
+
+.teal {
+    color: rgb(234, 250, 246);
+}
+
+.shifting {
+    color: rgb(234, 241, 250);
+}
+
+.forum {
+    color: rgb(228, 239, 227);
+}
+
+.tOV {
+    color: rgb(228, 242, 252);
+}
+
+.docks {
+    color: rgb(233, 245, 247);
+}
+
+.carnival {
+    color: rgb(246, 220, 220);
+}
+
+.delves {
+    color: rgb(235, 218, 255);
+}
+
+.rush {
+    color: rgb(244, 204, 204);
+}
+
+.horseman {
+    color: rgb(252, 220, 186);
+}
+
+.mist {
+    color: rgb(213, 195, 204);
+}
+
+.remorse {
+    color: rgb(215, 174, 174);
+}
+
+.depths {
+    color: rgb(169, 162, 186);
+}
+
+.eldrask {
+    color: rgb(212, 235, 255);
+}
+
+.hekawt {
+    color: rgb(255, 193, 208);
+}
+
+.islesDelves {
+    color: rgb(255, 237, 184);
+}
+
+.islesCasino {
+    color: rgb(224, 226, 255);
+}
+
+.islesOverworld {
+    color: rgb(224, 235, 255);
+}
+
+.celsianIsles {
+    color: rgb(244, 248, 255);
+}
+
+.valleyDelves {
+    color: rgb(255, 237, 184);
+}
+
+.armory {
+    color: rgb(255, 237, 184);
+}
+
+.yellow {
+    color: rgb(255, 247, 222);
+}
+
+.white {
+    color: rgb(246, 246, 246);
+}
+
+.valleyCasino {
+    color: rgb(255, 250, 236);
+}
+
+.valleyOverworld {
+    color: rgb(255, 255, 232);
+}
+
+.kingsValley {
+    color: rgb(245, 255, 245);
+}
+
+.lowtideSmuggler {
+    color: rgb(202, 202, 231);
+}
+
+.azacor {
+    color: rgb(246, 197, 182);
+}
+
+.labs {
+    color: rgb(233, 237, 235);
+}
+
+.willows {
+    color: rgb(180, 199, 180);
+}
+
+.sanctum {
+    color: rgb(184, 222, 184);
+}
+
+.reverie {
+    color: rgb(238, 166, 166);
+}
+
+.corridors {
+    color: rgb(235, 188, 178);
+}
+
+.verdant {
+    color: rgb(186, 212, 186);
+}
+
+.kaul {
+    color: rgb(158, 210, 146);
+}
