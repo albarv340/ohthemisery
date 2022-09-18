@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import styles from '../styles/Items.module.css'
 import itemData from '../public/items/itemData.json'
+import enchantmentsData from '../public/items/enchantmentsData.json'
 import Image from 'next/image';
 import React from 'react';
 
@@ -11,19 +12,33 @@ function camelCase(str) {
     }).replace(/\s+/g, '');
 }
 
+function enchantStyle(ench, type) {
+    if (ench[0] == "-") {
+        return "negativeStat"
+    }
+    if (ench[0] == "+") {
+        return "positiveStat"
+    }
+    return camelCase(type)
+}
+
+function enchantTitle(ench, type) {
+    return `${enchantmentsData[(type == "Curses" ? "Curse of " : "") + ench.replaceAll(/\d*/g, "").replaceAll("Prot.", "Protection").trim()] || ""}`
+}
+
 function Enchants(data) {
-    const enchantmentTypes = ["Specialist Enchants", "Protection", "Melee Enchants", "Ranged Enchants", "Tool Enchants", "Water", "Misc.", "Epic Enchants", "Durability", "Curses", "Speed", "Health", "Armor Attribrutes", "Weapon Base Stats"]
+    const enchantmentTypes = ["Specialist Enchants", "Protection", "Melee Enchants", "Ranged Enchants", "Tool Enchants", "Water", "Misc.", "Epic Enchants", "Durability", "Curses", "Speed", "Health", "Weapon Base Stats", "Armor Attribrutes"]
     const item = itemData[data.name]
     let enchants = []
     for (const type of enchantmentTypes) {
         const enchant = item[type]
-        if (enchant == "") continue;
+        if (enchant == "" || typeof (enchant) == "undefined") continue;
         if (enchant.constructor === Array) {
             for (const ench of enchant) {
-                enchants.push(<span className={styles[ench[0] == "-" ? "negativeStat" : ench[0] == "+" ? "positiveStat" : camelCase(type)]} key={ench}>{ench}</span>)
+                enchants.push(<span title={enchantTitle(ench, type)} className={styles[enchantStyle(ench, type)]} key={ench}>{ench}</span>)
             }
         } else {
-            enchants.push(<span className={styles[camelCase(type)]} key={enchant}>{enchant}</span>)
+            enchants.push(<span title={enchantTitle(enchant, type)} className={styles[enchantStyle(enchant, type)]} key={enchant}>{enchant}</span>)
         }
     }
     return (
@@ -53,6 +68,7 @@ function CustomImage({ ...props }) {
 
 function ItemTile(data) {
     const item = itemData[data.name]
+    // console.log(item)
     return (
         <div className={`${styles.itemTile} ${data.hidden ? styles.hidden : ""}`}>
             <div className={styles.imageIcon}>
@@ -68,6 +84,7 @@ function ItemTile(data) {
                 <a href={`https://monumentammo.fandom.com/wiki/${item.Name.replace(/\(.*\)/g, '').trim().replaceAll(" ", "_",)}`} target="_blank" rel="noreferrer">{item.Name}</a>
             </span>
             <span className={styles.infoText}>{`${item.Type} - ${item['Base Item']} `}</span>
+            {item['Original Item'] ? <span className={styles.infoText}>{`Skin for ${item['Original Item']} `}</span> : ""}
             <Enchants name={data.name}></Enchants>
             {item.Agility ? <span className={styles.agility}>{item.Agility[0] == "-" ? "" : "+"}{item.Agility} Agility</span> : ""}
             {item.Armor ? <span className={styles.armor}>{item.Armor[0] == "-" ? "" : "+"}{item.Armor} Armor</span> : ""}
@@ -76,7 +93,7 @@ function ItemTile(data) {
                 <span className={styles[camelCase(item.Tier)]}>{item.Tier}</span>
             </span>
             <span className={styles[camelCase(item.Location)]}>{item.Location}</span>
-            <span className={styles.infoText}>{`${item.Notes} `}</span>
+            {item.Notes ? <span className={styles.infoText}>{`${item.Notes} `}</span> : ""}
         </div>
     )
 }
@@ -90,6 +107,19 @@ function CheckboxWithLabel(data) {
     )
 }
 
+function SelectInput(data) {
+    return (
+        <select name={data.name}>
+            {data.sortableStats.map(e => {
+                return (
+                    <option value={e} key={e}>{e}</option>
+                )
+            })}
+        </select>
+    )
+}
+
+const sortableStats = ["-", "Abyssal", "Adaptability", "Adrenaline", "Agility", "Anemia", "Aptitude", "Aqua Affinity", "Arcane Thrust", "Armor", "Ashes of Eternity", "Attack Damage", "Attack Speed", "Attack Speed %", "Base Attack Damage", "Base Attack Speed", "Base Proj Damage", "Base Proj Speed", "Base Spell Power", "Base Throw Rate", "Blast Prot.", "Bleeding", "Chaotic", "Corruption", "Crippling", "Darksight", "Decay", "Depth Strider", "Duelist", "Efficiency", "Eruption", "Ethereal ", "Evasion", "Feather Falling", "Fire Aspect (M)", "Fire Aspect (P)", "Fire Prot.", "Fortune", "Gills", "Hex Eater", "Ice Aspect (M)", "Ice Aspect (P)", "Ineptitude", "Inferno", "Infinity (bow)", "Infinity (tool)", "Intuition", "Inure", "Irreparability", "Knockback", "Knockback Res.", "Life Drain", "Looting", "Lure", "Magic Damage", "Magic Prot.", "Max Health", "Max Health %", "Melee Prot.", "Mending", "Multishot", "Multitool", "Persistence", "Piercing", "Point Blank", "Poise", "Proj Damage", "Proj Speed", "Projectile Prot.", "Protection of the Depths", "Punch", "Quake", "Quick Charge", "Radiant", "Rage of the Keter", "Recoil", "Reflexes ", "Regen", "Regicide", "Respiration", "Resurrection", "Retrieval", "Riptide", "Sapper", "Second Wind", "Shielding", "Shrapnel", "Silk Touch", "Slayer", "Smite", "Sniper", "Soul Speed", "Speed", "Speed %", "Steadfast", "Sustenance", "Sweeping Edge", "Tempo ", "Thorns", "Thorns Damage", "Thunder Aspect (M)", "Thunder Aspect (P)", "Triage", "Two Handed", "Unbreakable", "Unbreaking", "Vanishing", "Void Tether", "Weightless"]
 function SearchForm({ update }) {
     function sendUpdate(event) {
         event.preventDefault()
@@ -130,6 +160,8 @@ function SearchForm({ update }) {
                     <CheckboxWithLabel name="Misc" checked={true} />
                 </div>
             </div>
+            <span>Sort By:</span>
+            <SelectInput name="sortSelect" sortableStats={sortableStats} />
             <input type="text" name="search" placeholder="Search" />
             <div>
                 <input className={styles.submitButton} type="submit" />
@@ -144,6 +176,10 @@ function getRelevantItems(data) {
     if (data.search) {
         items = items.filter(e => e.toLowerCase().includes(data.search.toLowerCase()))
     }
+    if (data.sortSelect != "-") {
+        items = items.filter(e => typeof (itemData[e][data.sortSelect]) != "undefined")
+        items = items.sort((a, b) => (itemData[b][data.sortSelect] || 0) - (itemData[a][data.sortSelect] || 0))
+    }
     let includedTypes = []
     for (const key in data) {
         if (data[key] == "on") {
@@ -151,6 +187,8 @@ function getRelevantItems(data) {
         }
     }
     items = items.filter(e => includedTypes.includes(itemData[e].Type.toLowerCase().replace(/<.*>/, "").trim()))
+
+
 
     return items
 }
@@ -169,7 +207,7 @@ export default function Items() {
                 <h1>Monumenta Items</h1>
                 <SearchForm update={handleChange} />
                 <div className={styles.itemsContainer}>
-                    {Object.keys(itemData).map(name => {
+                    {[...new Set(relevantItems, Object.keys(itemData))].map(name => {
                         return (
                             <ItemTile key={name} name={name} hidden={!relevantItems.includes(name)}></ItemTile>
                         )
