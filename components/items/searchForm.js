@@ -10,8 +10,33 @@ export default function SearchForm({ update }) {
         update(Object.fromEntries(new FormData(event.target).entries()));
     }
 
+    function disableRightClick(event) {
+        event.preventDefault()
+    }
+
+    function uncheckOthers(event) {
+        if (event.button == 2) {
+            // Selects the checkbox given that you clicked the label or checkbox
+            let interestingElement = event.target.parentElement.firstChild;
+            if (interestingElement.type != "checkbox") {
+                interestingElement = event.target.firstChild;
+            }
+            if (interestingElement.type == "checkbox") {
+                event.preventDefault()
+                interestingElement.checked = true;
+                for (const group of interestingElement.parentElement.parentElement.parentElement.children) {
+                    for (const checkboxHolder of group.children) {
+                        if (checkboxHolder.firstChild.id != interestingElement.id) {
+                            checkboxHolder.firstChild.checked = false;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     return (
-        <form onSubmit={sendUpdate} className={styles.searchForm}>
+        <form onSubmit={sendUpdate} onMouseDown={uncheckOthers} onContextMenu={disableRightClick} className={styles.searchForm}>
             <div className={styles.checkboxes}>
                 <div className={styles.checkboxSubgroup}>
                     <CheckboxWithLabel name="Helmet" checked={true} />
