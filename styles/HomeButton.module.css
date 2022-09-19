@@ -1,0 +1,9 @@
+.homebutton {
+    position: absolute;
+    left: 2px;
+    top: 2px;
+}
+
+.homebutton:hover {
+    opacity: .6;
+}

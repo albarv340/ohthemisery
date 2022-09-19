@@ -4,7 +4,7 @@ export default function CheckboxWithLabel(data) {
     return (
         <div className={styles.checkboxWithLabel}>
             <input type="checkbox" id={data.name.toLowerCase()} name={data.name.toLowerCase()} defaultChecked={data.checked} />
-            <label for={data.name.toLowerCase()}>{data.name}</label>
+            <label htmlFor={data.name.toLowerCase()}>{data.name}</label>
         </div>
     )
 }

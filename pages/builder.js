@@ -3,6 +3,7 @@ import styles from '../styles/Items.module.css'
 import itemData from '../public/items/itemData.json'
 import React from 'react';
 import SelectInput from '../components/items/selectInput'
+import HomeButton from '../components/homeButton';
 
 function getRelevantItems(types) {
     let items = Object.keys(itemData);
@@ -41,16 +42,16 @@ function recalcBuild() {
         console.log(itemStats);
         if (itemStats["Health"]) {
             console.log(itemStats["Health"]);
-            let healthString = (typeof(itemStats["Health"]) === "string") ?
+            let healthString = (typeof (itemStats["Health"]) === "string") ?
                 itemStats["Health"] : itemStats["Health"].join(", ");
             console.log(healthString);
 
             // Try matching for % health
             let result = healthString.match(/([-+]\d+)% Max Health/);
-            stats.healthPercent += (result)? Number(result[1]) : 0;
+            stats.healthPercent += (result) ? Number(result[1]) : 0;
             // Try matching for regular health
             result = healthString.match(/([-+]\d+) Max Health/);
-            stats.healthFlat += (result)? Number(result[1]) : 0;
+            stats.healthFlat += (result) ? Number(result[1]) : 0;
         }
         stats.totalAgility += (itemStats["Agility"]) ? Number(itemStats["Agility"]) : 0;
         stats.totalArmor += (itemStats["Armor"]) ? Number(itemStats["Armor"]) : 0;
@@ -69,11 +70,12 @@ export default function Builder() {
                 <meta name="description" content="Monumenta builder." />
                 <meta name="keywords" content="Monumenta, Minecraft, MMORPG, Items, Builder" />
             </Head>
+            <HomeButton />
             <main className={styles.main}>
                 <h1>Monumenta Builder</h1>
                 <div>
                     Mainhand:
-                    <SelectInput name="Mainhand" sortableStats={getRelevantItems(["mainhand", "sword", "axe", "wand", "scythe", "bow", "crossbow", "throwable", "trident"])}></SelectInput>            
+                    <SelectInput name="Mainhand" sortableStats={getRelevantItems(["mainhand", "sword", "axe", "wand", "scythe", "bow", "crossbow", "throwable", "trident"])}></SelectInput>
                 </div>
                 <div>
                     Offhand:
