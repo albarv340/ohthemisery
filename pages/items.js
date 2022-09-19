@@ -5,6 +5,8 @@ import ItemTile from '../components/items/itemTile'
 import SearchForm from '../components/items/searchForm'
 import HomeButton from '../components/homeButton'
 import React from 'react';
+import InfiniteScroll from "react-infinite-scroll-component";
+
 
 function getRelevantItems(data) {
     let items = Object.keys(itemData)
@@ -31,9 +33,18 @@ function getRelevantItems(data) {
 
 export default function Items() {
     const [relevantItems, setRelevantItems] = React.useState(Object.keys(itemData));
+    const [itemsToShow, setItemsToShow] = React.useState(20)
+    const itemsToLoad = 20;
+
     function handleChange(data) {
         setRelevantItems(getRelevantItems(data))
+        setItemsToShow(itemsToLoad)
     }
+
+    function showMoreItems() {
+        setItemsToShow(itemsToShow + itemsToLoad)
+    };
+
     return (
         <div className={styles.container}>
             <Head>
@@ -45,14 +56,19 @@ export default function Items() {
             <main className={styles.main}>
                 <h1>Monumenta Items</h1>
                 <SearchForm update={handleChange} />
-                <div className={styles.itemsContainer}>
-                    {[...new Set(relevantItems, Object.keys(itemData))].map(name => {
+                <InfiniteScroll
+                    className={styles.itemsContainer}
+                    dataLength={itemsToShow}
+                    next={showMoreItems}
+                    hasMore={true}
+                    loader={<h4>Loading...</h4>}
+                >
+                    {[...new Set(relevantItems, Object.keys(itemData))].slice(0, itemsToShow).map(name => {
                         return (
                             <ItemTile key={name} name={name} item={itemData[name]} hidden={!relevantItems.includes(name)}></ItemTile>
                         )
                     })}
-                </div>
-
+                </InfiniteScroll>
             </main>
         </div>
     )
