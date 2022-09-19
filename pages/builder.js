@@ -28,7 +28,9 @@ function recalcBuild() {
             boots: itemData[boots]
         },
         totalAgility: 0,
-        totalArmor: 0
+        totalArmor: 0,
+        healthPercent: 100,
+        healthFlat: 20
     }
 
     document.getElementById("output").innerHTML = `<b>Items Selected:</b> ${stats.items.join(", ")}`;
@@ -36,12 +38,27 @@ function recalcBuild() {
     // Example: find total agility and armor
     Object.keys(stats.itemStats).forEach(type => {
         let itemStats = stats.itemStats[type];
+        console.log(itemStats);
+        if (itemStats["Health"]) {
+            console.log(itemStats["Health"]);
+            let healthString = (typeof(itemStats["Health"]) === "string") ?
+                itemStats["Health"] : itemStats["Health"].join(", ");
+            console.log(healthString);
+
+            // Try matching for % health
+            let result = healthString.match(/([-+]\d+)% Max Health/);
+            stats.healthPercent += (result)? Number(result[1]) : 0;
+            // Try matching for regular health
+            result = healthString.match(/([-+]\d+) Max Health/);
+            stats.healthFlat += (result)? Number(result[1]) : 0;
+        }
         stats.totalAgility += (itemStats["Agility"]) ? Number(itemStats["Agility"]) : 0;
         stats.totalArmor += (itemStats["Armor"]) ? Number(itemStats["Armor"]) : 0;
     });
 
     document.getElementById("agility").innerHTML = `<b>Total Agility:</b> ${stats.totalAgility}`;
     document.getElementById("armor").innerHTML = `<b>Total Armor:</b> ${stats.totalArmor}`;
+    document.getElementById("health").innerHTML = `<b>Health:</b> ${stats.healthFlat} flat hp, ${stats.healthPercent} percent hp, for a total of ${stats.healthFlat * (stats.healthPercent / 100)}`;
 }
 
 export default function Builder() {
@@ -83,6 +100,7 @@ export default function Builder() {
                     <p id="output"></p>
                     <p id="agility"></p>
                     <p id="armor"></p>
+                    <p id="health"></p>
                 </div>
             </main>
         </div>
