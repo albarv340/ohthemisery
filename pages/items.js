@@ -37,6 +37,7 @@ export default function Items() {
     const itemsToLoad = 20;
 
     function handleChange(data) {
+        console.log(data)
         setRelevantItems(getRelevantItems(data))
         setItemsToShow(itemsToLoad)
     }
