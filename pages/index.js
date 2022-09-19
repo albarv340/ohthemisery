@@ -54,6 +54,15 @@ export default function Home() {
             </p>
           </a> */}
         </div>
+
+        <div className={styles.grid}>
+          <Link href="/builder">
+            <a className={styles.card}>
+              <h2>Builder</h2>
+              <p>Monumenta builder to make class builds!</p>
+            </a>
+          </Link>
+        </div>
       </main>
 
       <footer className={styles.footer}>
