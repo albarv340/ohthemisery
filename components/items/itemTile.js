@@ -14,7 +14,7 @@ export default function ItemTile(data) {
     return (
         <div className={`${styles.itemTile} ${data.hidden ? styles.hidden : ""}`}>
             <div className={styles.imageIcon}>
-                <CustomImage
+                <CustomImage key={data.name}
                     alt={data.Name}
                     src={`/items/monumenta_icons/${item.Name.replace(/\(.*\)/g, '').trim().replaceAll(" ", "_")}.png`}
                     width={64}
