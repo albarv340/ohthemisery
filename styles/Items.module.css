@@ -141,96 +141,104 @@
     color: #fc5454;
 }
 
+.white {
+    color: #FCFCFC;
+}
+
 .orange {
-    color: rgb(255, 239, 222);
+    color: #FCA800;
 }
 
 .magenta {
-    color: rgb(241, 227, 233);
+    color: #FC54FC;
 }
 
 .lightBlue {
-    color: rgb(238, 247, 254);
+    color: #49C0E2;
+}
+
+.yellow {
+    color: #FCFC54;
 }
 
 .lime {
-    color: rgb(243, 255, 240);
+    color: #54FC54;
 }
 
 .pink {
-    color: rgb(255, 247, 254);
+    color: #FC68B2;
 }
 
 .gray {
-    color: rgb(213, 213, 213);
+    color: #545454;
 }
 
 .lightGray {
-    color: rgb(234, 234, 234);
+    color: #A8A8A8;
 }
 
 .cyan {
-    color: rgb(222, 240, 243);
+    color: #00A8A8;
 }
 
 .purple {
-    color: rgb(246, 242, 255);
+    color: #A800A8;
 }
 
 .teal {
-    color: rgb(234, 250, 246);
+    color: #46B4B3;
 }
 
 .shifting {
-    color: rgb(234, 241, 250);
+    color: #7DFCD1;
 }
 
 .forum {
-    color: rgb(228, 239, 227);
+    color: #7E7E00;
 }
 
 .tOV {
-    color: rgb(228, 242, 252);
+    color: #C6A0C6;
 }
 
 .docks {
-    color: rgb(233, 245, 247);
+    color: #196281;
 }
 
 .carnival {
-    color: rgb(246, 220, 220);
+    color: #CE2D27;
 }
 
 .delves {
-    color: rgb(235, 218, 255);
+    color: #B26F27;
 }
 
 .rush {
-    color: rgb(244, 204, 204);
+    color: #C01E55;
 }
 
 .horseman {
-    color: rgb(252, 220, 186);
+    color: #8C3318;
 }
 
 .mist {
-    color: rgb(213, 195, 204);
+    color: #664B5A;
 }
 
 .remorse {
-    color: rgb(215, 174, 174);
+    color: #EBE3D3;
 }
 
 .depths {
-    color: rgb(169, 162, 186);
+    color: #5C2C85;
 }
 
 .eldrask {
-    color: rgb(212, 235, 255);
+    color: #85CCF7;
 }
 
 .hekawt {
-    color: rgb(255, 193, 208);
+    color: #FCB23D;
 }
 
 .islesDelves {
@@ -257,14 +265,6 @@
     color: rgb(255, 237, 184);
 }
 
-.yellow {
-    color: rgb(255, 247, 222);
-}
-
-.white {
-    color: rgb(246, 246, 246);
-}
-
 .valleyCasino {
     color: rgb(255, 250, 236);
 }
@@ -286,27 +286,27 @@
 }
 
 .labs {
-    color: rgb(233, 237, 235);
+    color: #B2AAC1;
 }
 
 .willows {
-    color: rgb(180, 199, 180);
+    color: #006300;
 }
 
 .sanctum {
-    color: rgb(184, 222, 184);
+    color: #51A800;
 }
 
 .reverie {
-    color: rgb(238, 166, 166);
+    color: #780E46;
 }
 
 .corridors {
-    color: rgb(235, 188, 178);
+    color: #890000;
 }
 
 .verdant {
-    color: rgb(186, 212, 186);
+    color: #158115;
 }
 
 .kaul {

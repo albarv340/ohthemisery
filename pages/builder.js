@@ -1,108 +1,60 @@
 import Head from 'next/head'
-import styles from '../styles/Items.module.css'
-import itemData from '../public/items/itemData.json'
 import React from 'react';
-import SelectInput from '../components/items/selectInput'
+import UpdateForm from '../components/builder/updateForm'
 import HomeButton from '../components/homeButton';
+import ItemTile from '../components/items/itemTile';
 
-function getRelevantItems(types) {
-    let items = Object.keys(itemData);
-    return items.filter(name => types.includes(itemData[name].Type.toLowerCase().replace(/<.*>/, "").trim()));
-}
-
-function recalcBuild() {
-    let mainhand = document.getElementsByName("Mainhand")[0].value;
-    let offhand = document.getElementsByName("Offhand")[0].value;
-    let helmet = document.getElementsByName("Helmet")[0].value;
-    let chestplate = document.getElementsByName("Chestplate")[0].value;
-    let leggings = document.getElementsByName("Leggings")[0].value;
-    let boots = document.getElementsByName("Boots")[0].value;
-
-    let stats = {
-        items: [mainhand, offhand, helmet, chestplate, leggings, boots],
-        itemStats: {
-            mainhand: itemData[mainhand],
-            offhand: itemData[offhand],
-            helmet: itemData[helmet],
-            chestplate: itemData[chestplate],
-            leggings: itemData[leggings],
-            boots: itemData[boots]
-        },
-        totalAgility: 0,
-        totalArmor: 0,
-        healthPercent: 100,
-        healthFlat: 20
-    }
-
-    document.getElementById("output").innerHTML = `<b>Items Selected:</b> ${stats.items.join(", ")}`;
-
-    // Example: find total agility and armor
-    Object.keys(stats.itemStats).forEach(type => {
-        let itemStats = stats.itemStats[type];
-        console.log(itemStats);
-        if (itemStats["Health"]) {
-            console.log(itemStats["Health"]);
-            let healthString = (typeof (itemStats["Health"]) === "string") ?
-                itemStats["Health"] : itemStats["Health"].join(", ");
-            console.log(healthString);
-
-            // Try matching for % health
-            let result = healthString.match(/([-+]\d+)% Max Health/);
-            stats.healthPercent += (result) ? Number(result[1]) : 0;
-            // Try matching for regular health
-            result = healthString.match(/([-+]\d+) Max Health/);
-            stats.healthFlat += (result) ? Number(result[1]) : 0;
-        }
-        stats.totalAgility += (itemStats["Agility"]) ? Number(itemStats["Agility"]) : 0;
-        stats.totalArmor += (itemStats["Armor"]) ? Number(itemStats["Armor"]) : 0;
-    });
-
-    document.getElementById("agility").innerHTML = `<b>Total Agility:</b> ${stats.totalAgility}`;
-    document.getElementById("armor").innerHTML = `<b>Total Armor:</b> ${stats.totalArmor}`;
-    document.getElementById("health").innerHTML = `<b>Health:</b> ${stats.healthFlat} flat hp, ${stats.healthPercent} percent hp, for a total of ${stats.healthFlat * (stats.healthPercent / 100)}`;
+function checkExists(type, itemsToDisplay) {
+    return (itemsToDisplay.itemStats) ? itemsToDisplay.itemStats[type] !== undefined : false;
 }
 
 export default function Builder() {
+    const [itemsToDisplay, setItemsToDisplay] = React.useState({});
+    function change(itemData) {
+        setItemsToDisplay(itemData);
+    }
+
+    const itemTypes = ["mainhand", "offhand", "helmet", "chestplate", "leggings", "boots"];
+    const ehpStats = [
+        {type: "armor", name: "Armor"},
+        {type: "agility", name: "Agility"},
+        {type: "healthFinal", name: "Health"}
+    ]
+
     return (
-        <div className={styles.container}>
+        <div className="container-fluid">
             <Head>
                 <title>Monumenta Builder</title>
                 <meta name="description" content="Monumenta builder." />
                 <meta name="keywords" content="Monumenta, Minecraft, MMORPG, Items, Builder" />
             </Head>
             <HomeButton />
-            <main className={styles.main}>
-                <h1>Monumenta Builder</h1>
-                <div>
-                    Mainhand:
-                    <SelectInput name="Mainhand" sortableStats={getRelevantItems(["mainhand", "sword", "axe", "wand", "scythe", "bow", "crossbow", "throwable", "trident"])}></SelectInput>
+            <main>
+                <div className="row mb-5">
+                    <div className="col-12">
+                        <h1 className="text-center">Monumenta Builder</h1>
+                    </div>
                 </div>
-                <div>
-                    Offhand:
-                    <SelectInput name="Offhand" sortableStats={getRelevantItems(["offhand", "offhand shield", "offhand sword"])}></SelectInput>
+                <UpdateForm update={change}></UpdateForm>
+                <div className="row justify-content-center mb-2">
+                    {
+                        itemTypes.map(type =>
+                            (checkExists(type, itemsToDisplay)) ?
+                                <ItemTile key={type} name={itemsToDisplay.itemNames[type]} item={itemsToDisplay.itemStats[type]}></ItemTile> : ""
+                        )
+                    }
                 </div>
-                <div>
-                    Helmet:
-                    <SelectInput name="Helmet" sortableStats={getRelevantItems(["helmet"])}></SelectInput>
-                </div>
-                <div>
-                    Chestplate:
-                    <SelectInput name="Chestplate" sortableStats={getRelevantItems(["chestplate"])}></SelectInput>
-                </div>
-                <div>
-                    Leggings:
-                    <SelectInput name="Leggings" sortableStats={getRelevantItems(["leggings"])}></SelectInput>
-                </div>
-                <div>
-                    Boots:
-                    <SelectInput name="Boots" sortableStats={getRelevantItems(["boots"])}></SelectInput>
-                </div>
-                <button id="recalc" onClick={recalcBuild}>Recalculate</button>
-                <div>
-                    <p id="output"></p>
-                    <p id="agility"></p>
-                    <p id="armor"></p>
-                    <p id="health"></p>
+                <div className="row justify-content-center mb-2">
+                    <div className="col-auto text-center border border-dark">
+                        {
+                            ehpStats.map(stat => 
+                                (itemsToDisplay[stat.type] !== undefined) ?
+                                    <div>
+                                        <p className="mb-1 mt-1"><b>{stat.name}: </b>{itemsToDisplay[stat.type]}</p>
+                                    </div> : ""
+                            )
+                        }
+                    </div>
                 </div>
             </main>
         </div>
