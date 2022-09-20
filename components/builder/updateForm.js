@@ -61,12 +61,16 @@ export default function SearchForm({ update, build }) {
     function sendUpdate(event) {
         event.preventDefault()
         let itemNames = Object.fromEntries(new FormData(event.target).entries());
-        //console.log(itemNames);
         let stats = recalcBuild(itemNames);
         update(stats);
     }
 
-    const mainhandRef = React.useRef();
+    const mainhandReference = React.useRef();
+    const offhandReference = React.useRef();
+    const helmetReference = React.useRef();
+    const chestplateReference = React.useRef();
+    const leggingsReference = React.useRef();
+    const bootsReference = React.useRef();
 
     if (build) {
         let buildParts = build.split("&");
@@ -85,14 +89,14 @@ export default function SearchForm({ update, build }) {
             }
         })
 
-        //document.getElementsByName("mainhand")[0].value = itemNames.mainhand;
+        //m=Intellect Incarnate&o=Aurora Mirror (offhand)&h=Consumption&c=Heart of the Hero&l=Salazar's Greed&b=Chains of Entropy
 
-        
-        //mainhandRef.value = itemNames.mainhand;
-
-        console.log(mainhandRef);
-
-        console.log(itemNames);
+        mainhandReference?.current?.setValue({ "value": itemNames.mainhand, "label": itemNames.mainhand });
+        offhandReference?.current?.setValue({ "value": itemNames.offhand, "label": itemNames.offhand });
+        helmetReference?.current?.setValue({ "value": itemNames.helmet, "label": itemNames.helmet });
+        chestplateReference?.current?.setValue({ "value": itemNames.chestplate, "label": itemNames.chestplate });
+        leggingsReference?.current?.setValue({ "value": itemNames.leggings, "label": itemNames.leggings });
+        bootsReference?.current?.setValue({ "value": itemNames.boots, "label": itemNames.boots });
     }
 
     return (
@@ -107,10 +111,10 @@ export default function SearchForm({ update, build }) {
             </div>
             <div className="row justify-content-center mb-3">
                 <div className="col-2 text-center">
-                    <SelectInput ref={mainhandRef} name="mainhand" noneOption={true} sortableStats={getRelevantItems(["mainhand", "sword", "axe", "wand", "scythe", "bow", "crossbow", "throwable", "trident"])}></SelectInput>
+                    <SelectInput reference={mainhandReference} name="mainhand" noneOption={true} sortableStats={getRelevantItems(["mainhand", "sword", "axe", "wand", "scythe", "bow", "crossbow", "throwable", "trident"])}></SelectInput>
                 </div>
                 <div className="col-2 text-center">
-                    <SelectInput name="offhand" noneOption={true} sortableStats={getRelevantItems(["offhand", "offhand shield", "offhand sword"])}></SelectInput>
+                    <SelectInput reference={offhandReference} name="offhand" noneOption={true} sortableStats={getRelevantItems(["offhand", "offhand shield", "offhand sword"])}></SelectInput>
                 </div>
             </div>
             <div className="row justify-content-center">
@@ -129,16 +133,16 @@ export default function SearchForm({ update, build }) {
             </div>
             <div className="row justify-content-center mb-4">
                 <div className="col-2 text-center">
-                    <SelectInput noneOption={true} name="helmet" sortableStats={getRelevantItems(["helmet"])}></SelectInput>
+                    <SelectInput reference={helmetReference} noneOption={true} name="helmet" sortableStats={getRelevantItems(["helmet"])}></SelectInput>
                 </div>
                 <div className="col-2 text-center">
-                    <SelectInput noneOption={true} name="chestplate" sortableStats={getRelevantItems(["chestplate"])}></SelectInput>
+                    <SelectInput reference={chestplateReference} noneOption={true} name="chestplate" sortableStats={getRelevantItems(["chestplate"])}></SelectInput>
                 </div>
                 <div className="col-2 text-center">
-                    <SelectInput noneOption={true} name="leggings" sortableStats={getRelevantItems(["leggings"])}></SelectInput>
+                    <SelectInput reference={leggingsReference} noneOption={true} name="leggings" sortableStats={getRelevantItems(["leggings"])}></SelectInput>
                 </div>
                 <div className="col-2 text-center">
-                    <SelectInput noneOption={true} name="boots" sortableStats={getRelevantItems(["boots"])}></SelectInput>
+                    <SelectInput reference={bootsReference} noneOption={true} name="boots" sortableStats={getRelevantItems(["boots"])}></SelectInput>
                 </div>
             </div>
             <div className="row justify-content-center mb-3">
