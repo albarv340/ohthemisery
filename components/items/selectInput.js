@@ -7,6 +7,7 @@ export default function SelectInput(data) {
     return (
         <div>
             <Select
+                instanceId={data.name}
                 name={data.name}
                 options={options}
                 defaultValue={options[0]}

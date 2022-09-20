@@ -13,8 +13,14 @@ function getRelevantItems(data) {
     if (data.search) {
         items = items.filter(name => name.toLowerCase().includes(data.search.toLowerCase()))
     }
-    if (data.regionSelect != "Any") {
+    if (data.regionSelect != "Any Region") {
         items = items.filter(name => itemData[name].Region == data.regionSelect)
+    }
+    if (data.tierSelect != "Any Tier") {
+        items = items.filter(name => itemData[name].Tier == data.tierSelect)
+    }
+    if (data.locationSelect != "Any Location") {
+        items = items.filter(name => itemData[name].Location == data.locationSelect)
     }
     if (data.sortSelect != "-") {
         items = items.filter(name => typeof (itemData[name][data.sortSelect]) != "undefined")
@@ -37,7 +43,6 @@ export default function Items() {
     const itemsToLoad = 20;
 
     function handleChange(data) {
-        console.log(data)
         setRelevantItems(getRelevantItems(data))
         setItemsToShow(itemsToLoad)
     }
