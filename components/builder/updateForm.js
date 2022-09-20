@@ -79,7 +79,7 @@ export default function SearchForm({ update, build }) {
         let data = new FormData(formRef.current).entries();
         let url = `https://${window.location.host}/builder/`;
         for (const [ key, value ] of data) {
-            url += `${key[0]}=${value}&`;
+            url += `${key[0]}=${value.replaceAll(" ", "%20")}&`;
         }
         url = url.substring(0, url.length - 1);
     
