@@ -77,7 +77,7 @@ export default function SearchForm({ update, build }) {
     
     function copyBuild() {
         let data = new FormData(formRef.current).entries();
-        let url = `${window.location.host}/builder/`;
+        let url = `https://${window.location.host}/builder/`;
         for (const [ key, value ] of data) {
             url += `${key[0]}=${value}&`;
         }
