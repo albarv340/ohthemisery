@@ -37,6 +37,7 @@ export default function Items() {
     const itemsToLoad = 20;
 
     function handleChange(data) {
+        console.log(data)
         setRelevantItems(getRelevantItems(data))
         setItemsToShow(itemsToLoad)
     }
@@ -61,11 +62,11 @@ export default function Items() {
                     dataLength={itemsToShow}
                     next={showMoreItems}
                     hasMore={true}
-                    loader={<h4>Loading...</h4>}
+                    loader={<h4>No items found</h4>}
                 >
-                    {[...new Set(relevantItems, Object.keys(itemData))].slice(0, itemsToShow).map(name => {
+                    {relevantItems.slice(0, itemsToShow).map(name => {
                         return (
-                            <ItemTile key={name} name={name} item={itemData[name]} hidden={!relevantItems.includes(name)}></ItemTile>
+                            <ItemTile key={name} name={name} item={itemData[name]}></ItemTile>
                         )
                     })}
                 </InfiniteScroll>
