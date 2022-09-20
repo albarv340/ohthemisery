@@ -8,7 +8,7 @@ function checkExists(type, itemsToDisplay) {
     return (itemsToDisplay.itemStats) ? itemsToDisplay.itemStats[type] !== undefined : false;
 }
 
-export default function Builder() {
+export default function Builder({ build }) {
     const [itemsToDisplay, setItemsToDisplay] = React.useState({});
     function change(itemData) {
         setItemsToDisplay(itemData);
@@ -35,7 +35,7 @@ export default function Builder() {
                         <h1 className="text-center">Monumenta Builder</h1>
                     </div>
                 </div>
-                <UpdateForm update={change}></UpdateForm>
+                <UpdateForm update={change} build={build}></UpdateForm>
                 <div className="row justify-content-center mb-2">
                     {
                         itemTypes.map(type =>
@@ -49,7 +49,7 @@ export default function Builder() {
                         {
                             ehpStats.map(stat => 
                                 (itemsToDisplay[stat.type] !== undefined) ?
-                                    <div>
+                                    <div key={stat.type}>
                                         <p className="mb-1 mt-1"><b>{stat.name}: </b>{itemsToDisplay[stat.type]}</p>
                                     </div> : ""
                             )
