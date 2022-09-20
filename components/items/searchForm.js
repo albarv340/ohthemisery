@@ -1,14 +1,32 @@
 import SelectInput from './selectInput'
 import CheckboxWithLabel from './checkboxWithLabel'
 import styles from '../../styles/Items.module.css'
+import React from 'react'
 
 const sortableStats = ["-", "Abyssal", "Adaptability", "Adrenaline", "Agility", "Anemia", "Aptitude", "Aqua Affinity", "Arcane Thrust", "Armor", "Ashes of Eternity", "Attack Damage", "Attack Speed", "Attack Speed %", "Base Attack Damage", "Base Attack Speed", "Base Proj Damage", "Base Proj Speed", "Base Spell Power", "Base Throw Rate", "Blast Prot.", "Bleeding", "Chaotic", "Corruption", "Crippling", "Darksight", "Decay", "Depth Strider", "Duelist", "Efficiency", "Eruption", "Ethereal ", "Evasion", "Feather Falling", "Fire Aspect (M)", "Fire Aspect (P)", "Fire Prot.", "Fortune", "Gills", "Hex Eater", "Ice Aspect (M)", "Ice Aspect (P)", "Ineptitude", "Inferno", "Infinity (bow)", "Infinity (tool)", "Intuition", "Inure", "Irreparability", "Knockback", "Knockback Res.", "Life Drain", "Looting", "Lure", "Magic Damage", "Magic Prot.", "Max Health", "Max Health %", "Melee Prot.", "Mending", "Multishot", "Multitool", "Persistence", "Piercing", "Point Blank", "Poise", "Proj Damage", "Proj Speed", "Projectile Prot.", "Protection of the Depths", "Punch", "Quake", "Quick Charge", "Radiant", "Rage of the Keter", "Recoil", "Reflexes ", "Regen", "Regicide", "Respiration", "Resurrection", "Retrieval", "Riptide", "Sapper", "Second Wind", "Shielding", "Shrapnel", "Silk Touch", "Slayer", "Smite", "Sniper", "Soul Speed", "Speed", "Speed %", "Steadfast", "Sustenance", "Sweeping Edge", "Tempo ", "Thorns", "Thorns Damage", "Thunder Aspect (M)", "Thunder Aspect (P)", "Triage", "Two Handed", "Unbreakable", "Unbreaking", "Vanishing", "Void Tether", "Weightless"]
 const regions = ["Any", "Isles", "Valley"]
 
+
+function getResetKey(name) {
+    return name + new Date()
+}
+
 export default function SearchForm({ update }) {
-    function sendUpdate(event) {
-        event.preventDefault()
-        update(Object.fromEntries(new FormData(event.target).entries()));
+    const [searchKey, setSearchKey] = React.useState(getResetKey("search"))
+    const [regionKey, setRegionKey] = React.useState(getResetKey("region"))
+    const form = React.useRef()
+
+    function sendUpdate(event = {}) {
+        if (event.type === "submit") {
+            event.preventDefault()
+        }
+        update(Object.fromEntries(new FormData(form.current).entries()));
+    }
+
+    function resetForm() {
+        // Giving a new key to an element recreates it from scratch. It is used as a workaround to reset a component that doesn't reset on its own
+        setSearchKey(getResetKey("search"))
+        setRegionKey(getResetKey("region"))
     }
 
     function disableRightClick(event) {
@@ -22,7 +40,7 @@ export default function SearchForm({ update }) {
             if (interestingElement.type != "checkbox") {
                 interestingElement = event.target.firstChild;
             }
-            if (interestingElement.type == "checkbox") {
+            if (interestingElement && interestingElement.type == "checkbox") {
                 event.preventDefault()
                 interestingElement.checked = true;
                 for (const group of interestingElement.parentElement.parentElement.parentElement.children) {
@@ -37,7 +55,7 @@ export default function SearchForm({ update }) {
     }
 
     return (
-        <form onSubmit={sendUpdate} onMouseDown={uncheckOthers} onContextMenu={disableRightClick} className={styles.searchForm}>
+        <form onSubmit={sendUpdate} onReset={resetForm} onMouseDown={uncheckOthers} onContextMenu={disableRightClick} ref={form} className={styles.searchForm}>
             <div className={styles.checkboxes}>
                 <div className={styles.checkboxSubgroup}>
                     <CheckboxWithLabel name="Helmet" checked={true} />
@@ -71,9 +89,9 @@ export default function SearchForm({ update }) {
                 </div>
             </div>
             <span>Sort By:</span>
-            <SelectInput name="sortSelect" sortableStats={sortableStats} />
+            <SelectInput key={searchKey} name="sortSelect" sortableStats={sortableStats} />
             <span>Region:</span>
-            <SelectInput name="regionSelect" sortableStats={regions} />
+            <SelectInput key={regionKey} name="regionSelect" sortableStats={regions} />
             <input type="text" name="search" placeholder="Search" />
             <div>
                 <input className={styles.submitButton} type="submit" />
