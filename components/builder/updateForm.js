@@ -2,6 +2,8 @@ import SelectInput from '../items/selectInput';
 import itemData from '../../public/items/itemData.json';
 import React from 'react';
 
+let initialized = false;
+
 function getRelevantItems(types) {
     let items = Object.keys(itemData);
     return items.filter(name => types.includes(itemData[name].Type.toLowerCase().replace(/<.*>/, "").trim()));
@@ -65,16 +67,35 @@ export default function SearchForm({ update, build }) {
         update(stats);
     }
 
+    const formRef = React.useRef();
     const mainhandReference = React.useRef();
     const offhandReference = React.useRef();
     const helmetReference = React.useRef();
     const chestplateReference = React.useRef();
     const leggingsReference = React.useRef();
     const bootsReference = React.useRef();
+    
+    function copyBuild() {
+        let data = new FormData(formRef.current).entries();
+        let url = `${window.location.host}/builder/`;
+        for (const [ key, value ] of data) {
+            url += `${key[0]}=${value}&`;
+        }
+        url = url.substring(0, url.length - 1);
+    
+        if (!navigator.clipboard) {
+            window.alert("Couldn't copy build to clipboard. Sadness. :(");
+            return;
+        }
+        navigator.clipboard.writeText(url).then(function() {
+            console.log('Copying to clipboard was successful!');
+        }, function(err) {
+            console.error('Could not copy text: ', err);
+        });
+    }
 
-    if (build) {
+    if (build && !initialized) {
         let buildParts = build.split("&");
-        console.log(buildParts);
         let itemNames = {
             mainhand: (buildParts.find(str => str.includes("m="))?.split("m=")[1]),
             offhand: (buildParts.find(str => str.includes("o="))?.split("o=")[1]),
@@ -97,10 +118,14 @@ export default function SearchForm({ update, build }) {
         chestplateReference?.current?.setValue({ "value": itemNames.chestplate, "label": itemNames.chestplate });
         leggingsReference?.current?.setValue({ "value": itemNames.leggings, "label": itemNames.leggings });
         bootsReference?.current?.setValue({ "value": itemNames.boots, "label": itemNames.boots });
+
+        let stats = recalcBuild(itemNames);
+        update(stats);
+        initialized = true;
     }
 
     return (
-        <form onSubmit={sendUpdate}>
+        <form ref={formRef} onSubmit={sendUpdate}>
             <div className="row justify-content-center">
                 <div className="col-2 text-center">
                     <span>Mainhand</span>
@@ -150,7 +175,7 @@ export default function SearchForm({ update, build }) {
                     <input type="submit" className="btn btn-dark w-50" value="Recalculate" />
                 </div>
                 <div className="col-2 text-center">
-                    <button className="btn btn-dark w-50" id="share">Share</button>
+                    <button className="btn btn-dark w-50" id="share" onClick={copyBuild}>Share</button>
                 </div>
             </div>
         </form>
