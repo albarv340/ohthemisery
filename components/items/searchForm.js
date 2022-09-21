@@ -44,7 +44,6 @@ export default function SearchForm({ update }) {
         if (interestingElement.type != "checkbox") {
             interestingElement = event.target.firstChild;
         }
-        console.log(event)
         if (interestingElement && interestingElement.type == "checkbox") {
             if (event.button == 2) {
                 event.preventDefault()
