@@ -34,10 +34,6 @@ export default function SearchForm({ update }) {
         setLocationKey(getResetKey("location"))
     }
 
-    function disableRightClick(event) {
-        event.preventDefault()
-    }
-
     function uncheckOthers(event) {
         if (event.button == 2) {
             // Selects the checkbox given that you clicked the label or checkbox
@@ -60,7 +56,7 @@ export default function SearchForm({ update }) {
     }
 
     return (
-        <form onSubmit={sendUpdate} onReset={resetForm} onMouseDown={uncheckOthers} onContextMenu={disableRightClick} ref={form} className={styles.searchForm}>
+        <form onSubmit={sendUpdate} onReset={resetForm} onContextMenu={uncheckOthers} ref={form} className={styles.searchForm}>
             <div className={styles.checkboxes}>
                 <div className={styles.checkboxSubgroup}>
                     <CheckboxWithLabel name="Helmet" checked={true} />
