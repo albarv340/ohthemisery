@@ -26,6 +26,10 @@ export default function SearchForm({ update }) {
         update(Object.fromEntries(new FormData(form.current).entries()));
     }
 
+    function disableRightClick(event) {
+        event.preventDefault()
+    }
+
     function resetForm() {
         // Giving a new key to an element recreates it from scratch. It is used as a workaround to reset a component that doesn't reset on its own
         setSearchKey(getResetKey("search"))
@@ -35,13 +39,13 @@ export default function SearchForm({ update }) {
     }
 
     function uncheckOthers(event) {
-        if (event.button == 2) {
-            // Selects the checkbox given that you clicked the label or checkbox
-            let interestingElement = event.target.parentElement.firstChild;
-            if (interestingElement.type != "checkbox") {
-                interestingElement = event.target.firstChild;
-            }
-            if (interestingElement && interestingElement.type == "checkbox") {
+        // Selects the checkbox given that you clicked the label or checkbox
+        let interestingElement = event.target.parentElement.firstChild;
+        if (interestingElement.type != "checkbox") {
+            interestingElement = event.target.firstChild;
+        }
+        if (interestingElement && interestingElement.type == "checkbox") {
+            if (event.button == 2) {
                 event.preventDefault()
                 interestingElement.checked = true;
                 for (const group of interestingElement.parentElement.parentElement.parentElement.children) {
@@ -51,59 +55,68 @@ export default function SearchForm({ update }) {
                         }
                     }
                 }
+            } else if (event.button == 0 && event.target.localName == "div") {
+                // Makes it so that you check/uncheck the checkbox even if you click the div that the checkbox is in and not directly on the checkbox
+                interestingElement.checked = !interestingElement.checked;
             }
         }
     }
 
     return (
-        <form onSubmit={sendUpdate} onReset={resetForm} onContextMenu={uncheckOthers} ref={form} className={styles.searchForm}>
-            <div className={styles.checkboxes}>
-                <div className={styles.checkboxSubgroup}>
-                    <CheckboxWithLabel name="Helmet" checked={true} />
-                    <CheckboxWithLabel name="Chestplate" checked={true} />
-                    <CheckboxWithLabel name="Leggings" checked={true} />
-                    <CheckboxWithLabel name="Boots" checked={true} />
+        <form onSubmit={sendUpdate} onReset={resetForm} onContextMenu={disableRightClick} onMouseDown={uncheckOthers} ref={form} className={styles.searchForm}>
+            <div className={styles.inputs}>
+                <div className={styles.checkboxes}>
+                    <span>Display items of type:</span>
+                    <div className={styles.checkboxSubgroup}>
+                        <CheckboxWithLabel name="Helmet" checked={true} />
+                        <CheckboxWithLabel name="Chestplate" checked={true} />
+                        <CheckboxWithLabel name="Leggings" checked={true} />
+                        <CheckboxWithLabel name="Boots" checked={true} />
+                    </div>
+                    <div className={styles.checkboxSubgroup}>
+                        <CheckboxWithLabel name="Axe" checked={true} />
+                        <CheckboxWithLabel name="Wand" checked={true} />
+                        <CheckboxWithLabel name="Sword" checked={true} />
+                        <CheckboxWithLabel name="Scythe" checked={true} />
+                        <CheckboxWithLabel name="Pickaxe" checked={true} />
+                        <CheckboxWithLabel name="Shovel" checked={true} />
+                    </div>
+                    <div className={styles.checkboxSubgroup}>
+                        <CheckboxWithLabel name="Bow" checked={true} />
+                        <CheckboxWithLabel name="Crossbow" checked={true} />
+                        <CheckboxWithLabel name="Throwable" checked={true} />
+                        <CheckboxWithLabel name="Trident" checked={true} />
+                    </div>
+                    <div className={styles.checkboxSubgroup}>
+                        <CheckboxWithLabel name="Offhand Shield" checked={true} />
+                        <CheckboxWithLabel name="Offhand" checked={true} />
+                        <CheckboxWithLabel name="Offhand Sword" checked={true} />
+                    </div>
+                    <div className={styles.checkboxSubgroup}>
+                        <CheckboxWithLabel name="Mainhand" checked={true} />
+                        <CheckboxWithLabel name="Consumable" checked={true} />
+                        <CheckboxWithLabel name="Misc" checked={true} />
+                    </div>
                 </div>
-                <div className={styles.checkboxSubgroup}>
-                    <CheckboxWithLabel name="Axe" checked={true} />
-                    <CheckboxWithLabel name="Wand" checked={true} />
-                    <CheckboxWithLabel name="Sword" checked={true} />
-                    <CheckboxWithLabel name="Scythe" checked={true} />
-                    <CheckboxWithLabel name="Pickaxe" checked={true} />
-                    <CheckboxWithLabel name="Shovel" checked={true} />
+                <div>
+                    <div className={styles.selects}>
+                        <span>Sort By:</span>
+                        <SelectInput key={searchKey} name="sortSelect" sortableStats={sortableStats} />
+                    </div>
+                    <div className={styles.selects}>
+                        <span>Region:</span>
+                        <SelectInput key={regionKey} name="regionSelect" sortableStats={regions} />
+                    </div>
+                    <div className={styles.selects}>
+                        <span>Tier:</span>
+                        <SelectInput key={tierKey} name="tierSelect" sortableStats={tiers} />
+                    </div>
+                    <div className={styles.selects}>
+                        <span>Location:</span>
+                        <SelectInput key={locationKey} name="locationSelect" sortableStats={locations} />
+                    </div>
                 </div>
-                <div className={styles.checkboxSubgroup}>
-                    <CheckboxWithLabel name="Bow" checked={true} />
-                    <CheckboxWithLabel name="Crossbow" checked={true} />
-                    <CheckboxWithLabel name="Throwable" checked={true} />
-                    <CheckboxWithLabel name="Trident" checked={true} />
-                </div>
-                <div className={styles.checkboxSubgroup}>
-                    <CheckboxWithLabel name="Offhand Shield" checked={true} />
-                    <CheckboxWithLabel name="Offhand" checked={true} />
-                    <CheckboxWithLabel name="Offhand Sword" checked={true} />
-                </div>
-                <div className={styles.checkboxSubgroup}>
-                    <CheckboxWithLabel name="Mainhand" checked={true} />
-                    <CheckboxWithLabel name="Consumable" checked={true} />
-                    <CheckboxWithLabel name="Misc" checked={true} />
-                </div>
-            </div>
-            <div className={styles.flex}>
-                <span>Sort By:</span>
-                <SelectInput key={searchKey} name="sortSelect" sortableStats={sortableStats} />
-            </div>
-            <div className={styles.flex}>
-                <span>Region:</span>
-                <SelectInput key={regionKey} name="regionSelect" sortableStats={regions} />
-            </div>
-            <div className={styles.flex}>
-                <span>Tier:</span>
-                <SelectInput key={tierKey} name="tierSelect" sortableStats={tiers} />
-            </div>
-            <div className={styles.flex}>
-                <span>Location:</span>
-                <SelectInput key={locationKey} name="locationSelect" sortableStats={locations} />
+
             </div>
             <span>Search:</span>
             <input type="text" name="search" placeholder="Search" />
