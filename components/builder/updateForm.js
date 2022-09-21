@@ -17,6 +17,33 @@ function sumEnchantmentStat(itemStats, enchName, perLevelMultiplier) {
     return (itemStats[enchName]) ? Number(itemStats[enchName]) * perLevelMultiplier : 0;
 }
 
+function returnArmorAgilityReduction(armor, agility, extraProt, type) {
+    let reductionCoefficient;
+    if (armor == 0) {
+        reductionCoefficient = Math.pow(0.96, agility);
+    } else if (agility == 0) {
+        reductionCoefficient = Math.pow(0.96, armor);
+    } else {
+        reductionCoefficient = Math.pow(0.96, (armor+agility - 0.5 * armor * agility / (armor + agility)));
+    }
+
+    switch (type) {
+        case "fire": {
+            return Math.pow(0.96, (2 * extraProt + 0.5 * armor + 0.5 * agility));
+        }
+        case "fall": {
+            return Math.pow(0.96, (3 * extraProt + 0.5 * armor + 0.5 * agility));
+        }
+        default: {
+            return reductionCoefficient * Math.pow(0.96, 2 * extraProt);
+        }
+    }
+}
+
+function calculateDamageReduction(reductionCoefficient) {
+    return (100 - (100 * reductionCoefficient));
+}
+
 function recalcBuild(data) {
     let stats = {
         itemNames: {
@@ -50,7 +77,43 @@ function recalcBuild(data) {
         regenPerSec: 0,
         regenPerSecPercent: 0,
         lifeDrainOnCrit: 0,
-        lifeDrainOnCritPercent: 0
+        lifeDrainOnCritPercent: 0,
+
+        meleeProt: 0,
+        projectileProt: 0,
+        magicProt: 0,
+        blastProt: 0,
+        fireProt: 0,
+        fallProt: 0,
+        ailmentProt: 0,
+
+        meleeHNDR: 0,
+        projectileHNDR: 0,
+        magicHNDR: 0,
+        blastHNDR: 0,
+        fireHNDR: 0,
+        fallHNDR: 0,
+        ailmentHNDR: 0,
+
+        meleeDR: 0,
+        projectileDR: 0,
+        magicDR: 0,
+        blastDR: 0,
+        fireDR: 0,
+        fallDR: 0,
+        ailmentDR: 0,
+
+        meleeEHP: 0,
+        projectileEHP: 0,
+        magicEHP: 0,
+        blastEHP: 0,
+        fireEHP: 0,
+        fallEHP: 0,
+        ailmentEHP: 0,
+
+        hasMoreArmor: false,
+        hasMoreAgility: false,
+        hasEqualDefenses: false
     }
 
     // Main loop to add up stats from items
@@ -78,6 +141,13 @@ function recalcBuild(data) {
             stats.healingRate += sumEnchantmentStat(itemStats, "Anemia", -10) + sumEnchantmentStat(itemStats, "Sustenance", 10);
             stats.regenPerSec += sumEnchantmentStat(itemStats, "Regen", 1);
             stats.lifeDrainOnCrit += sumEnchantmentStat(itemStats, "Life Drain", 1);
+
+            stats.meleeProt += sumNumberStat(itemStats, "Melee Prot.");
+            stats.projectileProt += sumNumberStat(itemStats, "Projectile Prot.");
+            stats.magicProt += sumNumberStat(itemStats, "Magic Prot.");
+            stats.blastProt += sumNumberStat(itemStats, "Blast Prot.");
+            stats.fireProt += sumNumberStat(itemStats, "Fire Prot.");
+            stats.fallProt += sumNumberStat(itemStats, "Feather Falling");
         }
     });
 
@@ -100,6 +170,39 @@ function recalcBuild(data) {
     stats.lifeDrainOnCrit = lifeDrainOnCritFixedNonRounded.toFixed(2);
     // Calculate %hp regained from life drain on crit
     stats.lifeDrainOnCritPercent = ((lifeDrainOnCritFixedNonRounded / stats.healthFinal) * 100).toFixed(2);
+
+    // Agility or Armor presidence check for situationals ( WIP )
+    (stats.agility > stats.armor) ? stats.hasMoreAgility = true : (stats.armor > stats.agility) ? stats.hasMoreArmor = true : stats.hasEqualDefenses = true;
+    // DR
+    let meleeDR = calculateDamageReduction(returnArmorAgilityReduction(stats.armor, stats.agility, stats.meleeProt, "melee"));
+    let projectileDR = calculateDamageReduction(returnArmorAgilityReduction(stats.armor, stats.agility, stats.projectileProt, "projectile"));
+    let magicDR = calculateDamageReduction(returnArmorAgilityReduction(stats.armor, stats.agility, stats.magicProt, "magic"));
+    let blastDR = calculateDamageReduction(returnArmorAgilityReduction(stats.armor, stats.agility, stats.blastProt, "blast"));
+    let fireDR = calculateDamageReduction(returnArmorAgilityReduction(stats.armor, stats.agility, stats.fireProt, "fire"));
+    let fallDR = calculateDamageReduction(returnArmorAgilityReduction(stats.armor, stats.agility, stats.fallProt, "fall"));
+
+    stats.meleeDR = meleeDR.toFixed(2);
+    stats.projectileDR = projectileDR.toFixed(2);
+    stats.magicDR = magicDR.toFixed(2);
+    stats.blastDR = blastDR.toFixed(2);
+    stats.fireDR = fireDR.toFixed(2);
+    stats.fallDR = fallDR.toFixed(2);
+
+    stats.meleeEHP = (stats.healthFinal / (1 - meleeDR / 100)).toFixed(2);
+    stats.projectileEHP = (stats.healthFinal / (1 - projectileDR / 100)).toFixed(2);
+    stats.magicEHP = (stats.healthFinal / (1 - magicDR / 100)).toFixed(2);
+    stats.blastEHP = (stats.healthFinal / (1 - blastDR / 100)).toFixed(2);
+    stats.fireEHP = (stats.healthFinal / (1 - fireDR / 100)).toFixed(2);
+    stats.fallEHP = (stats.healthFinal / (1 - fallDR / 100)).toFixed(2);
+    stats.ailmentEHP = stats.healthFinal;
+
+    stats.meleeHNDR = ((1 - ((1 - (meleeDR / 100)) / (stats.healthFinal / 20))) * 100).toFixed(2);
+    stats.projectileHNDR = ((1 - ((1 - (projectileDR / 100)) / (stats.healthFinal / 20))) * 100).toFixed(2);
+    stats.magicHNDR = ((1 - ((1 - (magicDR / 100)) / (stats.healthFinal / 20))) * 100).toFixed(2);
+    stats.blastHNDR = ((1 - ((1 - (blastDR / 100)) / (stats.healthFinal / 20))) * 100).toFixed(2);
+    stats.fireHNDR = ((1 - ((1 - (fireDR / 100)) / (stats.healthFinal / 20))) * 100).toFixed(2);
+    stats.fallHNDR = ((1 - ((1 - (fallDR / 100)) / (stats.healthFinal / 20))) * 100).toFixed(2);
+    stats.ailmentHNDR = ((1 - (1 / (stats.healthFinal / 20))) * 100).toFixed(2);
 
     console.log(stats);
 
