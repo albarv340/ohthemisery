@@ -15,10 +15,21 @@ export default function Builder({ build }) {
     }
 
     const itemTypes = ["mainhand", "offhand", "helmet", "chestplate", "leggings", "boots"];
-    const ehpStats = [
-        {type: "armor", name: "Armor"},
-        {type: "agility", name: "Agility"},
-        {type: "healthFinal", name: "Health"}
+    const miscStats = [
+        {type: "armor", name: "Armor", percent: false},
+        {type: "agility", name: "Agility", percent: false},
+        {type: "speedPercent", name: "Speed", percent: true},
+        {type: "knockbackRes", name: "KB Resistance", percent: true},
+        {type: "thorns", name: "Thorns Damage", percent: false}
+    ]
+    const healthStats = [
+        {type: "healthFinal", name: "Health", percent: false},
+        {type: "healingRate", name: "Healing Rate", percent: true},
+        {type: "effHealingRate", name: "Eff. Healing Rate", percent: true},
+        {type: "regenPerSec", name: "Regen/sec", percent: false},
+        {type: "regenPerSecPercent", name: "%HP regen/sec", percent: true},
+        {type: "lifeDrainOnCrit", name: "Life Drain Crit", percent: false},
+        {type: "lifeDrainOnCritPercent", name: "Life Drain %HP Crit", percent: true}
     ]
 
     return (
@@ -45,12 +56,24 @@ export default function Builder({ build }) {
                     }
                 </div>
                 <div className="row justify-content-center mb-2">
-                    <div className="col-auto text-center border border-dark">
+                    <div className="col-auto text-center border border-dark me-3">
+                        <h5 className="text-center fw-bold">Misc</h5>
                         {
-                            ehpStats.map(stat => 
+                            miscStats.map(stat => 
                                 (itemsToDisplay[stat.type] !== undefined) ?
                                     <div key={stat.type}>
-                                        <p className="mb-1 mt-1"><b>{stat.name}: </b>{itemsToDisplay[stat.type]}</p>
+                                        <p className="mb-1 mt-1"><b>{stat.name}: </b>{itemsToDisplay[stat.type]}{stat.percent ? "%" : ""}</p>
+                                    </div> : ""
+                            )
+                        }
+                    </div>
+                    <div className="col-auto text-center border border-dark">
+                        <h5 className="text-center fw-bold">Health</h5>
+                        {
+                            healthStats.map(stat => 
+                                (itemsToDisplay[stat.type] !== undefined) ?
+                                    <div key={stat.type}>
+                                        <p className="mb-1 mt-1"><b>{stat.name}: </b>{itemsToDisplay[stat.type]}{stat.percent ? "%" : ""}</p>
                                     </div> : ""
                             )
                         }

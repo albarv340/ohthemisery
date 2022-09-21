@@ -9,6 +9,14 @@ function getRelevantItems(types) {
     return items.filter(name => types.includes(itemData[name].Type.toLowerCase().replace(/<.*>/, "").trim()));
 }
 
+function sumNumberStat(itemStats, statName, defaultIncrement) {
+    return (itemStats[statName]) ? Number(itemStats[statName]) : (defaultIncrement) ? defaultIncrement : 0;
+}
+
+function sumEnchantmentStat(itemStats, enchName, perLevelMultiplier) {
+    return (itemStats[enchName]) ? Number(itemStats[enchName]) * perLevelMultiplier : 0;
+}
+
 function recalcBuild(data) {
     let stats = {
         itemNames: {
@@ -20,41 +28,78 @@ function recalcBuild(data) {
             "boots": data.boots
         },
         itemStats: {
-            "mainhand": itemData[data.mainhand],
-            "offhand": itemData[data.offhand],
-            "helmet": itemData[data.helmet],
-            "chestplate": itemData[data.chestplate],
-            "leggings": itemData[data.leggings],
-            "boots": itemData[data.boots]
+            "mainhand": (data.mainhand != "None") ? itemData[data.mainhand] : undefined,
+            "offhand": (data.offhand != "None") ? itemData[data.offhand] : undefined,
+            "helmet": (data.helmet != "None") ? itemData[data.helmet] : undefined,
+            "chestplate": (data.chestplate != "None") ? itemData[data.chestplate] : undefined,
+            "leggings": (data.leggings != "None") ? itemData[data.leggings] : undefined,
+            "boots": (data.boots != "None") ? itemData[data.boots] : undefined
         },
         agility: 0,
         armor: 0,
+        speedPercent: 100,
+        speedFlat: 0.1,
+        knockbackRes: 0,
+        thorns: 0,
+
         healthPercent: 100,
         healthFlat: 20,
-        healthFinal: 20
+        healthFinal: 20,
+        healingRate: 100,
+        effHealingRate: 100,
+        regenPerSec: 0,
+        regenPerSecPercent: 0,
+        lifeDrainOnCrit: 0,
+        lifeDrainOnCritPercent: 0
     }
 
-    //console.log(stats);
-
-    // Example: find total agility and armor
+    // Main loop to add up stats from items
     Object.keys(stats.itemStats).forEach(type => {
         let itemStats = stats.itemStats[type];
-        //console.log(itemStats);
-        if (itemStats["Health"]) {
-            let healthString = (typeof (itemStats["Health"]) === "string") ?
-                itemStats["Health"] : itemStats["Health"].join(", ");
-
-            // Try matching for % health
-            let result = healthString.match(/([-+]\d+)% Max Health/);
-            stats.healthPercent += (result) ? Number(result[1]) : 0;
-            // Try matching for regular health
-            result = healthString.match(/([-+]\d+) Max Health/);
-            stats.healthFlat += (result) ? Number(result[1]) : 0;
+        if (itemStats !== undefined) {
+            if (itemStats["Health"]) {
+                let healthString = (typeof (itemStats["Health"]) === "string") ?
+                    itemStats["Health"] : itemStats["Health"].join(", ");
+    
+                // Try matching for % health
+                let result = healthString.match(/([-+]\d+)% Max Health/);
+                stats.healthPercent += (result) ? Number(result[1]) : 0;
+                // Try matching for regular health
+                result = healthString.match(/([-+]\d+) Max Health/);
+                stats.healthFlat += (result) ? Number(result[1]) : 0;
+            }
+            stats.agility += sumNumberStat(itemStats, "Agility");
+            stats.armor += sumNumberStat(itemStats, "Armor");
+            stats.speedPercent += sumNumberStat(itemStats, "Speed %");
+            stats.speedFlat += sumNumberStat(itemStats, "Speed");
+            stats.knockbackRes += sumNumberStat(itemStats, "Knockback Res.");
+            stats.thorns += sumNumberStat(itemStats, "Thorns");
+    
+            stats.healingRate += sumEnchantmentStat(itemStats, "Anemia", -10) + sumEnchantmentStat(itemStats, "Sustenance", 10);
+            stats.regenPerSec += sumEnchantmentStat(itemStats, "Regen", 1);
+            stats.lifeDrainOnCrit += sumEnchantmentStat(itemStats, "Life Drain", 1);
         }
-        stats.agility += (itemStats["Agility"]) ? Number(itemStats["Agility"]) : 0;
-        stats.armor += (itemStats["Armor"]) ? Number(itemStats["Armor"]) : 0;
-        stats.healthFinal = stats.healthFlat * (stats.healthPercent / 100);
     });
+
+    // Calculate final health
+    stats.healthFinal = stats.healthFlat * (stats.healthPercent / 100);
+    // Fix speed percentage to account for base speed
+    stats.speedPercent = (stats.speedPercent * (stats.speedFlat)/0.1).toFixed(2);
+    // Fix knockback resistance to be percentage and cap at 100
+    stats.knockbackRes = (stats.knockbackRes > 10) ? 100 : stats.knockbackRes * 10;
+    // Calculate effective healing rate
+    let effHealingNonRounded = (((20 / stats.healthFinal) * (stats.healingRate / 100)) * 100);
+    stats.effHealingRate = effHealingNonRounded.toFixed(2);
+    // Fix regen to the actual value per second
+    let regenPerSecNonRounded = 0.33 * Math.sqrt(stats.regenPerSec) * (effHealingNonRounded / 100);
+    stats.regenPerSec = regenPerSecNonRounded.toFixed(2);
+    // Calculate %hp regen per sec
+    stats.regenPerSecPercent = ((regenPerSecNonRounded / stats.healthFinal) * 100).toFixed(2);
+    // Fix life drain on crit
+    let lifeDrainOnCritFixedNonRounded = (Math.sqrt(stats.lifeDrainOnCrit)) * (effHealingNonRounded / 100);
+    stats.lifeDrainOnCrit = lifeDrainOnCritFixedNonRounded.toFixed(2);
+    // Calculate %hp regained from life drain on crit
+    stats.lifeDrainOnCritPercent = ((lifeDrainOnCritFixedNonRounded / stats.healthFinal) * 100).toFixed(2);
 
     return stats;
 }
