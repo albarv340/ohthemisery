@@ -91,7 +91,7 @@ function recalcBuild(data) {
     let effHealingNonRounded = (((20 / stats.healthFinal) * (stats.healingRate / 100)) * 100);
     stats.effHealingRate = effHealingNonRounded.toFixed(2);
     // Fix regen to the actual value per second
-    let regenPerSecNonRounded = 0.33 * Math.sqrt(stats.regenPerSec) * (effHealingNonRounded / 100);
+    let regenPerSecNonRounded = 0.33 * Math.sqrt(stats.regenPerSec) * (stats.healingRate / 100);
     stats.regenPerSec = regenPerSecNonRounded.toFixed(2);
     // Calculate %hp regen per sec
     stats.regenPerSecPercent = ((regenPerSecNonRounded / stats.healthFinal) * 100).toFixed(2);
@@ -100,6 +100,8 @@ function recalcBuild(data) {
     stats.lifeDrainOnCrit = lifeDrainOnCritFixedNonRounded.toFixed(2);
     // Calculate %hp regained from life drain on crit
     stats.lifeDrainOnCritPercent = ((lifeDrainOnCritFixedNonRounded / stats.healthFinal) * 100).toFixed(2);
+
+    console.log(stats);
 
     return stats;
 }
