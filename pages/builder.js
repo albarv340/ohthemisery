@@ -31,15 +31,6 @@ export default function Builder({ build }) {
         {type: "lifeDrainOnCrit", name: "Life Drain Crit", percent: false},
         {type: "lifeDrainOnCritPercent", name: "Life Drain %HP Crit", percent: true}
     ];
-    const healthNormalizedDRStats = [
-        {type: "meleeHNDR", name: "Melee", percent: true},
-        {type: "projectileHNDR", name: "Projectile", percent: true},
-        {type: "magicHNDR", name: "Magic", percent: true},
-        {type: "blastHNDR", name: "Blast", percent: true},
-        {type: "fireHNDR", name: "Fire", percent: true},
-        {type: "fallHNDR", name: "Fall", percent: true},
-        {type: "ailmentHNDR", name: "Ailment", percent: true}
-    ];
     const DRStats = [
         {type: "meleeDR", name: "Melee", percent: true},
         {type: "projectileDR", name: "Projectile", percent: true},
@@ -48,6 +39,15 @@ export default function Builder({ build }) {
         {type: "fireDR", name: "Fire", percent: true},
         {type: "fallDR", name: "Fall", percent: true},
         {type: "ailmentDR", name: "Ailment", percent: true}
+    ];
+    const healthNormalizedDRStats = [
+        {type: "meleeHNDR", name: "Melee", percent: true},
+        {type: "projectileHNDR", name: "Projectile", percent: true},
+        {type: "magicHNDR", name: "Magic", percent: true},
+        {type: "blastHNDR", name: "Blast", percent: true},
+        {type: "fireHNDR", name: "Fire", percent: true},
+        {type: "fallHNDR", name: "Fall", percent: true},
+        {type: "ailmentHNDR", name: "Ailment", percent: true}
     ];
     const EHPStats = [
         {type: "meleeEHP", name: "Melee", percent: false},
@@ -76,7 +76,10 @@ export default function Builder({ build }) {
         {type: "throwRate", name: "Weapon Throw Rate", percent: false}
     ];
     const magicStats = [
-
+        {type: "magicDamagePercent", name: "Magic Damage", percent: true},
+        {type: "spellPowerPercent", name: "Spell Power", percent: true},
+        {type: "spellDamage", name: "Total Spell Damage", percent: true},
+        {type: "spellCooldownPercent", name: "Cooldown Duration", percent: true}
     ];
 
     return (
@@ -129,9 +132,9 @@ export default function Builder({ build }) {
                     </div>
                     <div className="col-auto text-center border border-dark mx-2 py-2">
                         <h5 className="text-center fw-bold mb-0">Damage Reduction</h5>
-                        <h6 className="text-center fw-bold">(Health Normalized)</h6>
+                        <h6 className="text-center fw-bold">(Regular)</h6>
                         {
-                            healthNormalizedDRStats.map(stat => 
+                            DRStats.map(stat => 
                                 (itemsToDisplay[stat.type] !== undefined) ?
                                     <div key={stat.type}>
                                         <p className="mb-1 mt-1"><b>{stat.name}: </b>{itemsToDisplay[stat.type]}{stat.percent ? "%" : ""}</p>
@@ -141,9 +144,9 @@ export default function Builder({ build }) {
                     </div>
                     <div className="col-auto text-center border border-dark mx-2 py-2">
                         <h5 className="text-center fw-bold mb-0">Damage Reduction</h5>
-                        <h6 className="text-center fw-bold">(Regular)</h6>
+                        <h6 className="text-center fw-bold">(Health Normalized)</h6>
                         {
-                            DRStats.map(stat => 
+                            healthNormalizedDRStats.map(stat => 
                                 (itemsToDisplay[stat.type] !== undefined) ?
                                     <div key={stat.type}>
                                         <p className="mb-1 mt-1"><b>{stat.name}: </b>{itemsToDisplay[stat.type]}{stat.percent ? "%" : ""}</p>

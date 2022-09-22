@@ -130,7 +130,16 @@ function recalcBuild(data) {
         projectileSpeedPercent: 100,
         projectileSpeed: 0,
         throwRatePercent: 100,
-        throwRate: 0
+        throwRate: 0,
+
+        magicDamagePercent: 100,
+        spellPowerPercent: 100,
+        spellDamage: 100,
+        spellCooldownPercent: 100,
+
+        aptitude: 0,
+        ineptitude: 0
+
     }
 
     // Main loop to add up stats from items
@@ -170,7 +179,12 @@ function recalcBuild(data) {
             stats.attackSpeedPercent += sumNumberStat(itemStats, "Attack Speed %");
 
             stats.projectileDamagePercent += sumNumberStat(itemStats, "Proj Damage");
-            stats.projectileSpeedPercent += sumNumberStat(itemStats, "Proj Speed");
+            stats.projectileSpeedPercent += sumNumberStat(itemStats, "Proj Spseed");
+
+            stats.magicDamagePercent += sumNumberStat(itemStats, "Magic Damage");
+
+            stats.aptitude += sumEnchantmentStat(itemStats, "Aptitude", 1);
+            stats.ineptitude += sumEnchantmentStat(itemStats, "Ineptitude", -1);
         }
     });
 
@@ -246,6 +260,13 @@ function recalcBuild(data) {
     stats.projectileSpeed = projectileSpeed.toFixed(2);
     let throwRate = sumNumberStat(stats.itemStats.mainhand, "Base Throw Rate", stats.throwRate) * (stats.throwRatePercent / 100);
     stats.throwRate = throwRate.toFixed(2);
+
+    // Magic Stats
+    stats.spellPowerPercent = 100 + sumNumberStat(stats.itemStats.mainhand, "Base Spell Power", 0);
+    stats.spellDamage = (((stats.spellPowerPercent / 100) * (stats.magicDamagePercent / 100)) * 100).toFixed(2);
+    stats.spellCooldownPercent = (100 * Math.pow(0.95, stats.aptitude + stats.ineptitude)).toFixed(2);
+
+    // total spell damage: spell power * magic damage
 
     console.log(stats);
 
