@@ -58,6 +58,21 @@ export default function Builder({ build }) {
         {type: "fallEHP", name: "Fall", percent: false},
         {type: "ailmentEHP", name: "Ailment", percent: false}
     ];
+    const meleeStats = [
+        {type: "attackSpeedPercent", name: "Attack Speed", percent: true},
+        {type: "attackSpeed", name: "Weapon Attack Speed", percent: false},
+        {type: "attackDamagePercent", name: "Damage", percent: true},
+        {type: "attackDamage", name: "Weapon Damage", percent: false},
+        {type: "attackDamageCrit", name: "Weapon Crit Damage", percent: false},
+        {type: "iframeDPS", name: "IFrame-Capped DPS", percent: false},
+        {type: "iframeCritDPS", name: "IFrame-Capped Crit DPS", percent: false}
+    ];
+    const rangedStats = [
+
+    ];
+    const magicStats = [
+
+    ];
 
     return (
         <div className="container-fluid">
@@ -83,8 +98,9 @@ export default function Builder({ build }) {
                     }
                 </div>
                 <div className="row justify-content-center mb-2">
-                    <div className="col-auto text-center border border-dark mx-2">
-                        <h5 className="text-center fw-bold">Misc</h5>
+                    <div className="col-auto text-center border border-dark mx-2 py-2">
+                        <h5 className="text-center fw-bold mb-0">Misc</h5>
+                        <h6 className="text-center fw-bold">&nbsp;</h6>
                         {
                             miscStats.map(stat => 
                                 (itemsToDisplay[stat.type] !== undefined) ?
@@ -94,8 +110,9 @@ export default function Builder({ build }) {
                             )
                         }
                     </div>
-                    <div className="col-auto text-center border border-dark mx-2">
-                        <h5 className="text-center fw-bold">Health</h5>
+                    <div className="col-auto text-center border border-dark mx-2 py-2">
+                        <h5 className="text-center fw-bold mb-0">Health</h5>
+                        <h6 className="text-center fw-bold">&nbsp;</h6>
                         {
                             healthStats.map(stat => 
                                 (itemsToDisplay[stat.type] !== undefined) ?
@@ -105,7 +122,7 @@ export default function Builder({ build }) {
                             )
                         }
                     </div>
-                    <div className="col-auto text-center border border-dark mx-2">
+                    <div className="col-auto text-center border border-dark mx-2 py-2">
                         <h5 className="text-center fw-bold mb-0">Damage Reduction</h5>
                         <h6 className="text-center fw-bold">(Health Normalized)</h6>
                         {
@@ -117,7 +134,7 @@ export default function Builder({ build }) {
                             )
                         }
                     </div>
-                    <div className="col-auto text-center border border-dark mx-2">
+                    <div className="col-auto text-center border border-dark mx-2 py-2">
                         <h5 className="text-center fw-bold mb-0">Damage Reduction</h5>
                         <h6 className="text-center fw-bold">(Regular)</h6>
                         {
@@ -129,11 +146,47 @@ export default function Builder({ build }) {
                             )
                         }
                     </div>
-                    <div className="col-auto text-center border border-dark mx-2">
+                    <div className="col-auto text-center border border-dark mx-2 py-2">
                         <h5 className="text-center fw-bold mb-0">Effective Health</h5>
                         <h6 className="text-center fw-bold">&nbsp;</h6>
                         {
                             EHPStats.map(stat => 
+                                (itemsToDisplay[stat.type] !== undefined) ?
+                                    <div key={stat.type}>
+                                        <p className="mb-1 mt-1"><b>{stat.name}: </b>{itemsToDisplay[stat.type]}{stat.percent ? "%" : ""}</p>
+                                    </div> : ""
+                            )
+                        }
+                    </div>
+                    <div className="col-auto text-center border border-dark mx-2 py-2">
+                        <h5 className="text-center fw-bold mb-0">Melee</h5>
+                        <h6 className="text-center fw-bold">&nbsp;</h6>
+                        {
+                            meleeStats.map(stat => 
+                                (itemsToDisplay[stat.type] !== undefined) ?
+                                    <div key={stat.type}>
+                                        <p className="mb-1 mt-1"><b>{stat.name}: </b>{itemsToDisplay[stat.type]}{stat.percent ? "%" : ""}</p>
+                                    </div> : ""
+                            )
+                        }
+                    </div>
+                    <div className="col-auto text-center border border-dark mx-2 py-2">
+                        <h5 className="text-center fw-bold mb-0">Ranged</h5>
+                        <h6 className="text-center fw-bold">&nbsp;</h6>
+                        {
+                            rangedStats.map(stat => 
+                                (itemsToDisplay[stat.type] !== undefined) ?
+                                    <div key={stat.type}>
+                                        <p className="mb-1 mt-1"><b>{stat.name}: </b>{itemsToDisplay[stat.type]}{stat.percent ? "%" : ""}</p>
+                                    </div> : ""
+                            )
+                        }
+                    </div>
+                    <div className="col-auto text-center border border-dark mx-2 py-2">
+                        <h5 className="text-center fw-bold mb-0">Magic</h5>
+                        <h6 className="text-center fw-bold">&nbsp;</h6>
+                        {
+                            magicStats.map(stat => 
                                 (itemsToDisplay[stat.type] !== undefined) ?
                                     <div key={stat.type}>
                                         <p className="mb-1 mt-1"><b>{stat.name}: </b>{itemsToDisplay[stat.type]}{stat.percent ? "%" : ""}</p>

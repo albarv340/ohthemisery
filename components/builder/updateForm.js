@@ -10,10 +10,12 @@ function getRelevantItems(types) {
 }
 
 function sumNumberStat(itemStats, statName, defaultIncrement) {
+    if (!itemStats) return 0;
     return (itemStats[statName]) ? Number(itemStats[statName]) : (defaultIncrement) ? defaultIncrement : 0;
 }
 
 function sumEnchantmentStat(itemStats, enchName, perLevelMultiplier) {
+    if (!itemStats) return (perLevelMultiplier) ? perLevelMultiplier : 0;
     return (itemStats[enchName]) ? Number(itemStats[enchName]) * perLevelMultiplier : 0;
 }
 
@@ -113,7 +115,15 @@ function recalcBuild(data) {
 
         hasMoreArmor: false,
         hasMoreAgility: false,
-        hasEqualDefenses: false
+        hasEqualDefenses: false,
+
+        attackDamagePercent: 100,
+        attackSpeedPercent: 100,
+        attackSpeed: 4,
+        attackDamage: 1,
+        attackDamageCrit: 1.5,
+        iframeDPS: 2,
+        iframeCritDPS: 3
     }
 
     // Main loop to add up stats from items
@@ -148,6 +158,9 @@ function recalcBuild(data) {
             stats.blastProt += sumNumberStat(itemStats, "Blast Prot.");
             stats.fireProt += sumNumberStat(itemStats, "Fire Prot.");
             stats.fallProt += sumNumberStat(itemStats, "Feather Falling");
+
+            stats.attackDamagePercent += sumNumberStat(itemStats, "Attack Damage");
+            stats.attackSpeedPercent += sumNumberStat(itemStats, "Attack Speed %");
         }
     });
 
@@ -188,6 +201,7 @@ function recalcBuild(data) {
     stats.fireDR = fireDR.toFixed(2);
     stats.fallDR = fallDR.toFixed(2);
 
+    // EHP
     stats.meleeEHP = (stats.healthFinal / (1 - meleeDR / 100)).toFixed(2);
     stats.projectileEHP = (stats.healthFinal / (1 - projectileDR / 100)).toFixed(2);
     stats.magicEHP = (stats.healthFinal / (1 - magicDR / 100)).toFixed(2);
@@ -196,6 +210,7 @@ function recalcBuild(data) {
     stats.fallEHP = (stats.healthFinal / (1 - fallDR / 100)).toFixed(2);
     stats.ailmentEHP = stats.healthFinal;
 
+    // Health Normalized DR
     stats.meleeHNDR = ((1 - ((1 - (meleeDR / 100)) / (stats.healthFinal / 20))) * 100).toFixed(2);
     stats.projectileHNDR = ((1 - ((1 - (projectileDR / 100)) / (stats.healthFinal / 20))) * 100).toFixed(2);
     stats.magicHNDR = ((1 - ((1 - (magicDR / 100)) / (stats.healthFinal / 20))) * 100).toFixed(2);
@@ -203,6 +218,16 @@ function recalcBuild(data) {
     stats.fireHNDR = ((1 - ((1 - (fireDR / 100)) / (stats.healthFinal / 20))) * 100).toFixed(2);
     stats.fallHNDR = ((1 - ((1 - (fallDR / 100)) / (stats.healthFinal / 20))) * 100).toFixed(2);
     stats.ailmentHNDR = ((1 - (1 / (stats.healthFinal / 20))) * 100).toFixed(2);
+
+    // Melee Stats
+    let attackSpeed = sumNumberStat(stats.itemStats.mainhand, "Base Attack Speed", stats.attackSpeed) * (stats.attackSpeedPercent / 100);
+    stats.attackSpeed = attackSpeed.toFixed(2);
+    let attackDamage = ((sumNumberStat(stats.itemStats.mainhand, "Base Attack Damage", stats.attackDamage)) * (stats.attackDamagePercent / 100));
+    stats.attackDamage = attackDamage.toFixed(2);
+    let attackDamageCrit = (attackDamage * 1.5)
+    stats.attackDamageCrit = attackDamageCrit.toFixed(2);
+    stats.iframeDPS = ((attackSpeed >= 2) ? attackDamage * 2 : attackDamage * attackSpeed).toFixed(2);
+    stats.iframeCritDPS = ((attackSpeed >= 2) ? attackDamageCrit * 2 : attackDamageCrit * attackSpeed).toFixed(2);
 
     console.log(stats);
 
