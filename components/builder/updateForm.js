@@ -123,7 +123,14 @@ function recalcBuild(data) {
         attackDamage: 1,
         attackDamageCrit: 1.5,
         iframeDPS: 2,
-        iframeCritDPS: 3
+        iframeCritDPS: 3,
+
+        projectileDamagePercent: 100,
+        projectileDamage: 0,
+        projectileSpeedPercent: 100,
+        projectileSpeed: 0,
+        throwRatePercent: 100,
+        throwRate: 0
     }
 
     // Main loop to add up stats from items
@@ -161,6 +168,9 @@ function recalcBuild(data) {
 
             stats.attackDamagePercent += sumNumberStat(itemStats, "Attack Damage");
             stats.attackSpeedPercent += sumNumberStat(itemStats, "Attack Speed %");
+
+            stats.projectileDamagePercent += sumNumberStat(itemStats, "Proj Damage");
+            stats.projectileSpeedPercent += sumNumberStat(itemStats, "Proj Speed");
         }
     });
 
@@ -220,14 +230,22 @@ function recalcBuild(data) {
     stats.ailmentHNDR = ((1 - (1 / (stats.healthFinal / 20))) * 100).toFixed(2);
 
     // Melee Stats
+    let attackDamage = sumNumberStat(stats.itemStats.mainhand, "Base Attack Damage", stats.attackDamage) * (stats.attackDamagePercent / 100);
+    stats.attackDamage = attackDamage.toFixed(2);
     let attackSpeed = sumNumberStat(stats.itemStats.mainhand, "Base Attack Speed", stats.attackSpeed) * (stats.attackSpeedPercent / 100);
     stats.attackSpeed = attackSpeed.toFixed(2);
-    let attackDamage = ((sumNumberStat(stats.itemStats.mainhand, "Base Attack Damage", stats.attackDamage)) * (stats.attackDamagePercent / 100));
-    stats.attackDamage = attackDamage.toFixed(2);
     let attackDamageCrit = (attackDamage * 1.5)
     stats.attackDamageCrit = attackDamageCrit.toFixed(2);
     stats.iframeDPS = ((attackSpeed >= 2) ? attackDamage * 2 : attackDamage * attackSpeed).toFixed(2);
     stats.iframeCritDPS = ((attackSpeed >= 2) ? attackDamageCrit * 2 : attackDamageCrit * attackSpeed).toFixed(2);
+
+    // Projectile Stats
+    let projectileDamage = sumNumberStat(stats.itemStats.mainhand, "Base Proj Damage", stats.projectileDamage) * (stats.projectileDamagePercent / 100);
+    stats.projectileDamage = projectileDamage.toFixed(2);
+    let projectileSpeed = sumNumberStat(stats.itemStats.mainhand, "Base Proj Speed", stats.projectileSpeed) * (stats.projectileSpeedPercent / 100);
+    stats.projectileSpeed = projectileSpeed.toFixed(2);
+    let throwRate = sumNumberStat(stats.itemStats.mainhand, "Base Throw Rate", stats.throwRate) * (stats.throwRatePercent / 100);
+    stats.throwRate = throwRate.toFixed(2);
 
     console.log(stats);
 

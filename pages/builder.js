@@ -67,8 +67,13 @@ export default function Builder({ build }) {
         {type: "iframeDPS", name: "IFrame-Capped DPS", percent: false},
         {type: "iframeCritDPS", name: "IFrame-Capped Crit DPS", percent: false}
     ];
-    const rangedStats = [
-
+    const projectileStats = [
+        {type: "projectileDamagePercent", name: "Proj Damage", percent: true},
+        {type: "projectileDamage", name: "Weapon Proj Damage", percent: false},
+        {type: "projectileSpeedPercent", name: "Proj Speed", percent: true},
+        {type: "projectileSpeed", name: "Weapon Proj Speed", percent: false},
+        {type: "throwRatePercent", name: "Throw Rate", percent: true},
+        {type: "throwRate", name: "Weapon Throw Rate", percent: false}
     ];
     const magicStats = [
 
@@ -171,10 +176,10 @@ export default function Builder({ build }) {
                         }
                     </div>
                     <div className="col-auto text-center border border-dark mx-2 py-2">
-                        <h5 className="text-center fw-bold mb-0">Ranged</h5>
+                        <h5 className="text-center fw-bold mb-0">Projectile</h5>
                         <h6 className="text-center fw-bold">&nbsp;</h6>
                         {
-                            rangedStats.map(stat => 
+                            projectileStats.map(stat => 
                                 (itemsToDisplay[stat.type] !== undefined) ?
                                     <div key={stat.type}>
                                         <p className="mb-1 mt-1"><b>{stat.name}: </b>{itemsToDisplay[stat.type]}{stat.percent ? "%" : ""}</p>
