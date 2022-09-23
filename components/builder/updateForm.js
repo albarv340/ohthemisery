@@ -120,6 +120,7 @@ function recalcBuild(data) {
         attackDamagePercent: 100,
         attackSpeedPercent: 100,
         attackSpeed: 4,
+        attackSpeedFlatBonus: 0,
         attackDamage: 1,
         attackDamageCrit: 1.5,
         iframeDPS: 2,
@@ -177,9 +178,10 @@ function recalcBuild(data) {
 
             stats.attackDamagePercent += sumNumberStat(itemStats, "Attack Damage");
             stats.attackSpeedPercent += sumNumberStat(itemStats, "Attack Speed %");
+            stats.attackSpeedFlatBonus += sumNumberStat(itemStats, "Attack Speed");
 
             stats.projectileDamagePercent += sumNumberStat(itemStats, "Proj Damage");
-            stats.projectileSpeedPercent += sumNumberStat(itemStats, "Proj Spseed");
+            stats.projectileSpeedPercent += sumNumberStat(itemStats, "Proj Speed");
 
             stats.magicDamagePercent += sumNumberStat(itemStats, "Magic Damage");
 
@@ -246,7 +248,7 @@ function recalcBuild(data) {
     // Melee Stats
     let attackDamage = sumNumberStat(stats.itemStats.mainhand, "Base Attack Damage", stats.attackDamage) * (stats.attackDamagePercent / 100);
     stats.attackDamage = attackDamage.toFixed(2);
-    let attackSpeed = sumNumberStat(stats.itemStats.mainhand, "Base Attack Speed", stats.attackSpeed) * (stats.attackSpeedPercent / 100);
+    let attackSpeed = (sumNumberStat(stats.itemStats.mainhand, "Base Attack Speed", stats.attackSpeed) + stats.attackSpeedFlatBonus) * (stats.attackSpeedPercent / 100);
     stats.attackSpeed = attackSpeed.toFixed(2);
     let attackDamageCrit = (attackDamage * 1.5)
     stats.attackDamageCrit = attackDamageCrit.toFixed(2);
@@ -265,8 +267,6 @@ function recalcBuild(data) {
     stats.spellPowerPercent = 100 + sumNumberStat(stats.itemStats.mainhand, "Base Spell Power", 0);
     stats.spellDamage = (((stats.spellPowerPercent / 100) * (stats.magicDamagePercent / 100)) * 100).toFixed(2);
     stats.spellCooldownPercent = (100 * Math.pow(0.95, stats.aptitude + stats.ineptitude)).toFixed(2);
-
-    // total spell damage: spell power * magic damage
 
     console.log(stats);
 
