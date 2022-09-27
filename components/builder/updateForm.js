@@ -407,8 +407,11 @@ export default function UpdateForm({ update, build }) {
     refs["bootsReference"] = bootsReference;
     refs["updateFunction"] = update;
     
-    function copyBuild() {
+    function copyBuild(event) {
         let baseUrl = `${window.location.origin}/builder/`;
+        event.target.value = "Copied!";
+        event.target.classList.add("fw-bold");
+        setTimeout(() => {event.target.value = "Share"; event.target.classList.remove("fw-bold")}, 3000);
     
         if (!navigator.clipboard) {
             window.alert("Couldn't copy build to clipboard. Sadness. :(");
@@ -501,7 +504,7 @@ export default function UpdateForm({ update, build }) {
                     <input type="submit" className="btn btn-dark w-50" value="Recalculate" />
                 </div>
                 <div className="col-2 text-center">
-                    <button className="btn btn-dark w-50" id="share" onClick={copyBuild}>Share</button>
+                    <input type="button" className="btn btn-dark w-50" id="share" onClick={copyBuild} value="Share" />
                 </div>
                 <div className="col-2 text-center">
                     <input type="reset" className="btn btn-danger w-50" />
