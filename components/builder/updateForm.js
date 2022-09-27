@@ -1,8 +1,31 @@
 import SelectInput from '../items/selectInput';
+import CheckboxWithLabel from '../items/checkboxWithLabel';
 import itemData from '../../public/items/itemData.json';
 import React from 'react';
 
 let initialized = false;
+
+const enabledSituationals = {
+    shielding: false,
+    poise: false,
+    inure: false,
+    steadfast: false,
+    ethereal: false,
+    reflexes: false,
+    evasion: false,
+    tempo: false
+};
+
+const refs = {
+    formRef: undefined,
+    mainhandReference: undefined,
+    offhandReference: undefined,
+    helmetReference: undefined,
+    chestplateReference: undefined,
+    leggingsReference: undefined,
+    bootsReference: undefined,
+    updateFunction: undefined
+};
 
 function getRelevantItems(types) {
     let items = Object.keys(itemData);
@@ -19,31 +42,78 @@ function sumEnchantmentStat(itemStats, enchName, perLevelMultiplier) {
     return (itemStats[enchName]) ? Number(itemStats[enchName]) * perLevelMultiplier : 0;
 }
 
-function returnArmorAgilityReduction(armor, agility, extraProt, type) {
+function calculateDamageTaken(noArmor, prot, protmodifier, earmor, eagility) {
+    return ((noArmor) ? 100 * Math.pow(0.96, prot * protmodifier) :
+        100 * Math.pow(0.96, (prot * protmodifier + earmor + eagility) - (0.5 * earmor * eagility / (earmor + eagility))));
+    
+}
+
+function returnArmorAgilityReduction(armor, agility, prots, situationals) {
+    let hasMoreAgility = false;
+    let hasMoreArmor = false;
+    let hasEqual = false;
+    (agility > armor) ? hasMoreAgility = true : (armor > agility) ? hasMoreArmor = true : hasEqual = true;
+
     let reductionCoefficient;
-    if (armor == 0) {
-        reductionCoefficient = Math.pow(0.96, agility);
-    } else if (agility == 0) {
-        reductionCoefficient = Math.pow(0.96, armor);
-    } else {
-        reductionCoefficient = Math.pow(0.96, (armor+agility - 0.5 * armor * agility / (armor + agility)));
+
+    let situationalArmor = (situationals.adaptability.level > 0) ? Math.min(Math.max(agility, armor), 30) * 0.2 : Math.min(armor, 30) * 0.2;
+    let situationalAgility = (situationals.adaptability.level > 0) ? Math.min(Math.max(agility, armor), 30) * 0.2 : Math.min(agility, 30) * 0.2;
+    
+    let etherealSit = (situationals.ethereal.enabled) ? situationalAgility * situationals.ethereal.level : 0;
+    let tempoSit = (situationals.tempo.enabled) ? situationalAgility * situationals.tempo.level : 0;
+    let evasionSit = (situationals.evasion.enabled) ? situationalAgility * situationals.evasion.level : 0;
+    let reflexesSit = (situationals.reflexes.enabled) ? situationalAgility * situationals.reflexes.level : 0;
+    let shieldingSit = (situationals.shielding.enabled) ? situationalArmor * situationals.shielding.level : 0;
+    let poiseSit = (situationals.poise.enabled) ? situationalArmor * situationals.poise.level * 1 : 0; // * 1 can change to * 0 if hp < 90% maxhp if added in the future
+    let inureSit = (situationals.inure.enabled) ? situationalArmor * situationals.inure.level : 0;
+
+    let steadfastArmor = (1 - Math.max(0.2, 1/*= currHp / maxHp */)) * 0.25 *
+        Math.min(((situationals.adaptability.level > 0 && agility > armor) ? agility : (agility < armor) ? armor : (situationals.adaptability.level = 0) ? armor : 0), 30);
+    
+    let steadfastSit = (situationals.steadfast.enabled) ? steadfastArmor * situationals.steadfast.level : 0;
+
+    let sumSits = etherealSit + tempoSit + evasionSit + reflexesSit + shieldingSit + poiseSit + inureSit;
+    let sumArmorSits = shieldingSit + poiseSit + inureSit;
+    
+    let armorPlusSits = armor + ((situationals.adaptability.level > 0 && armor > agility) ?
+         sumSits : (situationals.adaptability.level > 0 && armor < agility) ?
+            armor : (situationals.adaptability.level = 0) ? sumArmorSits : 0);
+
+    let armorPlusSitsSteadfast = armorPlusSits + (steadfastArmor * situationals.steadfast.level * (situationals.steadfast.enabled) ? 1 : 0);
+
+    let agilityPlusSits = agility + ((situationals.adaptability.level > 0 && armor < agility) ? sumSits : (situationals.adaptability.level > 0 && armor > agility) ? agility : (situationals.adaptability.level == 0) ? sumSits : 0);
+    let halfArmor = armorPlusSits / 2;
+    let halfAgility = agilityPlusSits / 2;
+
+    let meleeDamage = calculateDamageTaken(hasEqual && armor == 0, prots.melee, 2, armorPlusSitsSteadfast, agilityPlusSits);
+    let projectileDamage = calculateDamageTaken(hasEqual && armor == 0, prots.projectile, 2, armorPlusSitsSteadfast, agilityPlusSits);
+    let magicDamage = calculateDamageTaken(hasEqual && armor == 0, prots.magic, 2, armorPlusSitsSteadfast, agilityPlusSits);
+    let blastDamage = calculateDamageTaken(hasEqual && armor == 0, prots.blast, 2, armorPlusSitsSteadfast, agilityPlusSits);
+    let fireDamage = calculateDamageTaken(hasEqual && armor == 0, prots.fire, 2, halfArmor, halfAgility);
+    let fallDamage = calculateDamageTaken(hasEqual && armor == 0, prots.fall, 3, halfArmor, halfAgility);
+
+    let reductions = {
+        melee: 100 - meleeDamage,
+        projectile: 100 - projectileDamage,
+        magic: 100 - magicDamage,
+        blast: 100 - blastDamage,
+        fire: 100 - fireDamage,
+        fall: 100 - fallDamage
     }
 
-    switch (type) {
-        case "fire": {
-            return Math.pow(0.96, (2 * extraProt + 0.5 * armor + 0.5 * agility));
-        }
-        case "fall": {
-            return Math.pow(0.96, (3 * extraProt + 0.5 * armor + 0.5 * agility));
-        }
-        default: {
-            return reductionCoefficient * Math.pow(0.96, 2 * extraProt);
-        }
-    }
+    return reductions;
 }
 
 function calculateDamageReduction(reductionCoefficient) {
     return (100 - (100 * reductionCoefficient));
+}
+
+function checkboxChanged(event) {
+    // console.log(`${event.target.name} changed! New value: ${event.target.checked}`);
+    enabledSituationals[event.target.name] = event.target.checked;
+    let itemNames = Object.fromEntries(new FormData(refs.formRef.current).entries());
+    let stats = recalcBuild(itemNames);
+    refs.updateFunction(stats);
 }
 
 function recalcBuild(data) {
@@ -63,6 +133,17 @@ function recalcBuild(data) {
             "chestplate": (data.chestplate != "None") ? itemData[data.chestplate] : undefined,
             "leggings": (data.leggings != "None") ? itemData[data.leggings] : undefined,
             "boots": (data.boots != "None") ? itemData[data.boots] : undefined
+        },
+        situationals: {
+            shielding: {enabled: enabledSituationals.shielding, level: 0},
+            poise: {enabled: enabledSituationals.poise, level: 0},
+            inure: {enabled: enabledSituationals.inure, level: 0},
+            steadfast: {enabled: enabledSituationals.steadfast, level: 0},
+            ethereal: {enabled: enabledSituationals.ethereal, level: 0},
+            reflexes: {enabled: enabledSituationals.reflexes, level: 0},
+            evasion: {enabled: enabledSituationals.evasion, level: 0},
+            tempo: {enabled: enabledSituationals.tempo, level: 0},
+            adaptability: {enabled: true, level: 0}
         },
         agility: 0,
         armor: 0,
@@ -187,6 +268,16 @@ function recalcBuild(data) {
 
             stats.aptitude += sumEnchantmentStat(itemStats, "Aptitude", 1);
             stats.ineptitude += sumEnchantmentStat(itemStats, "Ineptitude", -1);
+
+            stats.situationals.shielding.level += sumNumberStat(itemStats, "Shielding");
+            stats.situationals.poise.level += sumNumberStat(itemStats, "Poise");
+            stats.situationals.inure.level += sumNumberStat(itemStats, "Inure");
+            stats.situationals.steadfast.level += sumNumberStat(itemStats, "Steadfast");
+            stats.situationals.ethereal.level += sumNumberStat(itemStats, "Ethereal ");
+            stats.situationals.reflexes.level += sumNumberStat(itemStats, "Reflexes ");
+            stats.situationals.evasion.level += sumNumberStat(itemStats, "Evasion");
+            stats.situationals.tempo.level += sumNumberStat(itemStats, "Tempo ");
+            stats.situationals.adaptability.level += sumNumberStat(itemStats, "Adaptability");
         }
     });
 
@@ -210,39 +301,33 @@ function recalcBuild(data) {
     // Calculate %hp regained from life drain on crit
     stats.lifeDrainOnCritPercent = ((lifeDrainOnCritFixedNonRounded / stats.healthFinal) * 100).toFixed(2);
 
-    // Agility or Armor presidence check for situationals ( WIP )
-    (stats.agility > stats.armor) ? stats.hasMoreAgility = true : (stats.armor > stats.agility) ? stats.hasMoreArmor = true : stats.hasEqualDefenses = true;
     // DR
-    let meleeDR = calculateDamageReduction(returnArmorAgilityReduction(stats.armor, stats.agility, stats.meleeProt, "melee"));
-    let projectileDR = calculateDamageReduction(returnArmorAgilityReduction(stats.armor, stats.agility, stats.projectileProt, "projectile"));
-    let magicDR = calculateDamageReduction(returnArmorAgilityReduction(stats.armor, stats.agility, stats.magicProt, "magic"));
-    let blastDR = calculateDamageReduction(returnArmorAgilityReduction(stats.armor, stats.agility, stats.blastProt, "blast"));
-    let fireDR = calculateDamageReduction(returnArmorAgilityReduction(stats.armor, stats.agility, stats.fireProt, "fire"));
-    let fallDR = calculateDamageReduction(returnArmorAgilityReduction(stats.armor, stats.agility, stats.fallProt, "fall"));
+    let prots = {melee: stats.meleeProt, projectile: stats.projectileProt, magic: stats.magicProt, blast: stats.blastProt, fire: stats.fireProt, fall: stats.fallProt};
+    let drs = returnArmorAgilityReduction(stats.armor, stats.agility, prots, stats.situationals);
 
-    stats.meleeDR = meleeDR.toFixed(2);
-    stats.projectileDR = projectileDR.toFixed(2);
-    stats.magicDR = magicDR.toFixed(2);
-    stats.blastDR = blastDR.toFixed(2);
-    stats.fireDR = fireDR.toFixed(2);
-    stats.fallDR = fallDR.toFixed(2);
+    stats.meleeDR = drs.melee.toFixed(2);
+    stats.projectileDR = drs.projectile.toFixed(2);
+    stats.magicDR = drs.magic.toFixed(2);
+    stats.blastDR = drs.blast.toFixed(2);
+    stats.fireDR = drs.fire.toFixed(2);
+    stats.fallDR = drs.fall.toFixed(2);
 
     // EHP
-    stats.meleeEHP = (stats.healthFinal / (1 - meleeDR / 100)).toFixed(2);
-    stats.projectileEHP = (stats.healthFinal / (1 - projectileDR / 100)).toFixed(2);
-    stats.magicEHP = (stats.healthFinal / (1 - magicDR / 100)).toFixed(2);
-    stats.blastEHP = (stats.healthFinal / (1 - blastDR / 100)).toFixed(2);
-    stats.fireEHP = (stats.healthFinal / (1 - fireDR / 100)).toFixed(2);
-    stats.fallEHP = (stats.healthFinal / (1 - fallDR / 100)).toFixed(2);
+    stats.meleeEHP = (stats.healthFinal / (1 - drs.melee / 100)).toFixed(2);
+    stats.projectileEHP = (stats.healthFinal / (1 - drs.projectile / 100)).toFixed(2);
+    stats.magicEHP = (stats.healthFinal / (1 - drs.magic / 100)).toFixed(2);
+    stats.blastEHP = (stats.healthFinal / (1 - drs.blast / 100)).toFixed(2);
+    stats.fireEHP = (stats.healthFinal / (1 - drs.fire / 100)).toFixed(2);
+    stats.fallEHP = (stats.healthFinal / (1 - drs.fall / 100)).toFixed(2);
     stats.ailmentEHP = stats.healthFinal;
 
     // Health Normalized DR
-    stats.meleeHNDR = ((1 - ((1 - (meleeDR / 100)) / (stats.healthFinal / 20))) * 100).toFixed(2);
-    stats.projectileHNDR = ((1 - ((1 - (projectileDR / 100)) / (stats.healthFinal / 20))) * 100).toFixed(2);
-    stats.magicHNDR = ((1 - ((1 - (magicDR / 100)) / (stats.healthFinal / 20))) * 100).toFixed(2);
-    stats.blastHNDR = ((1 - ((1 - (blastDR / 100)) / (stats.healthFinal / 20))) * 100).toFixed(2);
-    stats.fireHNDR = ((1 - ((1 - (fireDR / 100)) / (stats.healthFinal / 20))) * 100).toFixed(2);
-    stats.fallHNDR = ((1 - ((1 - (fallDR / 100)) / (stats.healthFinal / 20))) * 100).toFixed(2);
+    stats.meleeHNDR = ((1 - ((1 - (drs.melee / 100)) / (stats.healthFinal / 20))) * 100).toFixed(2);
+    stats.projectileHNDR = ((1 - ((1 - (drs.projectile / 100)) / (stats.healthFinal / 20))) * 100).toFixed(2);
+    stats.magicHNDR = ((1 - ((1 - (drs.magic / 100)) / (stats.healthFinal / 20))) * 100).toFixed(2);
+    stats.blastHNDR = ((1 - ((1 - (drs.blast / 100)) / (stats.healthFinal / 20))) * 100).toFixed(2);
+    stats.fireHNDR = ((1 - ((1 - (drs.fire / 100)) / (stats.healthFinal / 20))) * 100).toFixed(2);
+    stats.fallHNDR = ((1 - ((1 - (drs.fall / 100)) / (stats.healthFinal / 20))) * 100).toFixed(2);
     stats.ailmentHNDR = ((1 - (1 / (stats.healthFinal / 20))) * 100).toFixed(2);
 
     // Melee Stats
@@ -273,7 +358,7 @@ function recalcBuild(data) {
     return stats;
 }
 
-export default function SearchForm({ update, build }) {
+export default function UpdateForm({ update, build }) {
     function sendUpdate(event) {
         event.preventDefault()
         let itemNames = Object.fromEntries(new FormData(event.target).entries());
@@ -288,6 +373,15 @@ export default function SearchForm({ update, build }) {
     const chestplateReference = React.useRef();
     const leggingsReference = React.useRef();
     const bootsReference = React.useRef();
+
+    refs["formRef"] = formRef;
+    refs["mainhandReference"] = mainhandReference;
+    refs["offhandReference"] = offhandReference;
+    refs["helmetReference"] = helmetReference;
+    refs["chestplateReference"] = chestplateReference;
+    refs["leggingsReference"] = leggingsReference;
+    refs["bootsReference"] = bootsReference;
+    refs["updateFunction"] = update;
     
     function copyBuild() {
         let data = new FormData(formRef.current).entries();
@@ -391,6 +485,16 @@ export default function SearchForm({ update, build }) {
                 <div className="col-2 text-center">
                     <button className="btn btn-dark w-50" id="share" onClick={copyBuild}>Share</button>
                 </div>
+            </div>
+            <div className="row justify-content-center mb-3">
+                <CheckboxWithLabel name="Shielding" checked={false} onChange={checkboxChanged} />
+                <CheckboxWithLabel name="Poise" checked={false} onChange={checkboxChanged} />
+                <CheckboxWithLabel name="Inure" checked={false} onChange={checkboxChanged} />
+                <CheckboxWithLabel name="Steadfast" checked={false} onChange={checkboxChanged} />
+                <CheckboxWithLabel name="Ethereal" checked={false} onChange={checkboxChanged} />
+                <CheckboxWithLabel name="Reflexes" checked={false} onChange={checkboxChanged} />
+                <CheckboxWithLabel name="Evasion" checked={false} onChange={checkboxChanged} />
+                <CheckboxWithLabel name="Tempo" checked={false} onChange={checkboxChanged} />
             </div>
         </form>
     )
