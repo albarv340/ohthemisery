@@ -44,7 +44,7 @@ function sumEnchantmentStat(itemStats, enchName, perLevelMultiplier) {
 
 function calculateDamageTaken(noArmor, prot, protmodifier, earmor, eagility) {
     return ((noArmor) ? 100 * Math.pow(0.96, prot * protmodifier) :
-        100 * Math.pow(0.96, (prot * protmodifier + earmor + eagility) - (0.5 * earmor * eagility / (earmor + eagility))));
+        100 * Math.pow(0.96, ((prot * protmodifier) + earmor + eagility) - (0.5 * earmor * eagility / (earmor + eagility))));
     
 }
 
@@ -53,8 +53,6 @@ function returnArmorAgilityReduction(armor, agility, prots, situationals) {
     let hasMoreArmor = false;
     let hasEqual = false;
     (agility > armor) ? hasMoreAgility = true : (armor > agility) ? hasMoreArmor = true : hasEqual = true;
-
-    let reductionCoefficient;
 
     let situationalArmor = (situationals.adaptability.level > 0) ? Math.min(Math.max(agility, armor), 30) * 0.2 : Math.min(armor, 30) * 0.2;
     let situationalAgility = (situationals.adaptability.level > 0) ? Math.min(Math.max(agility, armor), 30) * 0.2 : Math.min(agility, 30) * 0.2;
@@ -68,23 +66,26 @@ function returnArmorAgilityReduction(armor, agility, prots, situationals) {
     let inureSit = (situationals.inure.enabled) ? situationalArmor * situationals.inure.level : 0;
 
     let steadfastArmor = (1 - Math.max(0.2, 1/*= currHp / maxHp */)) * 0.25 *
-        Math.min(((situationals.adaptability.level > 0 && agility > armor) ? agility : (agility < armor) ? armor : (situationals.adaptability.level = 0) ? armor : 0), 30);
+        Math.min(((situationals.adaptability.level > 0 && agility > armor) ? agility : (agility < armor) ? armor : (situationals.adaptability.level == 0) ? armor : 0), 30);
     
     let steadfastSit = (situationals.steadfast.enabled) ? steadfastArmor * situationals.steadfast.level : 0;
 
     let sumSits = etherealSit + tempoSit + evasionSit + reflexesSit + shieldingSit + poiseSit + inureSit;
     let sumArmorSits = shieldingSit + poiseSit + inureSit;
+    let sumAgiSits = etherealSit + tempoSit + evasionSit + reflexesSit;
     
     let armorPlusSits = armor + ((situationals.adaptability.level > 0 && armor > agility) ?
          sumSits : (situationals.adaptability.level > 0 && armor < agility) ?
-            armor : (situationals.adaptability.level = 0) ? sumArmorSits : 0);
+            armor : (situationals.adaptability.level == 0) ? sumArmorSits : 0);
 
+            
     let armorPlusSitsSteadfast = armorPlusSits + (steadfastArmor * situationals.steadfast.level * (situationals.steadfast.enabled) ? 1 : 0);
-
-    let agilityPlusSits = agility + ((situationals.adaptability.level > 0 && armor < agility) ? sumSits : (situationals.adaptability.level > 0 && armor > agility) ? agility : (situationals.adaptability.level == 0) ? sumSits : 0);
+    
+    let agilityPlusSits = agility + ((situationals.adaptability.level > 0 && armor < agility) ? sumSits : (situationals.adaptability.level > 0 && armor > agility) ? agility : (situationals.adaptability.level == 0) ? sumAgiSits : 0);
     let halfArmor = armorPlusSits / 2;
     let halfAgility = agilityPlusSits / 2;
-
+    console.log(agilityPlusSits);
+    
     let meleeDamage = calculateDamageTaken(hasEqual && armor == 0, prots.melee, 2, armorPlusSitsSteadfast, agilityPlusSits);
     let projectileDamage = calculateDamageTaken(hasEqual && armor == 0, prots.projectile, 2, armorPlusSitsSteadfast, agilityPlusSits);
     let magicDamage = calculateDamageTaken(hasEqual && armor == 0, prots.magic, 2, armorPlusSitsSteadfast, agilityPlusSits);
