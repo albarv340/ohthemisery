@@ -2,8 +2,11 @@ import SelectInput from '../items/selectInput';
 import CheckboxWithLabel from '../items/checkboxWithLabel';
 import itemData from '../../public/items/itemData.json';
 import React from 'react';
+import { useRouter } from 'next/router';
 
 let initialized = false;
+
+const emptyBuild = {mainhand: "None", offhand: "None", helmet: "None", chestplate: "None", leggings: "None", boots: "None"};
 
 const enabledSituationals = {
     shielding: false,
@@ -84,7 +87,9 @@ function returnArmorAgilityReduction(armor, agility, prots, situationals) {
     let agilityPlusSits = agility + ((situationals.adaptability.level > 0 && armor < agility) ? sumSits : (situationals.adaptability.level > 0 && armor > agility) ? agility : (situationals.adaptability.level == 0) ? sumAgiSits : 0);
     let halfArmor = armorPlusSits / 2;
     let halfAgility = agilityPlusSits / 2;
-    console.log(agilityPlusSits);
+
+    // second wind: half total ehp + half total ehp with second wind added onto it
+    // there is something weird going on with fall damage. check out: khrosmos/prophetic moonbeam/crest of the tundra/windborn cape/lyrata/mist's wake
     
     let meleeDamage = calculateDamageTaken(hasEqual && armor == 0, prots.melee, 2, armorPlusSitsSteadfast, agilityPlusSits);
     let projectileDamage = calculateDamageTaken(hasEqual && armor == 0, prots.projectile, 2, armorPlusSitsSteadfast, agilityPlusSits);
@@ -105,12 +110,7 @@ function returnArmorAgilityReduction(armor, agility, prots, situationals) {
     return reductions;
 }
 
-function calculateDamageReduction(reductionCoefficient) {
-    return (100 - (100 * reductionCoefficient));
-}
-
 function checkboxChanged(event) {
-    // console.log(`${event.target.name} changed! New value: ${event.target.checked}`);
     enabledSituationals[event.target.name] = event.target.checked;
     let itemNames = Object.fromEntries(new FormData(refs.formRef.current).entries());
     let stats = recalcBuild(itemNames);
@@ -223,7 +223,7 @@ function recalcBuild(data) {
         aptitude: 0,
         ineptitude: 0
 
-    }
+    };
 
     // Main loop to add up stats from items
     Object.keys(stats.itemStats).forEach(type => {
@@ -354,17 +354,26 @@ function recalcBuild(data) {
     stats.spellDamage = (((stats.spellPowerPercent / 100) * (stats.magicDamagePercent / 100)) * 100).toFixed(2);
     stats.spellCooldownPercent = (100 * Math.pow(0.95, stats.aptitude + stats.ineptitude)).toFixed(2);
 
-    console.log(stats);
-
     return stats;
+}
+
+function makeBuildString() {
+    let data = new FormData(refs.formRef.current).entries();
+    let buildString = "";
+    for (const [ key, value ] of data) {
+        buildString += `${key[0]}=${value.replaceAll(" ", "%20")}&`;
+    }
+    buildString = buildString.substring(0, buildString.length - 1);
+    return buildString;
 }
 
 export default function UpdateForm({ update, build }) {
     function sendUpdate(event) {
-        event.preventDefault()
+        event.preventDefault();
         let itemNames = Object.fromEntries(new FormData(event.target).entries());
         let stats = recalcBuild(itemNames);
         update(stats);
+        router.push('/builder', `/builder/${makeBuildString()}`, { shallow: true });
     }
 
     const formRef = React.useRef();
@@ -374,6 +383,20 @@ export default function UpdateForm({ update, build }) {
     const chestplateReference = React.useRef();
     const leggingsReference = React.useRef();
     const bootsReference = React.useRef();
+    
+    const router = useRouter();
+
+    function resetForm(event) {
+        mainhandReference?.current?.setValue({value: "None", label: "None"});
+        offhandReference?.current?.setValue({value: "None", label: "None"});
+        helmetReference?.current?.setValue({value: "None", label: "None"});
+        chestplateReference?.current?.setValue({value: "None", label: "None"});
+        leggingsReference?.current?.setValue({value: "None", label: "None"});
+        bootsReference?.current?.setValue({value: "None", label: "None"});
+        let stats = recalcBuild(emptyBuild);
+        update(stats);
+        router.push('/builder', `/builder/`, { shallow: true });
+    }
 
     refs["formRef"] = formRef;
     refs["mainhandReference"] = mainhandReference;
@@ -385,18 +408,13 @@ export default function UpdateForm({ update, build }) {
     refs["updateFunction"] = update;
     
     function copyBuild() {
-        let data = new FormData(formRef.current).entries();
-        let url = `https://${window.location.host}/builder/`;
-        for (const [ key, value ] of data) {
-            url += `${key[0]}=${value.replaceAll(" ", "%20")}&`;
-        }
-        url = url.substring(0, url.length - 1);
+        let baseUrl = `${window.location.origin}/builder/`;
     
         if (!navigator.clipboard) {
             window.alert("Couldn't copy build to clipboard. Sadness. :(");
             return;
         }
-        navigator.clipboard.writeText(url).then(function() {
+        navigator.clipboard.writeText(`${baseUrl}${makeBuildString()}`).then(function() {
             console.log('Copying to clipboard was successful!');
         }, function(err) {
             console.error('Could not copy text: ', err);
@@ -412,14 +430,13 @@ export default function UpdateForm({ update, build }) {
             chestplate: (buildParts.find(str => str.includes("c="))?.split("c=")[1]),
             leggings: (buildParts.find(str => str.includes("l="))?.split("l=")[1]),
             boots: (buildParts.find(str => str.includes("b="))?.split("b=")[1])
-        }
+        };
+
         Object.keys(itemNames).forEach(name => {
             if (itemNames[name] === undefined) {
                 itemNames[name] = "None";
             }
-        })
-
-        //m=Intellect Incarnate&o=Aurora Mirror (offhand)&h=Consumption&c=Heart of the Hero&l=Salazar's Greed&b=Chains of Entropy
+        });
 
         mainhandReference?.current?.setValue({ "value": itemNames.mainhand, "label": itemNames.mainhand });
         offhandReference?.current?.setValue({ "value": itemNames.offhand, "label": itemNames.offhand });
@@ -434,7 +451,7 @@ export default function UpdateForm({ update, build }) {
     }
 
     return (
-        <form ref={formRef} onSubmit={sendUpdate}>
+        <form ref={formRef} onSubmit={sendUpdate} onReset={resetForm}>
             <div className="row justify-content-center">
                 <div className="col-2 text-center">
                     <span>Mainhand</span>
@@ -485,6 +502,9 @@ export default function UpdateForm({ update, build }) {
                 </div>
                 <div className="col-2 text-center">
                     <button className="btn btn-dark w-50" id="share" onClick={copyBuild}>Share</button>
+                </div>
+                <div className="col-2 text-center">
+                    <input type="reset" className="btn btn-danger w-50" />
                 </div>
             </div>
             <div className="row justify-content-center mb-3">
