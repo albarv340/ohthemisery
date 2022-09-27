@@ -6,6 +6,7 @@ import SearchForm from '../components/items/searchForm'
 import HomeButton from '../components/homeButton'
 import React from 'react';
 import InfiniteScroll from "react-infinite-scroll-component";
+import Footer from '../components/footer'
 
 
 function getRelevantItems(data) {
@@ -76,6 +77,7 @@ export default function Items() {
                     })}
                 </InfiniteScroll>
             </main>
+            <Footer />
         </div>
     )
 }

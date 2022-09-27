@@ -3,6 +3,7 @@ import React from 'react';
 import UpdateForm from '../components/builder/updateForm'
 import HomeButton from '../components/homeButton';
 import ItemTile from '../components/items/itemTile';
+import Footer from '../components/footer'
 
 function checkExists(type, itemsToDisplay) {
     return (itemsToDisplay.itemStats) ? itemsToDisplay.itemStats[type] !== undefined : false;
@@ -205,6 +206,7 @@ export default function Builder({ build }) {
                     </div>
                 </div>
             </main>
+            <Footer />
         </div>
     )
 }
