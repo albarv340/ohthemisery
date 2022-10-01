@@ -373,7 +373,9 @@ export default function UpdateForm({ update, build }) {
         let itemNames = Object.fromEntries(new FormData(event.target).entries());
         let stats = recalcBuild(itemNames);
         update(stats);
-        router.push('/builder', `/builder/${makeBuildString()}`, { shallow: true });
+        if (!build) {
+            router.push('/builder', `/builder/${makeBuildString()}`, { shallow: true });
+        }
     }
 
     const formRef = React.useRef();
