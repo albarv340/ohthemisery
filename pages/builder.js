@@ -24,7 +24,8 @@ export default function Builder({ build }) {
         {type: "thorns", name: "Thorns Damage", percent: false}
     ];
     const healthStats = [
-        {type: "healthFinal", name: "Health", percent: false},
+        {type: "healthFinal", name: "Max Health", percent: false},
+        {type: "currentHealth", name: "Current Health", percent: false},
         {type: "healingRate", name: "Healing Rate", percent: true},
         {type: "effHealingRate", name: "Eff. Healing Rate", percent: true},
         {type: "regenPerSec", name: "Regen/sec", percent: false},

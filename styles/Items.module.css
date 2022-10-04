@@ -73,6 +73,7 @@
     padding: 4px;
     margin: 2px;
     width: fit-content;
+    height: 40px;
 }
 
 .checkboxWithLabel>* {

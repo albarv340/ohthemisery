@@ -45,13 +45,18 @@ function sumEnchantmentStat(itemStats, enchName, perLevelMultiplier) {
     return (itemStats[enchName]) ? Number(itemStats[enchName]) * perLevelMultiplier : 0;
 }
 
-function calculateDamageTaken(noArmor, prot, protmodifier, earmor, eagility) {
-    return ((noArmor) ? 100 * Math.pow(0.96, prot * protmodifier) :
-        100 * Math.pow(0.96, ((prot * protmodifier) + earmor + eagility) - (0.5 * earmor * eagility / (earmor + eagility))));
-    
+function calculateDamageTaken(noArmor, prot, protmodifier, earmor, eagility, secondwind) {
+    let damageTaken = {};
+    damageTaken.base = ((noArmor) ? 100 * Math.pow(0.96, (prot * protmodifier)) :
+    100 * Math.pow(0.96, ((prot * protmodifier) + earmor + eagility) - (0.5 * earmor * eagility / (earmor + eagility))));
+
+    damageTaken.secondwind = ((noArmor) ? 100 * Math.pow(0.96, (prot * protmodifier) + secondwind) :
+    100 * Math.pow(0.96, ((prot * protmodifier) + earmor + eagility + secondwind) - (0.5 * earmor * eagility / (earmor + eagility))));
+
+    return damageTaken;
 }
 
-function returnArmorAgilityReduction(armor, agility, prots, situationals) {
+function returnArmorAgilityReduction(armor, agility, prots, situationals, health) {
     let hasMoreAgility = false;
     let hasMoreArmor = false;
     let hasEqual = false;
@@ -68,7 +73,7 @@ function returnArmorAgilityReduction(armor, agility, prots, situationals) {
     let poiseSit = (situationals.poise.enabled) ? situationalArmor * situationals.poise.level * 1 : 0; // * 1 can change to * 0 if hp < 90% maxhp if added in the future
     let inureSit = (situationals.inure.enabled) ? situationalArmor * situationals.inure.level : 0;
 
-    let steadfastArmor = (1 - Math.max(0.2, 1/*= currHp / maxHp */)) * 0.25 *
+    let steadfastArmor = (1 - Math.max(0.2, health.current / health.final)) * 0.25 *
         Math.min(((situationals.adaptability.level > 0 && agility > armor) ? agility : (agility < armor) ? armor : (situationals.adaptability.level == 0) ? armor : 0), 30);
     
     let steadfastSit = (situationals.steadfast.enabled) ? steadfastArmor * situationals.steadfast.level : 0;
@@ -90,21 +95,23 @@ function returnArmorAgilityReduction(armor, agility, prots, situationals) {
 
     // second wind: half total ehp + half total ehp with second wind added onto it
     // there is something weird going on with fall damage. check out: khrosmos/prophetic moonbeam/crest of the tundra/windborn cape/lyrata/mist's wake
+
+    let secondwind = /*(health.current / health.final <= 0.5) ?*/ situationals.secondwind.level /*: 0*/;
     
-    let meleeDamage = calculateDamageTaken(hasEqual && armor == 0, prots.melee, 2, armorPlusSitsSteadfast, agilityPlusSits);
-    let projectileDamage = calculateDamageTaken(hasEqual && armor == 0, prots.projectile, 2, armorPlusSitsSteadfast, agilityPlusSits);
-    let magicDamage = calculateDamageTaken(hasEqual && armor == 0, prots.magic, 2, armorPlusSitsSteadfast, agilityPlusSits);
-    let blastDamage = calculateDamageTaken(hasEqual && armor == 0, prots.blast, 2, armorPlusSitsSteadfast, agilityPlusSits);
-    let fireDamage = calculateDamageTaken(hasEqual && armor == 0, prots.fire, 2, halfArmor, halfAgility);
-    let fallDamage = calculateDamageTaken(hasEqual && armor == 0, prots.fall, 3, halfArmor, halfAgility);
+    let meleeDamage = calculateDamageTaken(hasEqual && armor == 0, prots.melee, 2, armorPlusSitsSteadfast, agilityPlusSits, secondwind);
+    let projectileDamage = calculateDamageTaken(hasEqual && armor == 0, prots.projectile, 2, armorPlusSitsSteadfast, agilityPlusSits, secondwind);
+    let magicDamage = calculateDamageTaken(hasEqual && armor == 0, prots.magic, 2, armorPlusSitsSteadfast, agilityPlusSits, secondwind);
+    let blastDamage = calculateDamageTaken(hasEqual && armor == 0, prots.blast, 2, armorPlusSitsSteadfast, agilityPlusSits, secondwind);
+    let fireDamage = calculateDamageTaken(hasEqual && armor == 0, prots.fire, 2, halfArmor, halfAgility, secondwind);
+    let fallDamage = calculateDamageTaken(hasEqual && armor == 0, prots.fall, 3, halfArmor, halfAgility, secondwind);
 
     let reductions = {
-        melee: 100 - meleeDamage,
-        projectile: 100 - projectileDamage,
-        magic: 100 - magicDamage,
-        blast: 100 - blastDamage,
-        fire: 100 - fireDamage,
-        fall: 100 - fallDamage
+        melee: {base: 100 - meleeDamage.base, secondwind: 100 - meleeDamage.secondwind},
+        projectile: {base: 100 - projectileDamage.base, secondwind: 100 - projectileDamage.secondwind},
+        magic: {base: 100 - magicDamage.base, secondwind: 100 - magicDamage.secondwind},
+        blast: {base: 100 - blastDamage.base, secondwind: 100 - blastDamage.secondwind},
+        fire: {base: 100 - fireDamage.base, secondwind: 100 - fireDamage.secondwind},
+        fall: {base: 100 - fallDamage.base, secondwind: 100 - fallDamage.secondwind}
     }
 
     return reductions;
@@ -118,6 +125,9 @@ function checkboxChanged(event) {
 }
 
 function recalcBuild(data) {
+
+    console.log(data);
+    
     let stats = {
         itemNames: {
             "mainhand": data.mainhand,
@@ -144,7 +154,8 @@ function recalcBuild(data) {
             reflexes: {enabled: enabledSituationals.reflexes, level: 0},
             evasion: {enabled: enabledSituationals.evasion, level: 0},
             tempo: {enabled: enabledSituationals.tempo, level: 0},
-            adaptability: {enabled: true, level: 0}
+            adaptability: {enabled: true, level: 0},
+            secondwind: {enabled: true, level: 0}
         },
         agility: 0,
         armor: 0,
@@ -156,6 +167,7 @@ function recalcBuild(data) {
         healthPercent: 100,
         healthFlat: 20,
         healthFinal: 20,
+        currentHealth: 20,
         healingRate: 100,
         effHealingRate: 100,
         regenPerSec: 0,
@@ -222,7 +234,6 @@ function recalcBuild(data) {
 
         aptitude: 0,
         ineptitude: 0
-
     };
 
     // Main loop to add up stats from items
@@ -279,11 +290,15 @@ function recalcBuild(data) {
             stats.situationals.evasion.level += sumNumberStat(itemStats, "Evasion");
             stats.situationals.tempo.level += sumNumberStat(itemStats, "Tempo ");
             stats.situationals.adaptability.level += sumNumberStat(itemStats, "Adaptability");
+            stats.situationals.secondwind.level += sumNumberStat(itemStats, "Second Wind");
         }
     });
 
     // Calculate final health
     stats.healthFinal = stats.healthFlat * (stats.healthPercent / 100);
+    // Current health (percentage of max health based on player input)
+    let currHpPercent = (data.health) ? data.health : 100;
+    stats.currentHealth = stats.healthFinal * (currHpPercent / 100);
     // Fix speed percentage to account for base speed
     stats.speedPercent = (stats.speedPercent * (stats.speedFlat)/0.1).toFixed(2);
     // Fix knockback resistance to be percentage and cap at 100
@@ -304,31 +319,44 @@ function recalcBuild(data) {
 
     // DR
     let prots = {melee: stats.meleeProt, projectile: stats.projectileProt, magic: stats.magicProt, blast: stats.blastProt, fire: stats.fireProt, fall: stats.fallProt};
-    let drs = returnArmorAgilityReduction(stats.armor, stats.agility, prots, stats.situationals);
+    let drs = returnArmorAgilityReduction(stats.armor, stats.agility, prots, stats.situationals, {final: stats.healthFinal, current: stats.currentHealth});
 
-    stats.meleeDR = drs.melee.toFixed(2);
-    stats.projectileDR = drs.projectile.toFixed(2);
-    stats.magicDR = drs.magic.toFixed(2);
-    stats.blastDR = drs.blast.toFixed(2);
-    stats.fireDR = drs.fire.toFixed(2);
-    stats.fallDR = drs.fall.toFixed(2);
+    // Select to show either the regular dr, or dr with second wind currently active based on hp remaining
+    let drType = (stats.currentHealth / stats.healthFinal <= 0.5) ? "secondwind" : "base";
+    stats.meleeDR = drs.melee[drType].toFixed(2);
+    stats.projectileDR = drs.projectile[drType].toFixed(2);
+    stats.magicDR = drs.magic[drType].toFixed(2);
+    stats.blastDR = drs.blast[drType].toFixed(2);
+    stats.fireDR = drs.fire[drType].toFixed(2);
+    stats.fallDR = drs.fall[drType].toFixed(2);
 
-    // EHP
-    stats.meleeEHP = (stats.healthFinal / (1 - drs.melee / 100)).toFixed(2);
-    stats.projectileEHP = (stats.healthFinal / (1 - drs.projectile / 100)).toFixed(2);
-    stats.magicEHP = (stats.healthFinal / (1 - drs.magic / 100)).toFixed(2);
-    stats.blastEHP = (stats.healthFinal / (1 - drs.blast / 100)).toFixed(2);
-    stats.fireEHP = (stats.healthFinal / (1 - drs.fire / 100)).toFixed(2);
-    stats.fallEHP = (stats.healthFinal / (1 - drs.fall / 100)).toFixed(2);
-    stats.ailmentEHP = stats.healthFinal;
+    // EHP // Add second wind
+    if (stats.situationals.secondwind.level == 0) {
+        stats.meleeEHP = (stats.healthFinal * (currHpPercent / 100) / (1 - drs.melee / 100)).toFixed(2);
+        stats.projectileEHP = (stats.healthFinal * (currHpPercent / 100) / (1 - drs.projectile / 100)).toFixed(2);
+        stats.magicEHP = (stats.healthFinal * (currHpPercent / 100) / (1 - drs.magic / 100)).toFixed(2);
+        stats.blastEHP = (stats.healthFinal * (currHpPercent / 100) / (1 - drs.blast / 100)).toFixed(2);
+        stats.fireEHP = (stats.healthFinal * (currHpPercent / 100) / (1 - drs.fire / 100)).toFixed(2);
+        stats.fallEHP = (stats.healthFinal * (currHpPercent / 100) / (1 - drs.fall / 100)).toFixed(2);
+    } else {
+        let hpNoSecondWind = Math.max(0, (stats.currentHealth - stats.healthFinal * 0.5));
+        let hpSecondWind = Math.min(stats.currentHealth, stats.healthFinal * 0.5);
+        stats.meleeEHP = (hpNoSecondWind * (currHpPercent / 100) / (1 - drs.melee.base / 100) + hpSecondWind * (currHpPercent / 100) / (1 - drs.melee.secondwind / 100)).toFixed(2);
+        stats.projectileEHP = (hpNoSecondWind * (currHpPercent / 100) / (1 - drs.projectile.base / 100) + hpSecondWind * (currHpPercent / 100) / (1 - drs.projectile.secondwind / 100)).toFixed(2);
+        stats.magicEHP = (hpNoSecondWind * (currHpPercent / 100) / (1 - drs.magic.base / 100) + hpSecondWind * (currHpPercent / 100) / (1 - drs.magic.secondwind / 100)).toFixed(2);
+        stats.blastEHP = (hpNoSecondWind * (currHpPercent / 100) / (1 - drs.blast.base / 100) + hpSecondWind * (currHpPercent / 100) / (1 - drs.blast.secondwind / 100)).toFixed(2);
+        stats.fireEHP = (hpNoSecondWind * (currHpPercent / 100) / (1 - drs.fire.base / 100) + hpSecondWind * (currHpPercent / 100) / (1 - drs.fire.secondwind / 100)).toFixed(2);
+        stats.fallEHP = (hpNoSecondWind * (currHpPercent / 100) / (1 - drs.fall.base / 100) + hpSecondWind * (currHpPercent / 100) / (1 - drs.fall.secondwind / 100)).toFixed(2);
+    }
+    stats.ailmentEHP = stats.healthFinal * (currHpPercent / 100);
 
     // Health Normalized DR
-    stats.meleeHNDR = ((1 - ((1 - (drs.melee / 100)) / (stats.healthFinal / 20))) * 100).toFixed(2);
-    stats.projectileHNDR = ((1 - ((1 - (drs.projectile / 100)) / (stats.healthFinal / 20))) * 100).toFixed(2);
-    stats.magicHNDR = ((1 - ((1 - (drs.magic / 100)) / (stats.healthFinal / 20))) * 100).toFixed(2);
-    stats.blastHNDR = ((1 - ((1 - (drs.blast / 100)) / (stats.healthFinal / 20))) * 100).toFixed(2);
-    stats.fireHNDR = ((1 - ((1 - (drs.fire / 100)) / (stats.healthFinal / 20))) * 100).toFixed(2);
-    stats.fallHNDR = ((1 - ((1 - (drs.fall / 100)) / (stats.healthFinal / 20))) * 100).toFixed(2);
+    stats.meleeHNDR = ((1 - ((1 - (drs.melee[drType] / 100)) / (stats.healthFinal / 20))) * 100).toFixed(2);
+    stats.projectileHNDR = ((1 - ((1 - (drs.projectile[drType] / 100)) / (stats.healthFinal / 20))) * 100).toFixed(2);
+    stats.magicHNDR = ((1 - ((1 - (drs.magic[drType] / 100)) / (stats.healthFinal / 20))) * 100).toFixed(2);
+    stats.blastHNDR = ((1 - ((1 - (drs.blast[drType] / 100)) / (stats.healthFinal / 20))) * 100).toFixed(2);
+    stats.fireHNDR = ((1 - ((1 - (drs.fire[drType] / 100)) / (stats.healthFinal / 20))) * 100).toFixed(2);
+    stats.fallHNDR = ((1 - ((1 - (drs.fall[drType] / 100)) / (stats.healthFinal / 20))) * 100).toFixed(2);
     stats.ailmentHNDR = ((1 - (1 / (stats.healthFinal / 20))) * 100).toFixed(2);
 
     // Melee Stats
@@ -361,7 +389,7 @@ function makeBuildString() {
     let data = new FormData(refs.formRef.current).entries();
     let buildString = "";
     for (const [ key, value ] of data) {
-        buildString += `${key[0]}=${value.replaceAll(" ", "%20")}&`;
+        buildString += (key != "health") ? `${key[0]}=${value.replaceAll(" ", "%20")}&` : "";
     }
     buildString = buildString.substring(0, buildString.length - 1);
     return buildString;
@@ -510,7 +538,7 @@ export default function UpdateForm({ update, build }) {
                     <input type="reset" className="btn btn-danger w-50" />
                 </div>
             </div>
-            <div className="row justify-content-center mb-3">
+            <div className="row justify-content-center mb-3 pt-2">
                 <CheckboxWithLabel name="Shielding" checked={false} onChange={checkboxChanged} />
                 <CheckboxWithLabel name="Poise" checked={false} onChange={checkboxChanged} />
                 <CheckboxWithLabel name="Inure" checked={false} onChange={checkboxChanged} />
@@ -519,6 +547,9 @@ export default function UpdateForm({ update, build }) {
                 <CheckboxWithLabel name="Reflexes" checked={false} onChange={checkboxChanged} />
                 <CheckboxWithLabel name="Evasion" checked={false} onChange={checkboxChanged} />
                 <CheckboxWithLabel name="Tempo" checked={false} onChange={checkboxChanged} />
+                <div className="col col-1">
+                    Health % <input type="number" name="health" min="1" max="100" defaultValue="100" className="" />
+                </div>
             </div>
         </form>
     )
