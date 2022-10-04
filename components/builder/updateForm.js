@@ -70,7 +70,7 @@ function returnArmorAgilityReduction(armor, agility, prots, situationals, health
     let evasionSit = (situationals.evasion.enabled) ? situationalAgility * situationals.evasion.level : 0;
     let reflexesSit = (situationals.reflexes.enabled) ? situationalAgility * situationals.reflexes.level : 0;
     let shieldingSit = (situationals.shielding.enabled) ? situationalArmor * situationals.shielding.level : 0;
-    let poiseSit = (situationals.poise.enabled) ? situationalArmor * situationals.poise.level * 1 : 0; // * 1 can change to * 0 if hp < 90% maxhp if added in the future
+    let poiseSit = (situationals.poise.enabled) ? ((health.current / health.final >= 0.9) ? situationalArmor * situationals.poise.level : 0) : 0; // * 1 can change to * 0 if hp < 90% maxhp if added in the future
     let inureSit = (situationals.inure.enabled) ? situationalArmor * situationals.inure.level : 0;
 
     let steadfastArmor = (1 - Math.max(0.2, health.current / health.final)) * 0.25 *
@@ -330,14 +330,14 @@ function recalcBuild(data) {
     stats.fireDR = drs.fire[drType].toFixed(2);
     stats.fallDR = drs.fall[drType].toFixed(2);
 
-    // EHP // Add second wind
+    // EHP
     if (stats.situationals.secondwind.level == 0) {
-        stats.meleeEHP = (stats.healthFinal * (currHpPercent / 100) / (1 - drs.melee / 100)).toFixed(2);
-        stats.projectileEHP = (stats.healthFinal * (currHpPercent / 100) / (1 - drs.projectile / 100)).toFixed(2);
-        stats.magicEHP = (stats.healthFinal * (currHpPercent / 100) / (1 - drs.magic / 100)).toFixed(2);
-        stats.blastEHP = (stats.healthFinal * (currHpPercent / 100) / (1 - drs.blast / 100)).toFixed(2);
-        stats.fireEHP = (stats.healthFinal * (currHpPercent / 100) / (1 - drs.fire / 100)).toFixed(2);
-        stats.fallEHP = (stats.healthFinal * (currHpPercent / 100) / (1 - drs.fall / 100)).toFixed(2);
+        stats.meleeEHP = (stats.healthFinal * (currHpPercent / 100) / (1 - drs.melee.base / 100)).toFixed(2);
+        stats.projectileEHP = (stats.healthFinal * (currHpPercent / 100) / (1 - drs.projectile.base / 100)).toFixed(2);
+        stats.magicEHP = (stats.healthFinal * (currHpPercent / 100) / (1 - drs.magic.base / 100)).toFixed(2);
+        stats.blastEHP = (stats.healthFinal * (currHpPercent / 100) / (1 - drs.blast.base / 100)).toFixed(2);
+        stats.fireEHP = (stats.healthFinal * (currHpPercent / 100) / (1 - drs.fire.base / 100)).toFixed(2);
+        stats.fallEHP = (stats.healthFinal * (currHpPercent / 100) / (1 - drs.fall.base / 100)).toFixed(2);
     } else {
         let hpNoSecondWind = Math.max(0, (stats.currentHealth - stats.healthFinal * 0.5));
         let hpSecondWind = Math.min(stats.currentHealth, stats.healthFinal * 0.5);
