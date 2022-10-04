@@ -1,7 +1,7 @@
 import styles from '../../styles/Items.module.css'
 import enchantmentsData from '../../public/items/enchantmentsData.json'
 
-const otherCurses = ["Shrapnel", "Crippling"]
+const otherCurses = ["Shrapnel", "Crippling", "Anemia", "Irreparability"]
 
 function camelCase(str) {
     if (!str) return "";

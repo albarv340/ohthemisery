@@ -23,6 +23,9 @@ function getRelevantItems(data) {
     if (data.locationSelect != "Any Location") {
         items = items.filter(name => itemData[name].Location == data.locationSelect)
     }
+    if (data.baseItemSelect != "Any Item") {
+        items = items.filter(name => itemData[name]["Base Item"] == data.baseItemSelect)
+    }
     if (data.sortSelect != "-") {
         items = items.filter(name => typeof (itemData[name][data.sortSelect]) != "undefined")
         items = items.sort((item1, item2) => (itemData[item2][data.sortSelect] || 0) - (itemData[item1][data.sortSelect] || 0))
