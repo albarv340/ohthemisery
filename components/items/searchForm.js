@@ -68,7 +68,7 @@ export default function SearchForm({ update }) {
     return (
         <form onSubmit={sendUpdate} onReset={resetForm} onContextMenu={disableRightClick} onMouseDown={uncheckOthers} ref={form} className={styles.searchForm}>
             <div className={styles.inputs}>
-                <div className={styles.checkboxes}>
+                <div className={styles.checkboxes} title="Right-click a checkbox to deselect all others">
                     <span>Display items of type:</span>
                     <div className={styles.checkboxSubgroup}>
                         <CheckboxWithLabel name="Helmet" checked={true} />
