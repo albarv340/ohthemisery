@@ -50,8 +50,9 @@ function calculateDamageTaken(noArmor, prot, protmodifier, earmor, eagility, sec
     damageTaken.base = ((noArmor) ? 100 * Math.pow(0.96, (prot * protmodifier)) :
     100 * Math.pow(0.96, ((prot * protmodifier) + earmor + eagility) - (0.5 * earmor * eagility / (earmor + eagility))));
 
-    damageTaken.secondwind = ((noArmor) ? 100 * Math.pow(0.96, (prot * protmodifier) + secondwind) :
-    100 * Math.pow(0.96, ((prot * protmodifier) + earmor + eagility + secondwind) - (0.5 * earmor * eagility / (earmor + eagility))));
+    damageTaken.secondwind = ((noArmor) ? 100 * Math.pow(0.96, (prot * protmodifier)) :
+    100 * Math.pow(0.96, ((prot * protmodifier) + earmor + eagility) - (0.5 * earmor * eagility / (earmor + eagility))));
+    damageTaken.secondwind *= Math.pow(0.9, secondwind);
 
     return damageTaken;
 }
@@ -104,6 +105,7 @@ function returnArmorAgilityReduction(armor, agility, prots, situationals, health
     let blastDamage = calculateDamageTaken(hasEqual && armor == 0, prots.blast, 2, armorPlusSitsSteadfast, agilityPlusSits, secondwind);
     let fireDamage = calculateDamageTaken(hasEqual && armor == 0, prots.fire, 2, halfArmor, halfAgility, secondwind);
     let fallDamage = calculateDamageTaken(hasEqual && armor == 0, prots.fall, 3, halfArmor, halfAgility, secondwind);
+    let ailmentDamage = calculateDamageTaken(true, 0, 0, 0, 0, secondwind);
 
     let reductions = {
         melee: {base: 100 - meleeDamage.base, secondwind: 100 - meleeDamage.secondwind},
@@ -111,8 +113,11 @@ function returnArmorAgilityReduction(armor, agility, prots, situationals, health
         magic: {base: 100 - magicDamage.base, secondwind: 100 - magicDamage.secondwind},
         blast: {base: 100 - blastDamage.base, secondwind: 100 - blastDamage.secondwind},
         fire: {base: 100 - fireDamage.base, secondwind: 100 - fireDamage.secondwind},
-        fall: {base: 100 - fallDamage.base, secondwind: 100 - fallDamage.secondwind}
+        fall: {base: 100 - fallDamage.base, secondwind: 100 - fallDamage.secondwind},
+        ailment: {base: 100 - ailmentDamage.base, secondwind: 100 - ailmentDamage.secondwind}
     }
+
+    console.log(reductions.ailment);
 
     return reductions;
 }
@@ -329,6 +334,7 @@ function recalcBuild(data) {
     stats.blastDR = drs.blast[drType].toFixed(2);
     stats.fireDR = drs.fire[drType].toFixed(2);
     stats.fallDR = drs.fall[drType].toFixed(2);
+    stats.ailmentDR = drs.ailment[drType].toFixed(2);
 
     // EHP
     if (stats.situationals.secondwind.level == 0) {
@@ -338,6 +344,7 @@ function recalcBuild(data) {
         stats.blastEHP = (stats.healthFinal * (currHpPercent / 100) / (1 - drs.blast.base / 100)).toFixed(2);
         stats.fireEHP = (stats.healthFinal * (currHpPercent / 100) / (1 - drs.fire.base / 100)).toFixed(2);
         stats.fallEHP = (stats.healthFinal * (currHpPercent / 100) / (1 - drs.fall.base / 100)).toFixed(2);
+        stats.ailmentEHP = (stats.healthFinal * (currHpPercent / 100) / (1 - drs.ailment.base / 100)).toFixed(2);
     } else {
         let hpNoSecondWind = Math.max(0, (stats.currentHealth - stats.healthFinal * 0.5));
         let hpSecondWind = Math.min(stats.currentHealth, stats.healthFinal * 0.5);
@@ -347,8 +354,8 @@ function recalcBuild(data) {
         stats.blastEHP = (hpNoSecondWind * (currHpPercent / 100) / (1 - drs.blast.base / 100) + hpSecondWind * (currHpPercent / 100) / (1 - drs.blast.secondwind / 100)).toFixed(2);
         stats.fireEHP = (hpNoSecondWind * (currHpPercent / 100) / (1 - drs.fire.base / 100) + hpSecondWind * (currHpPercent / 100) / (1 - drs.fire.secondwind / 100)).toFixed(2);
         stats.fallEHP = (hpNoSecondWind * (currHpPercent / 100) / (1 - drs.fall.base / 100) + hpSecondWind * (currHpPercent / 100) / (1 - drs.fall.secondwind / 100)).toFixed(2);
+        stats.ailmentEHP = (hpNoSecondWind * (currHpPercent / 100) / (1 - drs.ailment.base / 100) + hpSecondWind * (currHpPercent / 100) / (1 - drs.ailment.secondwind / 100)).toFixed(2);
     }
-    stats.ailmentEHP = stats.healthFinal * (currHpPercent / 100);
 
     // Health Normalized DR
     stats.meleeHNDR = ((1 - ((1 - (drs.melee[drType] / 100)) / (stats.healthFinal / 20))) * 100).toFixed(2);
@@ -357,7 +364,7 @@ function recalcBuild(data) {
     stats.blastHNDR = ((1 - ((1 - (drs.blast[drType] / 100)) / (stats.healthFinal / 20))) * 100).toFixed(2);
     stats.fireHNDR = ((1 - ((1 - (drs.fire[drType] / 100)) / (stats.healthFinal / 20))) * 100).toFixed(2);
     stats.fallHNDR = ((1 - ((1 - (drs.fall[drType] / 100)) / (stats.healthFinal / 20))) * 100).toFixed(2);
-    stats.ailmentHNDR = ((1 - (1 / (stats.healthFinal / 20))) * 100).toFixed(2);
+    stats.ailmentHNDR = ((1 - ((1 - (drs.ailment[drType] / 100)) / (stats.healthFinal / 20))) * 100).toFixed(2);
 
     // Melee Stats
     let attackDamage = sumNumberStat(stats.itemStats.mainhand, "Base Attack Damage", stats.attackDamage) * (stats.attackDamagePercent / 100);
