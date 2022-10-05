@@ -16,7 +16,8 @@ const enabledSituationals = {
     ethereal: false,
     reflexes: false,
     evasion: false,
-    tempo: false
+    tempo: false,
+    secondwind: false
 };
 
 const refs = {
@@ -71,7 +72,7 @@ function returnArmorAgilityReduction(armor, agility, prots, situationals, health
     let evasionSit = (situationals.evasion.enabled) ? situationalAgility * situationals.evasion.level : 0;
     let reflexesSit = (situationals.reflexes.enabled) ? situationalAgility * situationals.reflexes.level : 0;
     let shieldingSit = (situationals.shielding.enabled) ? situationalArmor * situationals.shielding.level : 0;
-    let poiseSit = (situationals.poise.enabled) ? ((health.current / health.final >= 0.9) ? situationalArmor * situationals.poise.level : 0) : 0; // * 1 can change to * 0 if hp < 90% maxhp if added in the future
+    let poiseSit = (situationals.poise.enabled) ? ((health.current / health.final >= 0.9) ? situationalArmor * situationals.poise.level : 0) : 0;
     let inureSit = (situationals.inure.enabled) ? situationalArmor * situationals.inure.level : 0;
 
     let steadfastArmor = (1 - Math.max(0.2, health.current / health.final)) * 0.25 *
@@ -97,7 +98,7 @@ function returnArmorAgilityReduction(armor, agility, prots, situationals, health
     // second wind: half total ehp + half total ehp with second wind added onto it
     // there is something weird going on with fall damage. check out: khrosmos/prophetic moonbeam/crest of the tundra/windborn cape/lyrata/mist's wake
 
-    let secondwind = /*(health.current / health.final <= 0.5) ?*/ situationals.secondwind.level /*: 0*/;
+    let secondwind = situationals.secondwind.level;
     
     let meleeDamage = calculateDamageTaken(hasEqual && armor == 0, prots.melee, 2, armorPlusSitsSteadfast, agilityPlusSits, secondwind);
     let projectileDamage = calculateDamageTaken(hasEqual && armor == 0, prots.projectile, 2, armorPlusSitsSteadfast, agilityPlusSits, secondwind);
@@ -159,8 +160,8 @@ function recalcBuild(data) {
             reflexes: {enabled: enabledSituationals.reflexes, level: 0},
             evasion: {enabled: enabledSituationals.evasion, level: 0},
             tempo: {enabled: enabledSituationals.tempo, level: 0},
-            adaptability: {enabled: true, level: 0},
-            secondwind: {enabled: true, level: 0}
+            secondwind: {enabled: enabledSituationals.secondwind, level: 0},
+            adaptability: {enabled: true, level: 0}
         },
         agility: 0,
         armor: 0,
@@ -327,7 +328,7 @@ function recalcBuild(data) {
     let drs = returnArmorAgilityReduction(stats.armor, stats.agility, prots, stats.situationals, {final: stats.healthFinal, current: stats.currentHealth});
 
     // Select to show either the regular dr, or dr with second wind currently active based on hp remaining
-    let drType = (stats.currentHealth / stats.healthFinal <= 0.5) ? "secondwind" : "base";
+    let drType = (stats.currentHealth / stats.healthFinal <= 0.5 && stats.situationals.secondwind.enabled) ? "secondwind" : "base";
     stats.meleeDR = drs.melee[drType].toFixed(2);
     stats.projectileDR = drs.projectile[drType].toFixed(2);
     stats.magicDR = drs.magic[drType].toFixed(2);
@@ -337,7 +338,7 @@ function recalcBuild(data) {
     stats.ailmentDR = drs.ailment[drType].toFixed(2);
 
     // EHP
-    if (stats.situationals.secondwind.level == 0) {
+    if (stats.situationals.secondwind.level == 0 || drType == "base") {
         stats.meleeEHP = (stats.healthFinal * (currHpPercent / 100) / (1 - drs.melee.base / 100)).toFixed(2);
         stats.projectileEHP = (stats.healthFinal * (currHpPercent / 100) / (1 - drs.projectile.base / 100)).toFixed(2);
         stats.magicEHP = (stats.healthFinal * (currHpPercent / 100) / (1 - drs.magic.base / 100)).toFixed(2);
@@ -348,13 +349,13 @@ function recalcBuild(data) {
     } else {
         let hpNoSecondWind = Math.max(0, (stats.currentHealth - stats.healthFinal * 0.5));
         let hpSecondWind = Math.min(stats.currentHealth, stats.healthFinal * 0.5);
-        stats.meleeEHP = (hpNoSecondWind * (currHpPercent / 100) / (1 - drs.melee.base / 100) + hpSecondWind * (currHpPercent / 100) / (1 - drs.melee.secondwind / 100)).toFixed(2);
-        stats.projectileEHP = (hpNoSecondWind * (currHpPercent / 100) / (1 - drs.projectile.base / 100) + hpSecondWind * (currHpPercent / 100) / (1 - drs.projectile.secondwind / 100)).toFixed(2);
-        stats.magicEHP = (hpNoSecondWind * (currHpPercent / 100) / (1 - drs.magic.base / 100) + hpSecondWind * (currHpPercent / 100) / (1 - drs.magic.secondwind / 100)).toFixed(2);
-        stats.blastEHP = (hpNoSecondWind * (currHpPercent / 100) / (1 - drs.blast.base / 100) + hpSecondWind * (currHpPercent / 100) / (1 - drs.blast.secondwind / 100)).toFixed(2);
-        stats.fireEHP = (hpNoSecondWind * (currHpPercent / 100) / (1 - drs.fire.base / 100) + hpSecondWind * (currHpPercent / 100) / (1 - drs.fire.secondwind / 100)).toFixed(2);
-        stats.fallEHP = (hpNoSecondWind * (currHpPercent / 100) / (1 - drs.fall.base / 100) + hpSecondWind * (currHpPercent / 100) / (1 - drs.fall.secondwind / 100)).toFixed(2);
-        stats.ailmentEHP = (hpNoSecondWind * (currHpPercent / 100) / (1 - drs.ailment.base / 100) + hpSecondWind * (currHpPercent / 100) / (1 - drs.ailment.secondwind / 100)).toFixed(2);
+        stats.meleeEHP = (hpNoSecondWind / (1 - drs.melee.base / 100) + hpSecondWind / (1 - drs.melee.secondwind / 100)).toFixed(2);
+        stats.projectileEHP = (hpNoSecondWind / (1 - drs.projectile.base / 100) + hpSecondWind / (1 - drs.projectile.secondwind / 100)).toFixed(2);
+        stats.magicEHP = (hpNoSecondWind / (1 - drs.magic.base / 100) + hpSecondWind / (1 - drs.magic.secondwind / 100)).toFixed(2);
+        stats.blastEHP = (hpNoSecondWind / (1 - drs.blast.base / 100) + hpSecondWind / (1 - drs.blast.secondwind / 100)).toFixed(2);
+        stats.fireEHP = (hpNoSecondWind / (1 - drs.fire.base / 100) + hpSecondWind / (1 - drs.fire.secondwind / 100)).toFixed(2);
+        stats.fallEHP = (hpNoSecondWind / (1 - drs.fall.base / 100) + hpSecondWind / (1 - drs.fall.secondwind / 100)).toFixed(2);
+        stats.ailmentEHP = (hpNoSecondWind / (1 - drs.ailment.base / 100) + hpSecondWind / (1 - drs.ailment.secondwind / 100)).toFixed(2);
     }
 
     // Health Normalized DR
@@ -552,6 +553,7 @@ export default function UpdateForm({ update, build }) {
                 <CheckboxWithLabel name="Poise" checked={false} onChange={checkboxChanged} />
                 <CheckboxWithLabel name="Inure" checked={false} onChange={checkboxChanged} />
                 <CheckboxWithLabel name="Steadfast" checked={false} onChange={checkboxChanged} />
+                <CheckboxWithLabel name="SecondWind" checked={false} onChange={checkboxChanged} />
                 <CheckboxWithLabel name="Ethereal" checked={false} onChange={checkboxChanged} />
                 <CheckboxWithLabel name="Reflexes" checked={false} onChange={checkboxChanged} />
                 <CheckboxWithLabel name="Evasion" checked={false} onChange={checkboxChanged} />
