@@ -88,18 +88,16 @@ function returnArmorAgilityReduction(armor, agility, prots, situationals, health
          sumSits : (situationals.adaptability.level > 0 && armor < agility) ?
             armor : (situationals.adaptability.level == 0) ? sumArmorSits : 0);
 
-            
-    let armorPlusSitsSteadfast = armorPlusSits + (steadfastArmor * situationals.steadfast.level * (situationals.steadfast.enabled) ? 1 : 0);
+    let armorPlusSitsSteadfast = armorPlusSits + steadfastSit;
     
     let agilityPlusSits = agility + ((situationals.adaptability.level > 0 && armor < agility) ? sumSits : (situationals.adaptability.level > 0 && armor > agility) ? agility : (situationals.adaptability.level == 0) ? sumAgiSits : 0);
     let halfArmor = armorPlusSits / 2;
     let halfAgility = agilityPlusSits / 2;
 
-    // second wind: half total ehp + half total ehp with second wind added onto it
     // there is something weird going on with fall damage. check out: khrosmos/prophetic moonbeam/crest of the tundra/windborn cape/lyrata/mist's wake
 
     let secondwind = situationals.secondwind.level;
-    
+
     let meleeDamage = calculateDamageTaken(hasEqual && armor == 0, prots.melee, 2, armorPlusSitsSteadfast, agilityPlusSits, secondwind);
     let projectileDamage = calculateDamageTaken(hasEqual && armor == 0, prots.projectile, 2, armorPlusSitsSteadfast, agilityPlusSits, secondwind);
     let magicDamage = calculateDamageTaken(hasEqual && armor == 0, prots.magic, 2, armorPlusSitsSteadfast, agilityPlusSits, secondwind);
@@ -118,8 +116,6 @@ function returnArmorAgilityReduction(armor, agility, prots, situationals, health
         ailment: {base: 100 - ailmentDamage.base, secondwind: 100 - ailmentDamage.secondwind}
     }
 
-    console.log(reductions.ailment);
-
     return reductions;
 }
 
@@ -131,9 +127,6 @@ function checkboxChanged(event) {
 }
 
 function recalcBuild(data) {
-
-    console.log(data);
-    
     let stats = {
         itemNames: {
             "mainhand": data.mainhand,
