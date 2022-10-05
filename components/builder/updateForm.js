@@ -328,7 +328,7 @@ function recalcBuild(data) {
     let drs = returnArmorAgilityReduction(stats.armor, stats.agility, prots, stats.situationals, {final: stats.healthFinal, current: stats.currentHealth});
 
     // Select to show either the regular dr, or dr with second wind currently active based on hp remaining
-    let drType = (stats.currentHealth / stats.healthFinal <= 0.5 && stats.situationals.secondwind.enabled) ? "secondwind" : "base";
+    let drType = (/*stats.currentHealth / stats.healthFinal <= 0.5 && */stats.situationals.secondwind.enabled) ? "secondwind" : "base";
     stats.meleeDR = drs.melee[drType].toFixed(2);
     stats.projectileDR = drs.projectile[drType].toFixed(2);
     stats.magicDR = drs.magic[drType].toFixed(2);
