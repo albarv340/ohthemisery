@@ -389,8 +389,9 @@ function recalcBuild(data) {
 function makeBuildString() {
     let data = new FormData(refs.formRef.current).entries();
     let buildString = "";
+    let keysToShare = ["mainhand", "offhand", "helmet", "chestplate", "leggings", "boots"];
     for (const [ key, value ] of data) {
-        buildString += (key != "health") ? `${key[0]}=${value.replaceAll(" ", "%20")}&` : "";
+        buildString += (keysToShare.includes(key)) ? `${key[0]}=${value.replaceAll(" ", "%20")}&` : "";
     }
     buildString = buildString.substring(0, buildString.length - 1);
     return buildString;
