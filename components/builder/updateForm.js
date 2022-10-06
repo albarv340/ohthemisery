@@ -91,7 +91,7 @@ function returnArmorAgilityReduction(armor, agility, prots, situationals, health
     let armorPlusSitsSteadfast = armorPlusSits + steadfastSit;
     
     let agilityPlusSits = agility + ((situationals.adaptability.level > 0 && armor < agility) ? sumSits : (situationals.adaptability.level > 0 && armor > agility) ? agility : (situationals.adaptability.level == 0) ? sumAgiSits : 0);
-    let halfArmor = armorPlusSits / 2;
+    let halfArmor = armorPlusSitsSteadfast / 2;
     let halfAgility = agilityPlusSits / 2;
 
     // there is something weird going on with fall damage. check out: khrosmos/prophetic moonbeam/crest of the tundra/windborn cape/lyrata/mist's wake
