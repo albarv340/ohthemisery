@@ -39,6 +39,12 @@ export default function Enchants(data) {
             enchants.push(<span title={enchantTitle(enchant, type)} className={styles[enchantStyle(enchant, type)]} key={enchant}>{enchant}</span>)
         }
     }
+    if (item["Void Tether"]) {
+        enchants.push(<span title={enchantTitle("Void Tether", "Misc.")} key={"Void Tether"}>Void Tether</span>)
+    }
+    if (item["Resurrection"]) {
+        enchants.push(<span title={enchantTitle("Resurrection", "Misc.")} key={"Resurrection"}>Resurrection</span>)
+    }
     return (
         <div className={styles.enchants}>
             {enchants}
