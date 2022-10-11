@@ -244,7 +244,8 @@ function recalcBuild(data) {
 
         aptitude: 0,
         ineptitude: 0,
-        crippling: 0
+        crippling: 0,
+        corruption: 0
     };
 
     // Main loop to add up stats from items
@@ -304,6 +305,7 @@ function recalcBuild(data) {
             stats.situationals.secondwind.level += sumNumberStat(itemStats, "Second Wind");
 
             stats.crippling += sumNumberStat(itemStats, "Crippling");
+            stats.corruption += sumNumberStat(itemStats, "Corruption");
         }
     });
 
