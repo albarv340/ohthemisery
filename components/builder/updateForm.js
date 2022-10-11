@@ -243,7 +243,8 @@ function recalcBuild(data) {
         spellCooldownPercent: 100,
 
         aptitude: 0,
-        ineptitude: 0
+        ineptitude: 0,
+        crippling: 0
     };
 
     // Main loop to add up stats from items
@@ -301,6 +302,8 @@ function recalcBuild(data) {
             stats.situationals.tempo.level += sumNumberStat(itemStats, "Tempo ");
             stats.situationals.adaptability.level += sumNumberStat(itemStats, "Adaptability");
             stats.situationals.secondwind.level += sumNumberStat(itemStats, "Second Wind");
+
+            stats.crippling += sumNumberStat(itemStats, "Crippling");
         }
     });
 
@@ -310,7 +313,7 @@ function recalcBuild(data) {
     let currHpPercent = (data.health) ? data.health : 100;
     stats.currentHealth = stats.healthFinal * (currHpPercent / 100);
     // Fix speed percentage to account for base speed
-    stats.speedPercent = (stats.speedPercent * (stats.speedFlat)/0.1).toFixed(2);
+    stats.speedPercent = (stats.speedPercent * (stats.speedFlat) / 0.1 * ((currHpPercent <= 50) ? 1 - 0.1 * stats.crippling : 1)).toFixed(2);
     // Fix knockback resistance to be percentage and cap at 100
     stats.knockbackRes = (stats.knockbackRes > 10) ? 100 : stats.knockbackRes * 10;
     // Calculate effective healing rate
@@ -372,7 +375,7 @@ function recalcBuild(data) {
     stats.ailmentHNDR = ((1 - ((1 - (drs.ailment[drType] / 100)) / (stats.healthFinal / 20))) * 100).toFixed(2);
 
     // Melee Stats
-    let attackDamage = sumNumberStat(stats.itemStats.mainhand, "Base Attack Damage", stats.attackDamage) * (stats.attackDamagePercent / 100) * (1 + 0.01 * Number(data.vigor));
+    let attackDamage = sumNumberStat(stats.itemStats.mainhand, "Base Attack Damage", stats.attackDamage) * (stats.attackDamagePercent / 100) * (1 + 0.01 * Number(data.vigor)) * ((currHpPercent <= 50) ? 1 - 0.1 * stats.crippling : 1);
     stats.attackDamage = attackDamage.toFixed(2);
     let attackSpeed = (sumNumberStat(stats.itemStats.mainhand, "Base Attack Speed", stats.attackSpeed) + stats.attackSpeedFlatBonus) * (stats.attackSpeedPercent / 100);
     stats.attackSpeed = attackSpeed.toFixed(2);
