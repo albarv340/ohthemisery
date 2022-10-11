@@ -564,30 +564,30 @@ export default function UpdateForm({ update, build }) {
                 <CheckboxWithLabel name="Evasion" checked={false} onChange={checkboxChanged} />
                 <CheckboxWithLabel name="Tempo" checked={false} onChange={checkboxChanged} />
                 <div className="col col-1 text-center">
-                    <span>Health %</span>
+                    <p className="mb-1">Health %</p>
                     <input type="number" name="health" min="1" max="100" defaultValue="100" className="w-75" />
                 </div>
             </div>
             <div className="row justify-content-center mb-3 pt-2">
-                <div className="col col-1 text-center text-center">
-                    <span>Tenacity</span>
-                    <input type="number" name="tenacity" min="0" max="24" defaultValue="0" className="w-75" />
+                <div className="col col-2 text-center">
+                    <p className="mb-1">Tenacity</p>
+                    <input type="number" name="tenacity" min="0" max="24" defaultValue="0" className="" />
                 </div>
-                <div className="col col-1 text-center">
-                    <span>Vitality</span>
-                    <input type="number" name="vitality" min="0" max="24" defaultValue="0" className="w-75" />
+                <div className="col col-2 text-center">
+                    <p className="mb-1">Vitality</p>
+                    <input type="number" name="vitality" min="0" max="24" defaultValue="0" className="" />
                 </div>
-                <div className="col col-1 text-center">
-                    <span>Vigor</span>
-                    <input type="number" name="vigor" min="0" max="24" defaultValue="0" className="w-75" />
+                <div className="col col-2 text-center">
+                    <p className="mb-1">Vigor</p>
+                    <input type="number" name="vigor" min="0" max="24" defaultValue="0" className="" />
                 </div>
-                <div className="col col-1 text-center">
-                    <span>Focus</span>
-                    <input type="number" name="focus" min="0" max="24" defaultValue="0" className="w-75" />
+                <div className="col col-2 text-center">
+                    <p className="mb-1">Focus</p>
+                    <input type="number" name="focus" min="0" max="24" defaultValue="0" className="" />
                 </div>
-                <div className="col col-1 text-center">
-                    <span>Perspicacity</span>
-                    <input type="number" name="perspicacity" min="0" max="24" defaultValue="0" className="w-75" />
+                <div className="col col-2 text-center">
+                    <p className="mb-1">Perspicacity</p>
+                    <input type="number" name="perspicacity" min="0" max="24" defaultValue="0" className="" />
                 </div>
             </div>
         </form>
