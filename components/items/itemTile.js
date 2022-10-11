@@ -28,8 +28,6 @@ export default function ItemTile(data) {
             <span className={styles.infoText}>{`${item.Type} - ${item['Base Item']} `}</span>
             {item['Original Item'] ? <span className={styles.infoText}>{`Skin for ${item['Original Item']} `}</span> : ""}
             <Enchants item={item}></Enchants>
-            {item.Agility ? <span className={styles.agility}>{item.Agility[0] == "-" ? "" : "+"}{item.Agility} Agility</span> : ""}
-            {item.Armor ? <span className={styles.armor}>{item.Armor[0] == "-" ? "" : "+"}{item.Armor} Armor</span> : ""}
             <span>
                 <span className={styles.infoText}>{`${item.Region} `}</span>
                 <span className={styles[camelCase(item.Tier)]}>{item.Tier}</span>

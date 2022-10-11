@@ -39,6 +39,8 @@ export default function Enchants(data) {
             enchants.push(<span title={enchantTitle(enchant, type)} className={styles[enchantStyle(enchant, type)]} key={enchant}>{enchant}</span>)
         }
     }
+    enchants.push(item.Agility ? <span className={styles[enchantStyle(item.Agility, "Agility")]}>{item.Agility[0] == "-" ? "" : "+"}{item.Agility} Agility</span> : "")
+    enchants.push(item.Armor ? <span className={styles[enchantStyle(item.Armor, "Armor")]}>{item.Armor[0] == "-" ? "" : "+"}{item.Armor} Armor</span> : "")
     if (item["Void Tether"]) {
         enchants.push(<span title={enchantTitle("Void Tether", "Misc.")} key={"Void Tether"}>Void Tether</span>)
     }
