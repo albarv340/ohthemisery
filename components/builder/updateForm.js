@@ -46,7 +46,7 @@ function sumEnchantmentStat(itemStats, enchName, perLevelMultiplier) {
     return (itemStats[enchName]) ? Number(itemStats[enchName]) * perLevelMultiplier : 0;
 }
 
-function calculateDamageTaken(noArmor, prot, protmodifier, earmor, eagility, secondwind) {
+function calculateDamageTaken(noArmor, prot, protmodifier, earmor, eagility, secondwind, tenacity) {
     let damageTaken = {};
     damageTaken.base = ((noArmor) ? 100 * Math.pow(0.96, (prot * protmodifier)) :
     100 * Math.pow(0.96, ((prot * protmodifier) + earmor + eagility) - (0.5 * earmor * eagility / (earmor + eagility))));
@@ -54,11 +54,14 @@ function calculateDamageTaken(noArmor, prot, protmodifier, earmor, eagility, sec
     damageTaken.secondwind = ((noArmor) ? 100 * Math.pow(0.96, (prot * protmodifier)) :
     100 * Math.pow(0.96, ((prot * protmodifier) + earmor + eagility) - (0.5 * earmor * eagility / (earmor + eagility))));
     damageTaken.secondwind *= Math.pow(0.9, secondwind);
+    
+    damageTaken.base *= 1 - (tenacity * 0.005);
+    damageTaken.secondwind *= 1 - (tenacity * 0.005);
 
     return damageTaken;
 }
 
-function returnArmorAgilityReduction(armor, agility, prots, situationals, health) {
+function returnArmorAgilityReduction(armor, agility, prots, situationals, health, tenacity) {
     let hasMoreAgility = false;
     let hasMoreArmor = false;
     let hasEqual = false;
@@ -100,13 +103,13 @@ function returnArmorAgilityReduction(armor, agility, prots, situationals, health
 
     let secondwind = situationals.secondwind.level;
 
-    let meleeDamage = calculateDamageTaken(hasEqual && armor == 0, prots.melee, 2, armorPlusSitsSteadfast, agilityPlusSits, secondwind);
-    let projectileDamage = calculateDamageTaken(hasEqual && armor == 0, prots.projectile, 2, armorPlusSitsSteadfast, agilityPlusSits, secondwind);
-    let magicDamage = calculateDamageTaken(hasEqual && armor == 0, prots.magic, 2, armorPlusSitsSteadfast, agilityPlusSits, secondwind);
-    let blastDamage = calculateDamageTaken(hasEqual && armor == 0, prots.blast, 2, armorPlusSitsSteadfast, agilityPlusSits, secondwind);
-    let fireDamage = calculateDamageTaken(hasEqual && armor == 0, prots.fire, 2, halfArmor, halfAgility, secondwind);
-    let fallDamage = calculateDamageTaken(hasEqual && armor == 0, prots.fall, 3, halfArmor, halfAgility, secondwind);
-    let ailmentDamage = calculateDamageTaken(true, 0, 0, 0, 0, secondwind);
+    let meleeDamage = calculateDamageTaken(hasEqual && armor == 0, prots.melee, 2, armorPlusSitsSteadfast, agilityPlusSits, secondwind, tenacity);
+    let projectileDamage = calculateDamageTaken(hasEqual && armor == 0, prots.projectile, 2, armorPlusSitsSteadfast, agilityPlusSits, secondwind, tenacity);
+    let magicDamage = calculateDamageTaken(hasEqual && armor == 0, prots.magic, 2, armorPlusSitsSteadfast, agilityPlusSits, secondwind, tenacity);
+    let blastDamage = calculateDamageTaken(hasEqual && armor == 0, prots.blast, 2, armorPlusSitsSteadfast, agilityPlusSits, secondwind, tenacity);
+    let fireDamage = calculateDamageTaken(hasEqual && armor == 0, prots.fire, 2, halfArmor, halfAgility, secondwind, tenacity);
+    let fallDamage = calculateDamageTaken(hasEqual && armor == 0, prots.fall, 3, halfArmor, halfAgility, secondwind, tenacity);
+    let ailmentDamage = calculateDamageTaken(true, 0, 0, 0, 0, secondwind, tenacity);
 
     let reductions = {
         melee: {base: 100 - meleeDamage.base, secondwind: 100 - meleeDamage.secondwind},
@@ -129,6 +132,12 @@ function checkboxChanged(event) {
 }
 
 function recalcBuild(data) {
+    data.tenacity = (data.tenacity) ? data.tenacity : 0;
+    data.vitality = (data.vitality) ? data.vitality : 0;
+    data.vigor = (data.vigor) ? data.vigor : 0;
+    data.focus = (data.focus) ? data.focus : 0;
+    data.perspicacity = (data.perspicacity) ? data.perspicacity : 0;
+
     let stats = {
         itemNames: {
             "mainhand": data.mainhand,
@@ -296,7 +305,7 @@ function recalcBuild(data) {
     });
 
     // Calculate final health
-    stats.healthFinal = stats.healthFlat * (stats.healthPercent / 100);
+    stats.healthFinal = stats.healthFlat * (stats.healthPercent / 100) * (1 + 0.01 * Number(data.vitality));
     // Current health (percentage of max health based on player input)
     let currHpPercent = (data.health) ? data.health : 100;
     stats.currentHealth = stats.healthFinal * (currHpPercent / 100);
@@ -320,7 +329,7 @@ function recalcBuild(data) {
 
     // DR
     let prots = {melee: stats.meleeProt, projectile: stats.projectileProt, magic: stats.magicProt, blast: stats.blastProt, fire: stats.fireProt, fall: stats.fallProt};
-    let drs = returnArmorAgilityReduction(stats.armor, stats.agility, prots, stats.situationals, {final: stats.healthFinal, current: stats.currentHealth});
+    let drs = returnArmorAgilityReduction(stats.armor, stats.agility, prots, stats.situationals, {final: stats.healthFinal, current: stats.currentHealth}, Number(data.tenacity));
 
     // Select to show either the regular dr, or dr with second wind currently active based on hp remaining
     let drType = (/*stats.currentHealth / stats.healthFinal <= 0.5 && */stats.situationals.secondwind.enabled) ? "secondwind" : "base";
@@ -363,7 +372,7 @@ function recalcBuild(data) {
     stats.ailmentHNDR = ((1 - ((1 - (drs.ailment[drType] / 100)) / (stats.healthFinal / 20))) * 100).toFixed(2);
 
     // Melee Stats
-    let attackDamage = sumNumberStat(stats.itemStats.mainhand, "Base Attack Damage", stats.attackDamage) * (stats.attackDamagePercent / 100);
+    let attackDamage = sumNumberStat(stats.itemStats.mainhand, "Base Attack Damage", stats.attackDamage) * (stats.attackDamagePercent / 100) * (1 + 0.01 * Number(data.vigor));
     stats.attackDamage = attackDamage.toFixed(2);
     let attackSpeed = (sumNumberStat(stats.itemStats.mainhand, "Base Attack Speed", stats.attackSpeed) + stats.attackSpeedFlatBonus) * (stats.attackSpeedPercent / 100);
     stats.attackSpeed = attackSpeed.toFixed(2);
@@ -373,7 +382,7 @@ function recalcBuild(data) {
     stats.iframeCritDPS = ((attackSpeed >= 2) ? attackDamageCrit * 2 : attackDamageCrit * attackSpeed).toFixed(2);
 
     // Projectile Stats
-    let projectileDamage = sumNumberStat(stats.itemStats.mainhand, "Base Proj Damage", stats.projectileDamage) * (stats.projectileDamagePercent / 100);
+    let projectileDamage = sumNumberStat(stats.itemStats.mainhand, "Base Proj Damage", stats.projectileDamage) * (stats.projectileDamagePercent / 100) * (1 + 0.01 * Number(data.focus));
     stats.projectileDamage = projectileDamage.toFixed(2);
     let projectileSpeed = sumNumberStat(stats.itemStats.mainhand, "Base Proj Speed", stats.projectileSpeed) * (stats.projectileSpeedPercent / 100);
     stats.projectileSpeed = projectileSpeed.toFixed(2);
@@ -382,7 +391,7 @@ function recalcBuild(data) {
 
     // Magic Stats
     stats.spellPowerPercent = 100 + sumNumberStat(stats.itemStats.mainhand, "Base Spell Power", 0);
-    stats.spellDamage = (((stats.spellPowerPercent / 100) * (stats.magicDamagePercent / 100)) * 100).toFixed(2);
+    stats.spellDamage = (((stats.spellPowerPercent / 100) * (stats.magicDamagePercent / 100) * (1 + 0.01 * Number(data.perspicacity))) * 100).toFixed(2);
     stats.spellCooldownPercent = (100 * Math.pow(0.95, stats.aptitude + stats.ineptitude)).toFixed(2);
 
     return stats;
@@ -544,7 +553,7 @@ export default function UpdateForm({ update, build }) {
                     <input type="reset" className="btn btn-danger w-50" />
                 </div>
             </div>
-            <div className="row justify-content-center mb-3 pt-2">
+            <div className="row justify-content-center pt-2">
                 <CheckboxWithLabel name="Shielding" checked={false} onChange={checkboxChanged} />
                 <CheckboxWithLabel name="Poise" checked={false} onChange={checkboxChanged} />
                 <CheckboxWithLabel name="Inure" checked={false} onChange={checkboxChanged} />
@@ -554,8 +563,31 @@ export default function UpdateForm({ update, build }) {
                 <CheckboxWithLabel name="Reflexes" checked={false} onChange={checkboxChanged} />
                 <CheckboxWithLabel name="Evasion" checked={false} onChange={checkboxChanged} />
                 <CheckboxWithLabel name="Tempo" checked={false} onChange={checkboxChanged} />
-                <div className="col col-1">
-                    Health % <input type="number" name="health" min="1" max="100" defaultValue="100" className="" />
+                <div className="col col-1 text-center">
+                    <span>Health %</span>
+                    <input type="number" name="health" min="1" max="100" defaultValue="100" className="w-75" />
+                </div>
+            </div>
+            <div className="row justify-content-center mb-3 pt-2">
+                <div className="col col-1 text-center text-center">
+                    <span>Tenacity</span>
+                    <input type="number" name="tenacity" min="0" max="24" defaultValue="0" className="w-75" />
+                </div>
+                <div className="col col-1 text-center">
+                    <span>Vitality</span>
+                    <input type="number" name="vitality" min="0" max="24" defaultValue="0" className="w-75" />
+                </div>
+                <div className="col col-1 text-center">
+                    <span>Vigor</span>
+                    <input type="number" name="vigor" min="0" max="24" defaultValue="0" className="w-75" />
+                </div>
+                <div className="col col-1 text-center">
+                    <span>Focus</span>
+                    <input type="number" name="focus" min="0" max="24" defaultValue="0" className="w-75" />
+                </div>
+                <div className="col col-1 text-center">
+                    <span>Perspicacity</span>
+                    <input type="number" name="perspicacity" min="0" max="24" defaultValue="0" className="w-75" />
                 </div>
             </div>
         </form>

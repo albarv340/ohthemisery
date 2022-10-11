@@ -80,7 +80,7 @@ export default function Builder({ build }) {
     const magicStats = [
         {type: "magicDamagePercent", name: "Magic Damage", percent: true},
         {type: "spellPowerPercent", name: "Spell Power", percent: true},
-        {type: "spellDamage", name: "Total Spell Damage", percent: true},
+        {type: "spellDamage", name: "Total Magic Damage", percent: true},
         {type: "spellCooldownPercent", name: "Cooldown Duration", percent: true}
     ];
 
