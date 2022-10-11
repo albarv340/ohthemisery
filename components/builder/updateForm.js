@@ -62,6 +62,8 @@ function returnArmorAgilityReduction(armor, agility, prots, situationals, health
     let hasMoreAgility = false;
     let hasMoreArmor = false;
     let hasEqual = false;
+    armor = (armor < 0) ? 0 : armor;
+    agility = (agility < 0) ? 0 : agility;
     (agility > armor) ? hasMoreAgility = true : (armor > agility) ? hasMoreArmor = true : hasEqual = true;
 
     let situationalArmor = (situationals.adaptability.level > 0) ? Math.min(Math.max(agility, armor), 30) * 0.2 : Math.min(armor, 30) * 0.2;
