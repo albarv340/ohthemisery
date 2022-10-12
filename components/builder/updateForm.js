@@ -504,41 +504,41 @@ export default function UpdateForm({ update, build }) {
     return (
         <form ref={formRef} onSubmit={sendUpdate} onReset={resetForm}>
             <div className="row justify-content-center mb-3">
-                <div className="col text-center">
+                <div className="col-12 col-md-5 col-lg-2 text-center">
                     <p className="mb-1">Mainhand</p>
                     <SelectInput reference={mainhandReference} name="mainhand" noneOption={true} sortableStats={getRelevantItems(["mainhand", "sword", "axe", "wand", "scythe", "bow", "crossbow", "throwable", "trident"])}></SelectInput>
                 </div>
-                <div className="col text-center">
+                <div className="col-12 col-md-5 col-lg-2 text-center">
                     <p className="mb-1">Offhand</p>
                     <SelectInput reference={offhandReference} name="offhand" noneOption={true} sortableStats={getRelevantItems(["offhand", "offhand shield", "offhand sword"])}></SelectInput>
                 </div>
             </div>
             <div className="row justify-content-center mb-4 pt-2">
-                <div className="col text-center">
+                <div className="col-12 col-md-3 col-lg-2 text-center">
                     <p className="mb-1">Helmet</p>
                     <SelectInput reference={helmetReference} noneOption={true} name="helmet" sortableStats={getRelevantItems(["helmet"])}></SelectInput>
                 </div>
-                <div className="col text-center">
+                <div className="col-12 col-md-3 col-lg-2 text-center">
                     <p className="mb-1">Chestplate</p>
                     <SelectInput reference={chestplateReference} noneOption={true} name="chestplate" sortableStats={getRelevantItems(["chestplate"])}></SelectInput>
                 </div>
-                <div className="col text-center">
+                <div className="col-12 col-md-3 col-lg-2 text-center">
                     <p className="mb-1">Leggings</p>
                     <SelectInput reference={leggingsReference} noneOption={true} name="leggings" sortableStats={getRelevantItems(["leggings"])}></SelectInput>
                 </div>
-                <div className="col text-center">
+                <div className="col-12 col-md-3 col-lg-2 text-center">
                     <p className="mb-1">Boots</p>
                     <SelectInput reference={bootsReference} noneOption={true} name="boots" sortableStats={getRelevantItems(["boots"])}></SelectInput>
                 </div>
             </div>
             <div className="row justify-content-center mb-3">
-                <div className="col text-center">
+                <div className="col-4 col-md-3 col-lg-1 text-center">
                     <input type="submit" className="btn btn-dark" value="Recalculate" />
                 </div>
-                <div className="col text-center">
+                <div className="col-4 col-md-3 col-lg-1 text-center">
                     <input type="button" className="btn btn-dark" id="share" onClick={copyBuild} value="Share" />
                 </div>
-                <div className="col text-center">
+                <div className="col-4 col-md-3 col-lg-1 text-center">
                     <input type="reset" className="btn btn-danger" />
                 </div>
             </div>
