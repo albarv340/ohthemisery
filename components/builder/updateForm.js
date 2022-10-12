@@ -503,59 +503,43 @@ export default function UpdateForm({ update, build }) {
 
     return (
         <form ref={formRef} onSubmit={sendUpdate} onReset={resetForm}>
-            <div className="row justify-content-center">
-                <div className="col-2 text-center">
-                    <span>Mainhand</span>
-                </div>
-                <div className="col-2 text-center">
-                    <span>Offhand</span>
-                </div>
-            </div>
             <div className="row justify-content-center mb-3">
-                <div className="col-2 text-center">
+                <div className="col text-center">
+                    <p className="mb-1">Mainhand</p>
                     <SelectInput reference={mainhandReference} name="mainhand" noneOption={true} sortableStats={getRelevantItems(["mainhand", "sword", "axe", "wand", "scythe", "bow", "crossbow", "throwable", "trident"])}></SelectInput>
                 </div>
-                <div className="col-2 text-center">
+                <div className="col text-center">
+                    <p className="mb-1">Offhand</p>
                     <SelectInput reference={offhandReference} name="offhand" noneOption={true} sortableStats={getRelevantItems(["offhand", "offhand shield", "offhand sword"])}></SelectInput>
                 </div>
             </div>
-            <div className="row justify-content-center">
-                <div className="col-2 text-center">
-                    <span>Helmet</span>
-                </div>
-                <div className="col-2 text-center">
-                    <span>Chestplate</span>
-                </div>
-                <div className="col-2 text-center">
-                    <span>Leggings</span>
-                </div>
-                <div className="col-2 text-center">
-                    <span>Boots</span>
-                </div>
-            </div>
-            <div className="row justify-content-center mb-4">
-                <div className="col-2 text-center">
+            <div className="row justify-content-center mb-4 pt-2">
+                <div className="col text-center">
+                    <p className="mb-1">Helmet</p>
                     <SelectInput reference={helmetReference} noneOption={true} name="helmet" sortableStats={getRelevantItems(["helmet"])}></SelectInput>
                 </div>
-                <div className="col-2 text-center">
+                <div className="col text-center">
+                    <p className="mb-1">Chestplate</p>
                     <SelectInput reference={chestplateReference} noneOption={true} name="chestplate" sortableStats={getRelevantItems(["chestplate"])}></SelectInput>
                 </div>
-                <div className="col-2 text-center">
+                <div className="col text-center">
+                    <p className="mb-1">Leggings</p>
                     <SelectInput reference={leggingsReference} noneOption={true} name="leggings" sortableStats={getRelevantItems(["leggings"])}></SelectInput>
                 </div>
-                <div className="col-2 text-center">
+                <div className="col text-center">
+                    <p className="mb-1">Boots</p>
                     <SelectInput reference={bootsReference} noneOption={true} name="boots" sortableStats={getRelevantItems(["boots"])}></SelectInput>
                 </div>
             </div>
             <div className="row justify-content-center mb-3">
-                <div className="col-2 text-center">
-                    <input type="submit" className="btn btn-dark w-50" value="Recalculate" />
+                <div className="col text-center">
+                    <input type="submit" className="btn btn-dark" value="Recalculate" />
                 </div>
-                <div className="col-2 text-center">
-                    <input type="button" className="btn btn-dark w-50" id="share" onClick={copyBuild} value="Share" />
+                <div className="col text-center">
+                    <input type="button" className="btn btn-dark" id="share" onClick={copyBuild} value="Share" />
                 </div>
-                <div className="col-2 text-center">
-                    <input type="reset" className="btn btn-danger w-50" />
+                <div className="col text-center">
+                    <input type="reset" className="btn btn-danger" />
                 </div>
             </div>
             <div className="row justify-content-center pt-2">
@@ -568,29 +552,29 @@ export default function UpdateForm({ update, build }) {
                 <CheckboxWithLabel name="Reflexes" checked={false} onChange={checkboxChanged} />
                 <CheckboxWithLabel name="Evasion" checked={false} onChange={checkboxChanged} />
                 <CheckboxWithLabel name="Tempo" checked={false} onChange={checkboxChanged} />
-                <div className="col col-1 text-center">
-                    <p className="mb-1">Health %</p>
-                    <input type="number" name="health" min="1" max="100" defaultValue="100" className="w-75" />
-                </div>
             </div>
             <div className="row justify-content-center mb-3 pt-2">
-                <div className="col col-2 text-center">
+                <div className="col text-center">
+                    <p className="mb-1">Health%</p>
+                    <input type="number" name="health" min="1" max="100" defaultValue="100" className="" />
+                </div>
+                <div className="col text-center">
                     <p className="mb-1">Tenacity</p>
                     <input type="number" name="tenacity" min="0" max="24" defaultValue="0" className="" />
                 </div>
-                <div className="col col-2 text-center">
+                <div className="col text-center">
                     <p className="mb-1">Vitality</p>
                     <input type="number" name="vitality" min="0" max="24" defaultValue="0" className="" />
                 </div>
-                <div className="col col-2 text-center">
+                <div className="col text-center">
                     <p className="mb-1">Vigor</p>
                     <input type="number" name="vigor" min="0" max="24" defaultValue="0" className="" />
                 </div>
-                <div className="col col-2 text-center">
+                <div className="col text-center">
                     <p className="mb-1">Focus</p>
                     <input type="number" name="focus" min="0" max="24" defaultValue="0" className="" />
                 </div>
-                <div className="col col-2 text-center">
+                <div className="col text-center">
                     <p className="mb-1">Perspicacity</p>
                     <input type="number" name="perspicacity" min="0" max="24" defaultValue="0" className="" />
                 </div>
