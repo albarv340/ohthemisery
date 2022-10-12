@@ -101,7 +101,7 @@ export default function Builder({ build }) {
                 </div>
                 <UpdateForm update={change} build={build}></UpdateForm>
                 <div className="row mb-2 pt-2">
-                    <span className="text-center text-danger fs-2 fw-bold">{(itemsToDisplay.corruption > 1) ? "YOU HAVE TWO CURSE OF CORRUPTION ITEMS" : ""}</span>
+                    <span className="text-center text-danger fs-2 fw-bold">{(itemsToDisplay.corruption > 1) ? "YOU HAVE MORE THAN ONE CURSE OF CORRUPTION ITEM" : ""}</span>
                 </div>
                 <div className="row justify-content-center mb-2">
                     {
