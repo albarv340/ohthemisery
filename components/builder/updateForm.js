@@ -183,6 +183,7 @@ function recalcBuild(data) {
         speedFlat: 0.1,
         knockbackRes: 0,
         thorns: 0,
+        thornsPercent: 100,
 
         healthPercent: 100,
         healthFlat: 20,
@@ -279,6 +280,7 @@ function recalcBuild(data) {
             stats.speedFlat += sumNumberStat(itemStats, "Speed");
             stats.knockbackRes += sumNumberStat(itemStats, "Knockback Res.");
             stats.thorns += sumNumberStat(itemStats, "Thorns");
+            stats.thornsPercent += sumNumberStat(itemStats, "Thorns Damage");
     
             stats.healingRate += sumEnchantmentStat(itemStats, "Anemia", -10) + sumEnchantmentStat(itemStats, "Sustenance", 10);
             stats.regenPerSec += sumEnchantmentStat(itemStats, "Regen", 1);
@@ -341,6 +343,8 @@ function recalcBuild(data) {
     stats.lifeDrainOnCrit = lifeDrainOnCritFixedNonRounded.toFixed(2);
     // Calculate %hp regained from life drain on crit
     stats.lifeDrainOnCritPercent = ((lifeDrainOnCritFixedNonRounded / stats.healthFinal) * 100).toFixed(2);
+    // Add to thorns damage
+    stats.thorns = (stats.thorns * (stats.thornsPercent / 100)).toFixed(2);
 
     // DR
     let prots = {melee: stats.meleeProt, projectile: stats.projectileProt, magic: stats.magicProt, blast: stats.blastProt, fire: stats.fireProt, fall: stats.fallProt};
