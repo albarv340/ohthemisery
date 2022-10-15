@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 let initialized = false;
 
 let scout = false;
+let clericBlessing = false;
 let fruitOfLife = false;
 
 const emptyBuild = {mainhand: "None", offhand: "None", helmet: "None", chestplate: "None", leggings: "None", boots: "None"};
@@ -146,6 +147,10 @@ function checkboxChanged(event) {
         }
         case "fol": {
             fruitOfLife = event.target.checked;
+            break;
+        }
+        case "clericblessing": {
+            clericBlessing = event.target.checked;
             break;
         }
         case "speed":
@@ -353,6 +358,7 @@ function recalcBuild(data) {
         * (stats.speedFlat) / 0.1
         * ((patronBuffs.speed) ? 1.1 : 1)
         * ((fruitOfLife) ? 1.15 : 1)
+        * ((clericBlessing) ? 1.2 : 1)
         * ((currHpPercent <= 50) ? 1 - 0.1 * stats.crippling : 1);
     stats.speedPercent = stats.speedPercent.toFixed(2);
     // Fix knockback resistance to be percentage and cap at 100
@@ -429,6 +435,7 @@ function recalcBuild(data) {
         * (stats.attackDamagePercent / 100)
         * ((patronBuffs.strength) ? 1.1 : 1)
         * ((fruitOfLife) ? 1.15 : 1)
+        * ((clericBlessing) ? 1.35 : 1)
         * (1 + 0.01 * Number(data.vigor))
         * ((currHpPercent <= 50) ? 1 - 0.1 * stats.crippling : 1);
     stats.attackDamage = attackDamage.toFixed(2);
@@ -444,6 +451,7 @@ function recalcBuild(data) {
         * (stats.projectileDamagePercent / 100)
         * ((patronBuffs.strength) ? 1.1 : 1)
         * ((fruitOfLife) ? 1.15 : 1)
+        * ((clericBlessing) ? 1.35 : 1)
         * (1 + 0.01 * Number(data.focus));
     stats.projectileDamage = projectileDamage.toFixed(2);
     let projectileSpeed = sumNumberStat(stats.itemStats.mainhand, "Base Proj Speed", stats.projectileSpeed) * (stats.projectileSpeedPercent / 100);
@@ -615,6 +623,7 @@ export default function UpdateForm({ update, build }) {
                 <CheckboxWithLabel name="Evasion" checked={false} onChange={checkboxChanged} />
                 <CheckboxWithLabel name="Tempo" checked={false} onChange={checkboxChanged} />
                 <CheckboxWithLabel name="Scout" checked={false} onChange={checkboxChanged} />
+                <CheckboxWithLabel name="ClericBlessing" checked={false} onChange={checkboxChanged} />
                 <CheckboxWithLabel name="FOL" checked={false} onChange={checkboxChanged} />
             </div>
             <div className="row justify-content-center pt-2">
