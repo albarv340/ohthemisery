@@ -5,7 +5,9 @@ import React from 'react';
 import { useRouter } from 'next/router';
 
 let initialized = false;
+
 let scout = false;
+let fruitOfLife = false;
 
 const emptyBuild = {mainhand: "None", offhand: "None", helmet: "None", chestplate: "None", leggings: "None", boots: "None"};
 
@@ -131,6 +133,9 @@ function checkboxChanged(event) {
         case "scout": {
             scout = event.target.checked;
             break;
+        }
+        case "fol": {
+            fruitOfLife = event.target.checked;
         }
         default: {
             enabledSituationals[name] = event.target.checked;
@@ -327,7 +332,11 @@ function recalcBuild(data) {
     let currHpPercent = (data.health) ? data.health : 100;
     stats.currentHealth = stats.healthFinal * (currHpPercent / 100);
     // Fix speed percentage to account for base speed
-    stats.speedPercent = (stats.speedPercent * (stats.speedFlat) / 0.1 * ((currHpPercent <= 50) ? 1 - 0.1 * stats.crippling : 1)).toFixed(2);
+    stats.speedPercent = stats.speedPercent
+        * (stats.speedFlat) / 0.1
+        * ((fruitOfLife) ? 1.15 : 1)
+        * ((currHpPercent <= 50) ? 1 - 0.1 * stats.crippling : 1);
+    stats.speedPercent = stats.speedPercent.toFixed(2);
     // Fix knockback resistance to be percentage and cap at 100
     stats.knockbackRes = (stats.knockbackRes > 10) ? 100 : stats.knockbackRes * 10;
     // Calculate effective healing rate
@@ -398,7 +407,11 @@ function recalcBuild(data) {
     }
 
     // Melee Stats
-    let attackDamage = sumNumberStat(stats.itemStats.mainhand, "Base Attack Damage", stats.attackDamage) * (stats.attackDamagePercent / 100) * (1 + 0.01 * Number(data.vigor)) * ((currHpPercent <= 50) ? 1 - 0.1 * stats.crippling : 1);
+    let attackDamage = sumNumberStat(stats.itemStats.mainhand, "Base Attack Damage", stats.attackDamage)
+        * (stats.attackDamagePercent / 100)
+        * ((fruitOfLife) ? 1.15 : 1)
+        * (1 + 0.01 * Number(data.vigor))
+        * ((currHpPercent <= 50) ? 1 - 0.1 * stats.crippling : 1);
     stats.attackDamage = attackDamage.toFixed(2);
     let attackSpeed = (sumNumberStat(stats.itemStats.mainhand, "Base Attack Speed", stats.attackSpeed) + stats.attackSpeedFlatBonus) * (stats.attackSpeedPercent / 100);
     stats.attackSpeed = attackSpeed.toFixed(2);
@@ -574,6 +587,7 @@ export default function UpdateForm({ update, build }) {
                 <CheckboxWithLabel name="Evasion" checked={false} onChange={checkboxChanged} />
                 <CheckboxWithLabel name="Tempo" checked={false} onChange={checkboxChanged} />
                 <CheckboxWithLabel name="Scout" checked={false} onChange={checkboxChanged} />
+                <CheckboxWithLabel name="FOL" checked={false} onChange={checkboxChanged} />
             </div>
             <div className="row justify-content-center mb-3 pt-2">
                 <div className="col text-center">
