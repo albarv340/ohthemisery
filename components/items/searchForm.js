@@ -100,6 +100,7 @@ export default function SearchForm({ update }) {
                         <CheckboxWithLabel name="Consumable" checked={true} />
                         <CheckboxWithLabel name="Misc" checked={true} />
                     </div>
+                    <span>TIP: Right click a checkbox to deselect all others!</span>
                 </div>
                 <div>
                     <div className={styles.selects}>
