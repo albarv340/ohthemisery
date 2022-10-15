@@ -11,6 +11,12 @@ let fruitOfLife = false;
 
 const emptyBuild = {mainhand: "None", offhand: "None", helmet: "None", chestplate: "None", leggings: "None", boots: "None"};
 
+const patronBuffs = {
+    speed: false,
+    resistance: false,
+    strength: false
+}
+
 const enabledSituationals = {
     shielding: false,
     poise: false,
@@ -58,8 +64,12 @@ function calculateDamageTaken(noArmor, prot, protmodifier, earmor, eagility, sec
     100 * Math.pow(0.96, ((prot * protmodifier) + earmor + eagility) - (0.5 * earmor * eagility / (earmor + eagility))));
     damageTaken.secondwind *= Math.pow(0.9, secondwind);
     
-    damageTaken.base *= 1 - (tenacity * 0.005);
-    damageTaken.secondwind *= 1 - (tenacity * 0.005);
+    damageTaken.base = damageTaken.base
+        * (1 - (tenacity * 0.005))
+        * ((patronBuffs.resistance) ? 0.9 : 1);
+    damageTaken.secondwind = damageTaken.secondwind
+        * (1 - (tenacity * 0.005))
+        * ((patronBuffs.resistance) ? 0.9 : 1);
 
     return damageTaken;
 }
@@ -136,6 +146,13 @@ function checkboxChanged(event) {
         }
         case "fol": {
             fruitOfLife = event.target.checked;
+            break;
+        }
+        case "speed":
+        case "resistance":
+        case "strength": {
+            patronBuffs[name] = event.target.checked;
+            break;
         }
         default: {
             enabledSituationals[name] = event.target.checked;
@@ -334,6 +351,7 @@ function recalcBuild(data) {
     // Fix speed percentage to account for base speed
     stats.speedPercent = stats.speedPercent
         * (stats.speedFlat) / 0.1
+        * ((patronBuffs.speed) ? 1.1 : 1)
         * ((fruitOfLife) ? 1.15 : 1)
         * ((currHpPercent <= 50) ? 1 - 0.1 * stats.crippling : 1);
     stats.speedPercent = stats.speedPercent.toFixed(2);
@@ -409,6 +427,7 @@ function recalcBuild(data) {
     // Melee Stats
     let attackDamage = sumNumberStat(stats.itemStats.mainhand, "Base Attack Damage", stats.attackDamage)
         * (stats.attackDamagePercent / 100)
+        * ((patronBuffs.strength) ? 1.1 : 1)
         * ((fruitOfLife) ? 1.15 : 1)
         * (1 + 0.01 * Number(data.vigor))
         * ((currHpPercent <= 50) ? 1 - 0.1 * stats.crippling : 1);
@@ -421,7 +440,11 @@ function recalcBuild(data) {
     stats.iframeCritDPS = ((attackSpeed >= 2) ? attackDamageCrit * 2 : attackDamageCrit * attackSpeed).toFixed(2);
 
     // Projectile Stats
-    let projectileDamage = sumNumberStat(stats.itemStats.mainhand, "Base Proj Damage", stats.projectileDamage) * (stats.projectileDamagePercent / 100) * (1 + 0.01 * Number(data.focus));
+    let projectileDamage = sumNumberStat(stats.itemStats.mainhand, "Base Proj Damage", stats.projectileDamage)
+        * (stats.projectileDamagePercent / 100)
+        * ((patronBuffs.strength) ? 1.1 : 1)
+        * ((fruitOfLife) ? 1.15 : 1)
+        * (1 + 0.01 * Number(data.focus));
     stats.projectileDamage = projectileDamage.toFixed(2);
     let projectileSpeed = sumNumberStat(stats.itemStats.mainhand, "Base Proj Speed", stats.projectileSpeed) * (stats.projectileSpeedPercent / 100);
     stats.projectileSpeed = projectileSpeed.toFixed(2);
@@ -430,7 +453,12 @@ function recalcBuild(data) {
 
     // Magic Stats
     stats.spellPowerPercent = 100 + sumNumberStat(stats.itemStats.mainhand, "Base Spell Power", 0);
-    stats.spellDamage = (((stats.spellPowerPercent / 100) * (stats.magicDamagePercent / 100) * (1 + 0.01 * Number(data.perspicacity))) * 100).toFixed(2);
+    stats.spellDamage = ((stats.spellPowerPercent / 100)
+        * (stats.magicDamagePercent / 100)
+        * ((patronBuffs.strength) ? 1.1 : 1)
+        * ((fruitOfLife) ? 1.15 : 1)
+        * (1 + 0.01 * Number(data.perspicacity))) * 10;
+    stats.spellDamage = stats.spellDamage.toFixed(2);
     stats.spellCooldownPercent = (100 * Math.pow(0.95, stats.aptitude + stats.ineptitude)).toFixed(2);
 
     return stats;
@@ -588,6 +616,12 @@ export default function UpdateForm({ update, build }) {
                 <CheckboxWithLabel name="Tempo" checked={false} onChange={checkboxChanged} />
                 <CheckboxWithLabel name="Scout" checked={false} onChange={checkboxChanged} />
                 <CheckboxWithLabel name="FOL" checked={false} onChange={checkboxChanged} />
+            </div>
+            <div className="row justify-content-center pt-2">
+                <p className="text-center mb-1">Patron Buffs</p>
+                <CheckboxWithLabel name="Speed" checked={false} onChange={checkboxChanged} />
+                <CheckboxWithLabel name="Resistance" checked={false} onChange={checkboxChanged} />
+                <CheckboxWithLabel name="Strength" checked={false} onChange={checkboxChanged} />
             </div>
             <div className="row justify-content-center mb-3 pt-2">
                 <div className="col text-center">
