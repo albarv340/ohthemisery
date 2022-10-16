@@ -465,7 +465,8 @@ function recalcBuild(data) {
         * (stats.magicDamagePercent / 100)
         * ((patronBuffs.strength) ? 1.1 : 1)
         * ((fruitOfLife) ? 1.15 : 1)
-        * (1 + 0.01 * Number(data.perspicacity))) * 10;
+        * (1 + 0.01 * Number(data.perspicacity)))
+        * 100;
     stats.spellDamage = stats.spellDamage.toFixed(2);
     stats.spellCooldownPercent = (100 * Math.pow(0.95, stats.aptitude + stats.ineptitude)).toFixed(2);
 
