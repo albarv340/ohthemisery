@@ -2,6 +2,7 @@ class Stats {
 
 
     constructor(itemData, formData, enabledBoxes) {
+        this.enabledBoxes = enabledBoxes;
         this.itemNames = {
             "mainhand": formData.mainhand,
             "offhand": formData.offhand,
@@ -30,9 +31,17 @@ class Stats {
             secondwind: {enabled: enabledBoxes.secondwind, level: 0},
             adaptability: {enabled: true, level: 0}
         };
+        this.tenacity = (formData.tenacity) ? formData.tenacity : 0;
+        this.vitality = (formData.vitality) ? formData.vitality : 0;
+        this.vigor = (formData.vigor) ? formData.vigor : 0;
+        this.focus = (formData.focus) ? formData.focus : 0;
+        this.perspicacity = (formData.perspicacity) ? formData.perspicacity : 0;
+
+        this.currentHealthPercent = (formData.health) ? formData.health : 100;
 
         this.setDefaultValues();
         this.sumAllStats();
+        this.adjustStats();
     }
 
     sumNumberStat(itemStats, statName, defaultIncrement) {
@@ -45,7 +54,45 @@ class Stats {
         return (itemStats[enchName]) ? Number(itemStats[enchName]) * perLevelMultiplier : 0;
     }
 
+    adjustStats() {
+        /*
+        Minor calculations to adjust the stat values
+        */
+        // Calculate final health
+        this.healthFinal = this.healthFlat * (this.healthPercent / 100) * (1 + 0.01 * Number(this.vitality));
+        // Current health (percentage of max health based on player input)
+        this.currentHealth = this.healthFinal * (this.currentHealthPercent / 100);
+        // Fix speed percentage to account for base speed
+        this.speedPercent = this.speedPercent
+            * (this.speedFlat) / 0.1
+            * ((this.enabledBoxes.speed) ? 1.1 : 1)
+            * ((this.enabledBoxes.fol) ? 1.15 : 1)
+            * ((this.enabledBoxes.clericblessing) ? 1.2 : 1)
+            * ((this.currentHealthPercent <= 50) ? 1 - 0.1 * this.crippling : 1);
+        this.speedPercent = this.speedPercent.toFixed(2);
+        // Fix knockback resistance to be percentage and cap at 100
+        this.knockbackRes = (this.knockbackRes > 10) ? 100 : this.knockbackRes * 10;
+        // Calculate effective healing rate
+        let effHealingNonRounded = (((20 / this.healthFinal) * (this.healingRate / 100)) * 100);
+        this.effHealingRate = effHealingNonRounded.toFixed(2);
+        // Fix regen to the actual value per second
+        let regenPerSecNonRounded = 0.33 * Math.sqrt(this.regenPerSec) * (this.healingRate / 100);
+        this.regenPerSec = regenPerSecNonRounded.toFixed(2);
+        // Calculate %hp regen per sec
+        this.regenPerSecPercent = ((regenPerSecNonRounded / this.healthFinal) * 100).toFixed(2);
+        // Fix life drain on crit
+        let lifeDrainOnCritFixedNonRounded = (Math.sqrt(this.lifeDrainOnCrit)) * (effHealingNonRounded / 100);
+        this.lifeDrainOnCrit = lifeDrainOnCritFixedNonRounded.toFixed(2);
+        // Calculate %hp regained from life drain on crit
+        this.lifeDrainOnCritPercent = ((lifeDrainOnCritFixedNonRounded / this.healthFinal) * 100).toFixed(2);
+        // Add to thorns damage
+        this.thorns = (this.thorns * (this.thornsPercent / 100)).toFixed(2);
+    }
+
     sumAllStats() {
+        /*
+        Add up all the stats from the items
+        */
         Object.keys(this.itemStats).forEach(type => {
             let itemStats = this.itemStats[type];
             if (itemStats !== undefined) {

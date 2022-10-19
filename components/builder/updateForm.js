@@ -156,57 +156,18 @@ function checkboxChanged(event) {
 *************** BUILD CALCULATIONS ***************
 \************************************************/
 function recalcBuild(data) {
-    data.tenacity = (data.tenacity) ? data.tenacity : 0;
-    data.vitality = (data.vitality) ? data.vitality : 0;
-    data.vigor = (data.vigor) ? data.vigor : 0;
-    data.focus = (data.focus) ? data.focus : 0;
-    data.perspicacity = (data.perspicacity) ? data.perspicacity : 0;
-
-    // Perhaps change stats to a class
     // Could even move the calc functions to said class.
     // Or maybe make a static class with methods that accept a stats object and extracts information.
     let stats = new Stats(itemData, data, enabledBoxes);
 
-    // Main loop to add up stats from items
-    
-
-    // Calculate final health
-    stats.healthFinal = stats.healthFlat * (stats.healthPercent / 100) * (1 + 0.01 * Number(data.vitality));
-    // Current health (percentage of max health based on player input)
+    // TO BE REMOVED AS IT MOVES TO STATS
     let currHpPercent = (data.health) ? data.health : 100;
-    stats.currentHealth = stats.healthFinal * (currHpPercent / 100);
-    // Fix speed percentage to account for base speed
-    stats.speedPercent = stats.speedPercent
-        * (stats.speedFlat) / 0.1
-        * ((enabledBoxes.speed) ? 1.1 : 1)
-        * ((enabledBoxes.fol) ? 1.15 : 1)
-        * ((enabledBoxes.clericblessing) ? 1.2 : 1)
-        * ((currHpPercent <= 50) ? 1 - 0.1 * stats.crippling : 1);
-    stats.speedPercent = stats.speedPercent.toFixed(2);
-    // Fix knockback resistance to be percentage and cap at 100
-    stats.knockbackRes = (stats.knockbackRes > 10) ? 100 : stats.knockbackRes * 10;
-    // Calculate effective healing rate
-    let effHealingNonRounded = (((20 / stats.healthFinal) * (stats.healingRate / 100)) * 100);
-    stats.effHealingRate = effHealingNonRounded.toFixed(2);
-    // Fix regen to the actual value per second
-    let regenPerSecNonRounded = 0.33 * Math.sqrt(stats.regenPerSec) * (stats.healingRate / 100);
-    stats.regenPerSec = regenPerSecNonRounded.toFixed(2);
-    // Calculate %hp regen per sec
-    stats.regenPerSecPercent = ((regenPerSecNonRounded / stats.healthFinal) * 100).toFixed(2);
-    // Fix life drain on crit
-    let lifeDrainOnCritFixedNonRounded = (Math.sqrt(stats.lifeDrainOnCrit)) * (effHealingNonRounded / 100);
-    stats.lifeDrainOnCrit = lifeDrainOnCritFixedNonRounded.toFixed(2);
-    // Calculate %hp regained from life drain on crit
-    stats.lifeDrainOnCritPercent = ((lifeDrainOnCritFixedNonRounded / stats.healthFinal) * 100).toFixed(2);
-    // Add to thorns damage
-    stats.thorns = (stats.thorns * (stats.thornsPercent / 100)).toFixed(2);
-
     // DR
     let prots = {melee: stats.meleeProt, projectile: stats.projectileProt, magic: stats.magicProt, blast: stats.blastProt, fire: stats.fireProt, fall: stats.fallProt};
-    let drs = returnArmorAgilityReduction(stats.armor, stats.agility, prots, stats.situationals, {final: stats.healthFinal, current: stats.currentHealth}, Number(data.tenacity));
+    let drs = returnArmorAgilityReduction(stats.armor, stats.agility, prots, stats.situationals, {final: stats.healthFinal, current: stats.currentHealth}, Number(stats.tenacity));
 
     // Select to show either the regular dr, or dr with second wind currently active based on hp remaining
-    let drType = (/*stats.currentHealth / stats.healthFinal <= 0.5 && */stats.situationals.secondwind.enabled) ? "secondwind" : "base";
+    let drType = (stats.situationals.secondwind.enabled) ? "secondwind" : "base";
     stats.meleeDR = drs.melee[drType].toFixed(2);
     stats.projectileDR = drs.projectile[drType].toFixed(2);
     stats.magicDR = drs.magic[drType].toFixed(2);
@@ -258,7 +219,7 @@ function recalcBuild(data) {
         * ((enabledBoxes.strength) ? 1.1 : 1)
         * ((enabledBoxes.fol) ? 1.15 : 1)
         * ((enabledBoxes.clericblessing) ? 1.35 : 1)
-        * (1 + 0.01 * Number(data.vigor))
+        * (1 + 0.01 * Number(stats.vigor))
         * ((currHpPercent <= 50) ? 1 - 0.1 * stats.crippling : 1);
     stats.attackDamage = attackDamage.toFixed(2);
     let attackSpeed = (sumNumberStat(stats.itemStats.mainhand, "Base Attack Speed", stats.attackSpeed) + stats.attackSpeedFlatBonus) * (stats.attackSpeedPercent / 100);
@@ -274,7 +235,7 @@ function recalcBuild(data) {
         * ((enabledBoxes.strength) ? 1.1 : 1)
         * ((enabledBoxes.fol) ? 1.15 : 1)
         * ((enabledBoxes.clericblessing) ? 1.35 : 1)
-        * (1 + 0.01 * Number(data.focus));
+        * (1 + 0.01 * Number(stats.focus));
     stats.projectileDamage = projectileDamage.toFixed(2);
     let projectileSpeed = sumNumberStat(stats.itemStats.mainhand, "Base Proj Speed", stats.projectileSpeed) * (stats.projectileSpeedPercent / 100);
     stats.projectileSpeed = projectileSpeed.toFixed(2);
@@ -287,7 +248,7 @@ function recalcBuild(data) {
         * (stats.magicDamagePercent / 100)
         * ((enabledBoxes.strength) ? 1.1 : 1)
         * ((enabledBoxes.fol) ? 1.15 : 1)
-        * (1 + 0.01 * Number(data.perspicacity)))
+        * (1 + 0.01 * Number(stats.perspicacity)))
         * 100;
     stats.spellDamage = stats.spellDamage.toFixed(2);
     stats.spellCooldownPercent = (100 * Math.pow(0.95, stats.aptitude + stats.ineptitude)).toFixed(2);
