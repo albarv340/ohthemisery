@@ -68,9 +68,9 @@ class Stats {
                 this.thorns += this.sumNumberStat(itemStats, "Thorns");
                 this.thornsPercent += this.sumNumberStat(itemStats, "Thorns Damage");
         
-                this.healingRate += sumEnchantmentStat(itemStats, "Anemia", -10) + sumEnchantmentStat(itemStats, "Sustenance", 10);
-                this.regenPerSec += sumEnchantmentStat(itemStats, "Regen", 1);
-                this.lifeDrainOnCrit += sumEnchantmentStat(itemStats, "Life Drain", 1);
+                this.healingRate += this.sumEnchantmentStat(itemStats, "Anemia", -10) + this.sumEnchantmentStat(itemStats, "Sustenance", 10);
+                this.regenPerSec += this.sumEnchantmentStat(itemStats, "Regen", 1);
+                this.lifeDrainOnCrit += this.sumEnchantmentStat(itemStats, "Life Drain", 1);
     
                 this.meleeProt += this.sumNumberStat(itemStats, "Melee Prot.");
                 this.projectileProt += this.sumNumberStat(itemStats, "Projectile Prot.");
