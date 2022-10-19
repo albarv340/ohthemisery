@@ -4,21 +4,14 @@ import itemData from '../../public/items/itemData.json';
 import React from 'react';
 import { useRouter } from 'next/router';
 
-let initialized = false;
+import Stats from '../../utils/builder/stats';
 
-let scout = false;
-let clericBlessing = false;
-let fruitOfLife = false;
+let initialized = false;
 
 const emptyBuild = {mainhand: "None", offhand: "None", helmet: "None", chestplate: "None", leggings: "None", boots: "None"};
 
-const patronBuffs = {
-    speed: false,
-    resistance: false,
-    strength: false
-}
-
-const enabledSituationals = {
+const enabledBoxes = {
+    // Situationals
     shielding: false,
     poise: false,
     inure: false,
@@ -27,7 +20,15 @@ const enabledSituationals = {
     reflexes: false,
     evasion: false,
     tempo: false,
-    secondwind: false
+    secondwind: false,
+    // Patron Buffs
+    speed: false,
+    resistance: false,
+    strength: false,
+    // Other Buffs
+    scout: false,
+    fol: false, // Fruit of Life
+    clericblessing: false
 };
 
 const refs = {
@@ -46,14 +47,10 @@ function getRelevantItems(types) {
     return items.filter(name => types.includes(itemData[name].Type.toLowerCase().replace(/<.*>/, "").trim()));
 }
 
+// TO BE REMOVED AS EVERYTHING MOVES TO STATS CLASS
 function sumNumberStat(itemStats, statName, defaultIncrement) {
     if (!itemStats) return 0;
     return (itemStats[statName]) ? Number(itemStats[statName]) : (defaultIncrement) ? defaultIncrement : 0;
-}
-
-function sumEnchantmentStat(itemStats, enchName, perLevelMultiplier) {
-    if (!itemStats) return (perLevelMultiplier) ? perLevelMultiplier : 0;
-    return (itemStats[enchName]) ? Number(itemStats[enchName]) * perLevelMultiplier : 0;
 }
 
 function calculateDamageTaken(noArmor, prot, protmodifier, earmor, eagility, secondwind, tenacity) {
@@ -67,10 +64,10 @@ function calculateDamageTaken(noArmor, prot, protmodifier, earmor, eagility, sec
     
     damageTaken.base = damageTaken.base
         * (1 - (tenacity * 0.005))
-        * ((patronBuffs.resistance) ? 0.9 : 1);
+        * ((enabledBoxes.resistance) ? 0.9 : 1);
     damageTaken.secondwind = damageTaken.secondwind
         * (1 - (tenacity * 0.005))
-        * ((patronBuffs.resistance) ? 0.9 : 1);
+        * ((enabledBoxes.resistance) ? 0.9 : 1);
 
     return damageTaken;
 }
@@ -149,34 +146,15 @@ function returnArmorAgilityReduction(armor, agility, prots, situationals, health
 
 function checkboxChanged(event) {
     let name = event.target.name;
-    switch (name) {
-        case "scout": {
-            scout = event.target.checked;
-            break;
-        }
-        case "fol": {
-            fruitOfLife = event.target.checked;
-            break;
-        }
-        case "clericblessing": {
-            clericBlessing = event.target.checked;
-            break;
-        }
-        case "speed":
-        case "resistance":
-        case "strength": {
-            patronBuffs[name] = event.target.checked;
-            break;
-        }
-        default: {
-            enabledSituationals[name] = event.target.checked;
-        }
-    }
+    enabledBoxes[name] = event.target.checked;
     let itemNames = Object.fromEntries(new FormData(refs.formRef.current).entries());
     let stats = recalcBuild(itemNames);
     refs.updateFunction(stats);
 }
 
+/************************************************\
+*************** BUILD CALCULATIONS ***************
+\************************************************/
 function recalcBuild(data) {
     data.tenacity = (data.tenacity) ? data.tenacity : 0;
     data.vitality = (data.vitality) ? data.vitality : 0;
@@ -184,178 +162,13 @@ function recalcBuild(data) {
     data.focus = (data.focus) ? data.focus : 0;
     data.perspicacity = (data.perspicacity) ? data.perspicacity : 0;
 
-    let stats = {
-        itemNames: {
-            "mainhand": data.mainhand,
-            "offhand": data.offhand,
-            "helmet": data.helmet,
-            "chestplate": data.chestplate,
-            "leggings": data.leggings,
-            "boots": data.boots
-        },
-        itemStats: {
-            "mainhand": (data.mainhand != "None") ? itemData[data.mainhand] : undefined,
-            "offhand": (data.offhand != "None") ? itemData[data.offhand] : undefined,
-            "helmet": (data.helmet != "None") ? itemData[data.helmet] : undefined,
-            "chestplate": (data.chestplate != "None") ? itemData[data.chestplate] : undefined,
-            "leggings": (data.leggings != "None") ? itemData[data.leggings] : undefined,
-            "boots": (data.boots != "None") ? itemData[data.boots] : undefined
-        },
-        situationals: {
-            shielding: {enabled: enabledSituationals.shielding, level: 0},
-            poise: {enabled: enabledSituationals.poise, level: 0},
-            inure: {enabled: enabledSituationals.inure, level: 0},
-            steadfast: {enabled: enabledSituationals.steadfast, level: 0},
-            ethereal: {enabled: enabledSituationals.ethereal, level: 0},
-            reflexes: {enabled: enabledSituationals.reflexes, level: 0},
-            evasion: {enabled: enabledSituationals.evasion, level: 0},
-            tempo: {enabled: enabledSituationals.tempo, level: 0},
-            secondwind: {enabled: enabledSituationals.secondwind, level: 0},
-            adaptability: {enabled: true, level: 0}
-        },
-        agility: 0,
-        armor: 0,
-        speedPercent: 100,
-        speedFlat: 0.1,
-        knockbackRes: 0,
-        thorns: 0,
-        thornsPercent: 100,
-
-        healthPercent: 100,
-        healthFlat: 20,
-        healthFinal: 20,
-        currentHealth: 20,
-        healingRate: 100,
-        effHealingRate: 100,
-        regenPerSec: 0,
-        regenPerSecPercent: 0,
-        lifeDrainOnCrit: 0,
-        lifeDrainOnCritPercent: 0,
-
-        meleeProt: 0,
-        projectileProt: 0,
-        magicProt: 0,
-        blastProt: 0,
-        fireProt: 0,
-        fallProt: 0,
-        ailmentProt: 0,
-
-        meleeHNDR: 0,
-        projectileHNDR: 0,
-        magicHNDR: 0,
-        blastHNDR: 0,
-        fireHNDR: 0,
-        fallHNDR: 0,
-        ailmentHNDR: 0,
-
-        meleeDR: 0,
-        projectileDR: 0,
-        magicDR: 0,
-        blastDR: 0,
-        fireDR: 0,
-        fallDR: 0,
-        ailmentDR: 0,
-
-        meleeEHP: 0,
-        projectileEHP: 0,
-        magicEHP: 0,
-        blastEHP: 0,
-        fireEHP: 0,
-        fallEHP: 0,
-        ailmentEHP: 0,
-
-        hasMoreArmor: false,
-        hasMoreAgility: false,
-        hasEqualDefenses: false,
-
-        attackDamagePercent: 100,
-        attackSpeedPercent: 100,
-        attackSpeed: 4,
-        attackSpeedFlatBonus: 0,
-        attackDamage: 1,
-        attackDamageCrit: 1.5,
-        iframeDPS: 2,
-        iframeCritDPS: 3,
-
-        projectileDamagePercent: 100,
-        projectileDamage: 0,
-        projectileSpeedPercent: 100,
-        projectileSpeed: 0,
-        throwRatePercent: 100,
-        throwRate: 0,
-
-        magicDamagePercent: 100,
-        spellPowerPercent: 100,
-        spellDamage: 100,
-        spellCooldownPercent: 100,
-
-        aptitude: 0,
-        ineptitude: 0,
-        crippling: 0,
-        corruption: 0
-    };
+    // Perhaps change stats to a class
+    // Could even move the calc functions to said class.
+    // Or maybe make a static class with methods that accept a stats object and extracts information.
+    let stats = new Stats(itemData, data, enabledBoxes);
 
     // Main loop to add up stats from items
-    Object.keys(stats.itemStats).forEach(type => {
-        let itemStats = stats.itemStats[type];
-        if (itemStats !== undefined) {
-            if (itemStats["Health"]) {
-                let healthString = (typeof (itemStats["Health"]) === "string") ?
-                    itemStats["Health"] : itemStats["Health"].join(", ");
     
-                // Try matching for % health
-                let result = healthString.match(/([-+]\d+)% Max Health/);
-                stats.healthPercent += (result) ? Number(result[1]) : 0;
-                // Try matching for regular health
-                result = healthString.match(/([-+]\d+) Max Health/);
-                stats.healthFlat += (result) ? Number(result[1]) : 0;
-            }
-            stats.agility += sumNumberStat(itemStats, "Agility");
-            stats.armor += sumNumberStat(itemStats, "Armor");
-            stats.speedPercent += sumNumberStat(itemStats, "Speed %");
-            stats.speedFlat += sumNumberStat(itemStats, "Speed");
-            stats.knockbackRes += sumNumberStat(itemStats, "Knockback Res.");
-            stats.thorns += sumNumberStat(itemStats, "Thorns");
-            stats.thornsPercent += sumNumberStat(itemStats, "Thorns Damage");
-    
-            stats.healingRate += sumEnchantmentStat(itemStats, "Anemia", -10) + sumEnchantmentStat(itemStats, "Sustenance", 10);
-            stats.regenPerSec += sumEnchantmentStat(itemStats, "Regen", 1);
-            stats.lifeDrainOnCrit += sumEnchantmentStat(itemStats, "Life Drain", 1);
-
-            stats.meleeProt += sumNumberStat(itemStats, "Melee Prot.");
-            stats.projectileProt += sumNumberStat(itemStats, "Projectile Prot.");
-            stats.magicProt += sumNumberStat(itemStats, "Magic Prot.");
-            stats.blastProt += sumNumberStat(itemStats, "Blast Prot.");
-            stats.fireProt += sumNumberStat(itemStats, "Fire Prot.");
-            stats.fallProt += sumNumberStat(itemStats, "Feather Falling");
-
-            stats.attackDamagePercent += sumNumberStat(itemStats, "Attack Damage");
-            stats.attackSpeedPercent += sumNumberStat(itemStats, "Attack Speed %");
-            stats.attackSpeedFlatBonus += sumNumberStat(itemStats, "Attack Speed");
-
-            stats.projectileDamagePercent += sumNumberStat(itemStats, "Proj Damage");
-            stats.projectileSpeedPercent += sumNumberStat(itemStats, "Proj Speed");
-
-            stats.magicDamagePercent += sumNumberStat(itemStats, "Magic Damage");
-
-            stats.aptitude += sumEnchantmentStat(itemStats, "Aptitude", 1);
-            stats.ineptitude += sumEnchantmentStat(itemStats, "Ineptitude", -1);
-
-            stats.situationals.shielding.level += sumNumberStat(itemStats, "Shielding");
-            stats.situationals.poise.level += sumNumberStat(itemStats, "Poise");
-            stats.situationals.inure.level += sumNumberStat(itemStats, "Inure");
-            stats.situationals.steadfast.level += sumNumberStat(itemStats, "Steadfast");
-            stats.situationals.ethereal.level += sumNumberStat(itemStats, "Ethereal ");
-            stats.situationals.reflexes.level += sumNumberStat(itemStats, "Reflexes ");
-            stats.situationals.evasion.level += sumNumberStat(itemStats, "Evasion");
-            stats.situationals.tempo.level += sumNumberStat(itemStats, "Tempo ");
-            stats.situationals.adaptability.level += sumNumberStat(itemStats, "Adaptability");
-            stats.situationals.secondwind.level += sumNumberStat(itemStats, "Second Wind");
-
-            stats.crippling += sumNumberStat(itemStats, "Crippling");
-            stats.corruption += sumNumberStat(itemStats, "Corruption");
-        }
-    });
 
     // Calculate final health
     stats.healthFinal = stats.healthFlat * (stats.healthPercent / 100) * (1 + 0.01 * Number(data.vitality));
@@ -365,9 +178,9 @@ function recalcBuild(data) {
     // Fix speed percentage to account for base speed
     stats.speedPercent = stats.speedPercent
         * (stats.speedFlat) / 0.1
-        * ((patronBuffs.speed) ? 1.1 : 1)
-        * ((fruitOfLife) ? 1.15 : 1)
-        * ((clericBlessing) ? 1.2 : 1)
+        * ((enabledBoxes.speed) ? 1.1 : 1)
+        * ((enabledBoxes.fol) ? 1.15 : 1)
+        * ((enabledBoxes.clericblessing) ? 1.2 : 1)
         * ((currHpPercent <= 50) ? 1 - 0.1 * stats.crippling : 1);
     stats.speedPercent = stats.speedPercent.toFixed(2);
     // Fix knockback resistance to be percentage and cap at 100
@@ -432,7 +245,7 @@ function recalcBuild(data) {
     stats.fallHNDR = ((1 - ((1 - (drs.fall[drType] / 100)) / (stats.healthFinal / 20))) * 100).toFixed(2);
     stats.ailmentHNDR = ((1 - ((1 - (drs.ailment[drType] / 100)) / (stats.healthFinal / 20))) * 100).toFixed(2);
 
-    if (scout) {
+    if (enabledBoxes.scout) {
         let extraAttackDamagePercent = (stats.projectileDamagePercent - 100) * 0.5;
         let extraProjectileDamagePercent = (stats.attackDamagePercent - 100) * 0.4;
         stats.attackDamagePercent += extraAttackDamagePercent;
@@ -442,9 +255,9 @@ function recalcBuild(data) {
     // Melee Stats
     let attackDamage = sumNumberStat(stats.itemStats.mainhand, "Base Attack Damage", stats.attackDamage)
         * (stats.attackDamagePercent / 100)
-        * ((patronBuffs.strength) ? 1.1 : 1)
-        * ((fruitOfLife) ? 1.15 : 1)
-        * ((clericBlessing) ? 1.35 : 1)
+        * ((enabledBoxes.strength) ? 1.1 : 1)
+        * ((enabledBoxes.fol) ? 1.15 : 1)
+        * ((enabledBoxes.clericblessing) ? 1.35 : 1)
         * (1 + 0.01 * Number(data.vigor))
         * ((currHpPercent <= 50) ? 1 - 0.1 * stats.crippling : 1);
     stats.attackDamage = attackDamage.toFixed(2);
@@ -458,9 +271,9 @@ function recalcBuild(data) {
     // Projectile Stats
     let projectileDamage = sumNumberStat(stats.itemStats.mainhand, "Base Proj Damage", stats.projectileDamage)
         * (stats.projectileDamagePercent / 100)
-        * ((patronBuffs.strength) ? 1.1 : 1)
-        * ((fruitOfLife) ? 1.15 : 1)
-        * ((clericBlessing) ? 1.35 : 1)
+        * ((enabledBoxes.strength) ? 1.1 : 1)
+        * ((enabledBoxes.fol) ? 1.15 : 1)
+        * ((enabledBoxes.clericblessing) ? 1.35 : 1)
         * (1 + 0.01 * Number(data.focus));
     stats.projectileDamage = projectileDamage.toFixed(2);
     let projectileSpeed = sumNumberStat(stats.itemStats.mainhand, "Base Proj Speed", stats.projectileSpeed) * (stats.projectileSpeedPercent / 100);
@@ -472,8 +285,8 @@ function recalcBuild(data) {
     stats.spellPowerPercent = 100 + sumNumberStat(stats.itemStats.mainhand, "Base Spell Power", 0);
     stats.spellDamage = ((stats.spellPowerPercent / 100)
         * (stats.magicDamagePercent / 100)
-        * ((patronBuffs.strength) ? 1.1 : 1)
-        * ((fruitOfLife) ? 1.15 : 1)
+        * ((enabledBoxes.strength) ? 1.1 : 1)
+        * ((enabledBoxes.fol) ? 1.15 : 1)
         * (1 + 0.01 * Number(data.perspicacity)))
         * 100;
     stats.spellDamage = stats.spellDamage.toFixed(2);
