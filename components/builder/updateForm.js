@@ -76,13 +76,20 @@ function calculateDamageTaken(noArmor, prot, protmodifier, earmor, eagility, sec
 }
 
 function returnArmorAgilityReduction(armor, agility, prots, situationals, health, tenacity) {
-    let hasMoreAgility = false;
-    let hasMoreArmor = false;
-    let hasEqual = false;
+    // Prevents things like Auric Tiara from breaking the DR calculations
+    // since having negative armor/agility doesn't mean you will take
+    // additional damage from enemy attacks.
     armor = (armor < 0) ? 0 : armor;
     agility = (agility < 0) ? 0 : agility;
-    (agility > armor) ? hasMoreAgility = true : (armor > agility) ? hasMoreArmor = true : hasEqual = true;
+    
+    let moreAgility = false;
+    let moreArmor = false;
+    let hasEqual = false;
+    (agility > armor) ? moreAgility = true : (armor > agility) ? moreArmor = true : hasEqual = true;
+    let hasNothing = (hasEqual && armor == 0);
 
+    // For situationals with 20% in mind.
+    // Capped at a total of 30 armor/agility effectiveness for r2.
     let situationalArmor = (situationals.adaptability.level > 0) ? Math.min(Math.max(agility, armor), 30) * 0.2 : Math.min(armor, 30) * 0.2;
     let situationalAgility = (situationals.adaptability.level > 0) ? Math.min(Math.max(agility, armor), 30) * 0.2 : Math.min(agility, 30) * 0.2;
     
@@ -95,7 +102,7 @@ function returnArmorAgilityReduction(armor, agility, prots, situationals, health
     let inureSit = (situationals.inure.enabled) ? situationalArmor * situationals.inure.level : 0;
 
     let steadfastArmor = (1 - Math.max(0.2, health.current / health.final)) * 0.25 *
-        Math.min(((situationals.adaptability.level > 0 && agility > armor) ? agility : (agility < armor) ? armor : (situationals.adaptability.level == 0) ? armor : 0), 30);
+        Math.min(((situationals.adaptability.level > 0 && moreAgility) ? agility : (moreArmor) ? armor : (situationals.adaptability.level == 0) ? armor : 0), 30);
     
     let steadfastSit = (situationals.steadfast.enabled) ? steadfastArmor * situationals.steadfast.level : 0;
 
@@ -103,13 +110,15 @@ function returnArmorAgilityReduction(armor, agility, prots, situationals, health
     let sumArmorSits = shieldingSit + poiseSit + inureSit;
     let sumAgiSits = etherealSit + tempoSit + evasionSit + reflexesSit;
     
-    let armorPlusSits = armor + ((situationals.adaptability.level > 0 && armor > agility) ?
-         sumSits : (situationals.adaptability.level > 0 && armor < agility) ?
+    let armorPlusSits = armor + ((situationals.adaptability.level > 0 && moreArmor) ?
+        sumSits : (situationals.adaptability.level > 0 && moreAgility) ?
             armor : (situationals.adaptability.level == 0) ? sumArmorSits : 0);
 
     let armorPlusSitsSteadfast = armorPlusSits + steadfastSit;
     
-    let agilityPlusSits = agility + ((situationals.adaptability.level > 0 && armor < agility) ? sumSits : (situationals.adaptability.level > 0 && armor > agility) ? agility : (situationals.adaptability.level == 0) ? sumAgiSits : 0);
+    let agilityPlusSits = agility + ((situationals.adaptability.level > 0 && moreAgility) ?
+        sumSits : (situationals.adaptability.level > 0 && moreArmor) ?
+            agility : (situationals.adaptability.level == 0) ? sumAgiSits : 0);
     let halfArmor = armorPlusSitsSteadfast / 2;
     let halfAgility = agilityPlusSits / 2;
 
@@ -117,12 +126,12 @@ function returnArmorAgilityReduction(armor, agility, prots, situationals, health
 
     let secondwind = situationals.secondwind.level;
 
-    let meleeDamage = calculateDamageTaken(hasEqual && armor == 0, prots.melee, 2, armorPlusSitsSteadfast, agilityPlusSits, secondwind, tenacity);
-    let projectileDamage = calculateDamageTaken(hasEqual && armor == 0, prots.projectile, 2, armorPlusSitsSteadfast, agilityPlusSits, secondwind, tenacity);
-    let magicDamage = calculateDamageTaken(hasEqual && armor == 0, prots.magic, 2, armorPlusSitsSteadfast, agilityPlusSits, secondwind, tenacity);
-    let blastDamage = calculateDamageTaken(hasEqual && armor == 0, prots.blast, 2, armorPlusSitsSteadfast, agilityPlusSits, secondwind, tenacity);
-    let fireDamage = calculateDamageTaken(hasEqual && armor == 0, prots.fire, 2, halfArmor, halfAgility, secondwind, tenacity);
-    let fallDamage = calculateDamageTaken(hasEqual && armor == 0, prots.fall, 3, halfArmor, halfAgility, secondwind, tenacity);
+    let meleeDamage = calculateDamageTaken(hasNothing, prots.melee, 2, armorPlusSitsSteadfast, agilityPlusSits, secondwind, tenacity);
+    let projectileDamage = calculateDamageTaken(hasNothing, prots.projectile, 2, armorPlusSitsSteadfast, agilityPlusSits, secondwind, tenacity);
+    let magicDamage = calculateDamageTaken(hasNothing, prots.magic, 2, armorPlusSitsSteadfast, agilityPlusSits, secondwind, tenacity);
+    let blastDamage = calculateDamageTaken(hasNothing, prots.blast, 2, armorPlusSitsSteadfast, agilityPlusSits, secondwind, tenacity);
+    let fireDamage = calculateDamageTaken(hasNothing, prots.fire, 2, halfArmor, halfAgility, secondwind, tenacity);
+    let fallDamage = calculateDamageTaken(hasNothing, prots.fall, 3, halfArmor, halfAgility, secondwind, tenacity);
     let ailmentDamage = calculateDamageTaken(true, 0, 0, 0, 0, secondwind, tenacity);
 
     let reductions = {
