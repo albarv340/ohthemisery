@@ -1,6 +1,4 @@
 class Stats {
-
-
     constructor(itemData, formData, enabledBoxes) {
         this.enabledBoxes = enabledBoxes;
         this.itemNames = {
@@ -42,6 +40,196 @@ class Stats {
         this.setDefaultValues();
         this.sumAllStats();
         this.adjustStats();
+        this.calculateDefenseStats();
+        this.calculateOffenseStats();
+    }
+
+    calculateOffenseStats() {
+        if (this.enabledBoxes.scout) {
+            let extraAttackDamagePercent = (this.projectileDamagePercent - 100) * 0.5;
+            let extraProjectileDamagePercent = (this.attackDamagePercent - 100) * 0.4;
+            this.attackDamagePercent += extraAttackDamagePercent;
+            this.projectileDamagePercent += extraProjectileDamagePercent;
+        }
+    
+        // Melee Stats
+        let attackDamage = this.sumNumberStat(this.itemStats.mainhand, "Base Attack Damage", this.attackDamage)
+            * (this.attackDamagePercent / 100)
+            * ((this.enabledBoxes.strength) ? 1.1 : 1)
+            * ((this.enabledBoxes.fol) ? 1.15 : 1)
+            * ((this.enabledBoxes.clericblessing) ? 1.35 : 1)
+            * (1 + 0.01 * Number(this.vigor))
+            * ((this.currentHealthPercent <= 50) ? 1 - 0.1 * this.crippling : 1);
+        this.attackDamage = attackDamage.toFixed(2);
+        let attackSpeed = (this.sumNumberStat(this.itemStats.mainhand, "Base Attack Speed", this.attackSpeed) + this.attackSpeedFlatBonus) * (this.attackSpeedPercent / 100);
+        this.attackSpeed = attackSpeed.toFixed(2);
+        let attackDamageCrit = (attackDamage * 1.5)
+        this.attackDamageCrit = attackDamageCrit.toFixed(2);
+        this.iframeDPS = ((attackSpeed >= 2) ? attackDamage * 2 : attackDamage * attackSpeed).toFixed(2);
+        this.iframeCritDPS = ((attackSpeed >= 2) ? attackDamageCrit * 2 : attackDamageCrit * attackSpeed).toFixed(2);
+    
+        // Projectile Stats
+        let projectileDamage = this.sumNumberStat(this.itemStats.mainhand, "Base Proj Damage", this.projectileDamage)
+            * (this.projectileDamagePercent / 100)
+            * ((this.enabledBoxes.strength) ? 1.1 : 1)
+            * ((this.enabledBoxes.fol) ? 1.15 : 1)
+            * ((this.enabledBoxes.clericblessing) ? 1.35 : 1)
+            * (1 + 0.01 * Number(this.focus));
+        this.projectileDamage = projectileDamage.toFixed(2);
+        let projectileSpeed = this.sumNumberStat(this.itemStats.mainhand, "Base Proj Speed", this.projectileSpeed) * (this.projectileSpeedPercent / 100);
+        this.projectileSpeed = projectileSpeed.toFixed(2);
+        let throwRate = this.sumNumberStat(this.itemStats.mainhand, "Base Throw Rate", this.throwRate) * (this.throwRatePercent / 100);
+        this.throwRate = throwRate.toFixed(2);
+    
+        // Magic Stats
+        this.spellPowerPercent = 100 + this.sumNumberStat(this.itemStats.mainhand, "Base Spell Power", 0);
+        this.spellDamage = ((this.spellPowerPercent / 100)
+            * (this.magicDamagePercent / 100)
+            * ((this.enabledBoxes.strength) ? 1.1 : 1)
+            * ((this.enabledBoxes.fol) ? 1.15 : 1)
+            * (1 + 0.01 * Number(this.perspicacity)))
+            * 100;
+        this.spellDamage = this.spellDamage.toFixed(2);
+        this.spellCooldownPercent = (100 * Math.pow(0.95, this.aptitude + this.ineptitude)).toFixed(2);
+    }
+
+    calculateDefenseStats() {
+        let drs = this.calculateDamageReductions();
+
+        // Select to show either the regular dr, or dr with second wind currently active based on hp remaining
+        let drType = (this.situationals.secondwind.enabled) ? "secondwind" : "base";
+        
+        // Regular Damage Reductions
+        this.meleeDR = drs.melee[drType].toFixed(2);
+        this.projectileDR = drs.projectile[drType].toFixed(2);
+        this.magicDR = drs.magic[drType].toFixed(2);
+        this.blastDR = drs.blast[drType].toFixed(2);
+        this.fireDR = drs.fire[drType].toFixed(2);
+        this.fallDR = drs.fall[drType].toFixed(2);
+        this.ailmentDR = drs.ailment[drType].toFixed(2);
+
+        // Effective HP
+        if (this.situationals.secondwind.level == 0 || drType == "base") {
+            this.meleeEHP = (this.healthFinal * (this.currentHealthPercent / 100) / (1 - drs.melee.base / 100)).toFixed(2);
+            this.projectileEHP = (this.healthFinal * (this.currentHealthPercent / 100) / (1 - drs.projectile.base / 100)).toFixed(2);
+            this.magicEHP = (this.healthFinal * (this.currentHealthPercent / 100) / (1 - drs.magic.base / 100)).toFixed(2);
+            this.blastEHP = (this.healthFinal * (this.currentHealthPercent / 100) / (1 - drs.blast.base / 100)).toFixed(2);
+            this.fireEHP = (this.healthFinal * (this.currentHealthPercent / 100) / (1 - drs.fire.base / 100)).toFixed(2);
+            this.fallEHP = (this.healthFinal * (this.currentHealthPercent / 100) / (1 - drs.fall.base / 100)).toFixed(2);
+            this.ailmentEHP = (this.healthFinal * (this.currentHealthPercent / 100) / (1 - drs.ailment.base / 100)).toFixed(2);
+        } else {
+            let hpNoSecondWind = Math.max(0, (this.currentHealth - this.healthFinal * 0.5));
+            let hpSecondWind = Math.min(this.currentHealth, this.healthFinal * 0.5);
+            this.meleeEHP = (hpNoSecondWind / (1 - drs.melee.base / 100) + hpSecondWind / (1 - drs.melee.secondwind / 100)).toFixed(2);
+            this.projectileEHP = (hpNoSecondWind / (1 - drs.projectile.base / 100) + hpSecondWind / (1 - drs.projectile.secondwind / 100)).toFixed(2);
+            this.magicEHP = (hpNoSecondWind / (1 - drs.magic.base / 100) + hpSecondWind / (1 - drs.magic.secondwind / 100)).toFixed(2);
+            this.blastEHP = (hpNoSecondWind / (1 - drs.blast.base / 100) + hpSecondWind / (1 - drs.blast.secondwind / 100)).toFixed(2);
+            this.fireEHP = (hpNoSecondWind / (1 - drs.fire.base / 100) + hpSecondWind / (1 - drs.fire.secondwind / 100)).toFixed(2);
+            this.fallEHP = (hpNoSecondWind / (1 - drs.fall.base / 100) + hpSecondWind / (1 - drs.fall.secondwind / 100)).toFixed(2);
+            this.ailmentEHP = (hpNoSecondWind / (1 - drs.ailment.base / 100) + hpSecondWind / (1 - drs.ailment.secondwind / 100)).toFixed(2);
+        }
+
+        // Health Normalized Damage Reductions
+        this.meleeHNDR = ((1 - ((1 - (drs.melee[drType] / 100)) / (this.healthFinal / 20))) * 100).toFixed(2);
+        this.projectileHNDR = ((1 - ((1 - (drs.projectile[drType] / 100)) / (this.healthFinal / 20))) * 100).toFixed(2);
+        this.magicHNDR = ((1 - ((1 - (drs.magic[drType] / 100)) / (this.healthFinal / 20))) * 100).toFixed(2);
+        this.blastHNDR = ((1 - ((1 - (drs.blast[drType] / 100)) / (this.healthFinal / 20))) * 100).toFixed(2);
+        this.fireHNDR = ((1 - ((1 - (drs.fire[drType] / 100)) / (this.healthFinal / 20))) * 100).toFixed(2);
+        this.fallHNDR = ((1 - ((1 - (drs.fall[drType] / 100)) / (this.healthFinal / 20))) * 100).toFixed(2);
+        this.ailmentHNDR = ((1 - ((1 - (drs.ailment[drType] / 100)) / (this.healthFinal / 20))) * 100).toFixed(2);
+    }
+
+    calculateDamageTaken(noArmor, prot, protmodifier, earmor, eagility) {
+        let damageTaken = {};
+        damageTaken.base = ((noArmor) ? 100 * Math.pow(0.96, (prot * protmodifier)) :
+        100 * Math.pow(0.96, ((prot * protmodifier) + earmor + eagility) - (0.5 * earmor * eagility / (earmor + eagility))));
+
+        damageTaken.secondwind = ((noArmor) ? 100 * Math.pow(0.96, (prot * protmodifier)) :
+        100 * Math.pow(0.96, ((prot * protmodifier) + earmor + eagility) - (0.5 * earmor * eagility / (earmor + eagility))));
+        damageTaken.secondwind *= Math.pow(0.9, this.situationals.secondwind.level);
+        
+        damageTaken.base = damageTaken.base
+            * (1 - (this.tenacity * 0.005))
+            * ((this.enabledBoxes.resistance) ? 0.9 : 1);
+        damageTaken.secondwind = damageTaken.secondwind
+            * (1 - (this.tenacity * 0.005))
+            * ((this.enabledBoxes.resistance) ? 0.9 : 1);
+
+        return damageTaken;
+    }
+
+    calculateDamageReductions() {
+        /*
+        Calculates all things damage reduction related.
+        */
+
+        // Prevents things like Auric Tiara from breaking the DR calculations
+        // since having negative armor/agility doesn't mean you will take
+        // additional damage from enemy attacks.
+        let armor = (this.armor < 0) ? 0 : this.armor;
+        let agility = (this.agility < 0) ? 0 : this.agility;
+        
+        let moreAgility = false;
+        let moreArmor = false;
+        let hasEqual = false;
+        (agility > armor) ? moreAgility = true : (armor > agility) ? moreArmor = true : hasEqual = true;
+        let hasNothing = (hasEqual && armor == 0);
+
+        // For situationals with 20% in mind.
+        // Capped at a total of 30 armor/agility effectiveness for r2.
+        let situationalArmor = (this.situationals.adaptability.level > 0) ? Math.min(Math.max(agility, armor), 30) * 0.2 : Math.min(armor, 30) * 0.2;
+        let situationalAgility = (this.situationals.adaptability.level > 0) ? Math.min(Math.max(agility, armor), 30) * 0.2 : Math.min(agility, 30) * 0.2;
+        
+        let etherealSit = (this.situationals.ethereal.enabled) ? situationalAgility * this.situationals.ethereal.level : 0;
+        let tempoSit = (this.situationals.tempo.enabled) ? situationalAgility * this.situationals.tempo.level : 0;
+        let evasionSit = (this.situationals.evasion.enabled) ? situationalAgility * this.situationals.evasion.level : 0;
+        let reflexesSit = (this.situationals.reflexes.enabled) ? situationalAgility * this.situationals.reflexes.level : 0;
+        let shieldingSit = (this.situationals.shielding.enabled) ? situationalArmor * this.situationals.shielding.level : 0;
+        let poiseSit = (this.situationals.poise.enabled) ? ((health.current / health.final >= 0.9) ? situationalArmor * this.situationals.poise.level : 0) : 0;
+        let inureSit = (this.situationals.inure.enabled) ? situationalArmor * this.situationals.inure.level : 0;
+
+        let steadfastArmor = (1 - Math.max(0.2, this.currentHealthPercent / 100)) * 0.25 *
+            Math.min(((this.situationals.adaptability.level > 0 && moreAgility) ? agility : (moreArmor) ? armor : (this.situationals.adaptability.level == 0) ? armor : 0), 30);
+        
+        let steadfastSit = (this.situationals.steadfast.enabled) ? steadfastArmor * this.situationals.steadfast.level : 0;
+
+        let sumSits = etherealSit + tempoSit + evasionSit + reflexesSit + shieldingSit + poiseSit + inureSit;
+        let sumArmorSits = shieldingSit + poiseSit + inureSit;
+        let sumAgiSits = etherealSit + tempoSit + evasionSit + reflexesSit;
+        
+        let armorPlusSits = armor + ((this.situationals.adaptability.level > 0 && moreArmor) ?
+            sumSits : (this.situationals.adaptability.level > 0 && moreAgility) ?
+                armor : (this.situationals.adaptability.level == 0) ? sumArmorSits : 0);
+
+        let armorPlusSitsSteadfast = armorPlusSits + steadfastSit;
+        
+        let agilityPlusSits = agility + ((this.situationals.adaptability.level > 0 && moreAgility) ?
+            sumSits : (this.situationals.adaptability.level > 0 && moreArmor) ?
+                agility : (this.situationals.adaptability.level == 0) ? sumAgiSits : 0);
+        let halfArmor = armorPlusSitsSteadfast / 2;
+        let halfAgility = agilityPlusSits / 2;
+
+        // there is something weird going on with fall damage. check out: khrosmos/prophetic moonbeam/crest of the tundra/windborn cape/lyrata/mist's wake
+
+        let meleeDamage = this.calculateDamageTaken(hasNothing, this.meleeProt, 2, armorPlusSitsSteadfast, agilityPlusSits);
+        let projectileDamage = this.calculateDamageTaken(hasNothing, this.projectileProt, 2, armorPlusSitsSteadfast, agilityPlusSits);
+        let magicDamage = this.calculateDamageTaken(hasNothing, this.magicProt, 2, armorPlusSitsSteadfast, agilityPlusSits);
+        let blastDamage = this.calculateDamageTaken(hasNothing, this.blastProt, 2, armorPlusSitsSteadfast, agilityPlusSits);
+        let fireDamage = this.calculateDamageTaken(hasNothing, this.fireProt, 2, halfArmor, halfAgility);
+        let fallDamage = this.calculateDamageTaken(hasNothing, this.fallProt, 3, halfArmor, halfAgility);
+        let ailmentDamage = this.calculateDamageTaken(true, 0, 0, 0, 0);
+
+        let reductions = {
+            melee: {base: 100 - meleeDamage.base, secondwind: 100 - meleeDamage.secondwind},
+            projectile: {base: 100 - projectileDamage.base, secondwind: 100 - projectileDamage.secondwind},
+            magic: {base: 100 - magicDamage.base, secondwind: 100 - magicDamage.secondwind},
+            blast: {base: 100 - blastDamage.base, secondwind: 100 - blastDamage.secondwind},
+            fire: {base: 100 - fireDamage.base, secondwind: 100 - fireDamage.secondwind},
+            fall: {base: 100 - fallDamage.base, secondwind: 100 - fallDamage.secondwind},
+            ailment: {base: 100 - ailmentDamage.base, secondwind: 100 - ailmentDamage.secondwind}
+        }
+
+        return reductions;
     }
 
     sumNumberStat(itemStats, statName, defaultIncrement) {
