@@ -14,6 +14,11 @@ function Builder({ build }) {
     function change(itemData) {
         setItemsToDisplay(itemData);
     }
+    const [parentLoaded, setParentLoaded] = React.useState(false);
+
+    React.useEffect(() => {
+        setParentLoaded(true);
+    }, []);
 
     const itemTypes = ["mainhand", "offhand", "helmet", "chestplate", "leggings", "boots"];
     const miscStats = [
@@ -84,6 +89,7 @@ function Builder({ build }) {
         { type: "spellCooldownPercent", name: "Cooldown Duration", percent: true }
     ];
 
+
     return (
         <div className="container-fluid">
             <Head>
@@ -100,7 +106,7 @@ function Builder({ build }) {
                         <h1 className="text-center">Monumenta Builder</h1>
                     </div>
                 </div>
-                <UpdateForm update={change} build={build}></UpdateForm>
+                <UpdateForm update={change} build={build} parentLoaded={parentLoaded}></UpdateForm>
                 <div className="row mb-2 pt-2">
                     <span className="text-center text-danger fs-2 fw-bold">{(itemsToDisplay.corruption > 1) ? "YOU HAVE MORE THAN ONE CURSE OF CORRUPTION ITEM" : ""}</span>
                 </div>

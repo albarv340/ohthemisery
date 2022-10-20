@@ -6,8 +6,6 @@ import { useRouter } from 'next/router';
 
 import Stats from '../../utils/builder/stats';
 
-let initialized = false;
-
 const emptyBuild = { mainhand: "None", offhand: "None", helmet: "None", chestplate: "None", leggings: "None", boots: "None" };
 
 const enabledBoxes = {
@@ -71,7 +69,7 @@ function makeBuildString() {
 }
 
 
-export default function UpdateForm({ update, build }) {
+export default function UpdateForm({ update, build, parentLoaded }) {
     function sendUpdate(event) {
         event.preventDefault();
         let itemNames = Object.fromEntries(new FormData(event.target).entries());
@@ -79,6 +77,28 @@ export default function UpdateForm({ update, build }) {
         update(stats);
         router.push(`/builder?${makeBuildString()}`, `/builder/${makeBuildString()}`, { shallow: true });
     }
+
+    React.useEffect(() => {
+        if (parentLoaded && build) {
+            let buildParts = decodeURI(build).split("&");
+            let itemNames = {
+                mainhand: (buildParts.find(str => str.includes("m="))?.split("m=")[1]),
+                offhand: (buildParts.find(str => str.includes("o="))?.split("o=")[1]),
+                helmet: (buildParts.find(str => str.includes("h="))?.split("h=")[1]),
+                chestplate: (buildParts.find(str => str.includes("c="))?.split("c=")[1]),
+                leggings: (buildParts.find(str => str.includes("l="))?.split("l=")[1]),
+                boots: (buildParts.find(str => str.includes("b="))?.split("b=")[1])
+            };
+            Object.keys(itemNames).forEach(name => {
+                if (itemNames[name] === undefined) {
+                    itemNames[name] = "None";
+                }
+            });
+
+            let stats = recalcBuild(itemNames);
+            update(stats);
+        }
+    }, [parentLoaded]);
 
     const formRef = React.useRef();
     const mainhandReference = React.useRef();
@@ -134,28 +154,6 @@ export default function UpdateForm({ update, build }) {
         let allowedTypes = ["mainhand", "offhand", "helmet", "chestplate", "leggings", "boots"]
         let name = (allowedTypes.includes(type)) ? buildParts.find(str => str.includes(`${type[0]}=`))?.split(`${type[0]}=`)[1] : "None";
         return { "value": name, "label": name };
-
-    }
-
-    if (build && !initialized) {
-        let buildParts = decodeURI(build).split("&");
-        let itemNames = {
-            mainhand: (buildParts.find(str => str.includes("m="))?.split("m=")[1]),
-            offhand: (buildParts.find(str => str.includes("o="))?.split("o=")[1]),
-            helmet: (buildParts.find(str => str.includes("h="))?.split("h=")[1]),
-            chestplate: (buildParts.find(str => str.includes("c="))?.split("c=")[1]),
-            leggings: (buildParts.find(str => str.includes("l="))?.split("l=")[1]),
-            boots: (buildParts.find(str => str.includes("b="))?.split("b=")[1])
-        };
-        Object.keys(itemNames).forEach(name => {
-            if (itemNames[name] === undefined) {
-                itemNames[name] = "None";
-            }
-        });
-
-        let stats = recalcBuild(itemNames);
-        update(stats);
-        initialized = true;
     }
 
     return (
