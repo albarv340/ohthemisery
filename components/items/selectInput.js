@@ -14,7 +14,7 @@ export default function SelectInput(data) {
                 instanceId={data.name}
                 name={data.name}
                 options={options}
-                defaultValue={options[0]}
+                defaultValue={data.default ? data.default : options[0]}
                 theme={theme => ({
                     ...theme,
                     borderRadius: 0,

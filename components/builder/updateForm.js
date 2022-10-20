@@ -8,7 +8,7 @@ import Stats from '../../utils/builder/stats';
 
 let initialized = false;
 
-const emptyBuild = {mainhand: "None", offhand: "None", helmet: "None", chestplate: "None", leggings: "None", boots: "None"};
+const emptyBuild = { mainhand: "None", offhand: "None", helmet: "None", chestplate: "None", leggings: "None", boots: "None" };
 
 const enabledBoxes = {
     // Situationals
@@ -63,12 +63,13 @@ function makeBuildString() {
     let data = new FormData(refs.formRef.current).entries();
     let buildString = "";
     let keysToShare = ["mainhand", "offhand", "helmet", "chestplate", "leggings", "boots"];
-    for (const [ key, value ] of data) {
+    for (const [key, value] of data) {
         buildString += (keysToShare.includes(key)) ? `${key[0]}=${value.replaceAll(" ", "%20")}&` : "";
     }
     buildString = buildString.substring(0, buildString.length - 1);
     return buildString;
 }
+
 
 export default function UpdateForm({ update, build }) {
     function sendUpdate(event) {
@@ -76,9 +77,7 @@ export default function UpdateForm({ update, build }) {
         let itemNames = Object.fromEntries(new FormData(event.target).entries());
         let stats = recalcBuild(itemNames);
         update(stats);
-        if (!build) {
-            router.push('/builder', `/builder/${makeBuildString()}`, { shallow: true });
-        }
+        router.push(`/builder?${makeBuildString()}`, `/builder/${makeBuildString()}`, { shallow: true });
     }
 
     const formRef = React.useRef();
@@ -88,16 +87,16 @@ export default function UpdateForm({ update, build }) {
     const chestplateReference = React.useRef();
     const leggingsReference = React.useRef();
     const bootsReference = React.useRef();
-    
+
     const router = useRouter();
 
     function resetForm(event) {
-        mainhandReference?.current?.setValue({value: "None", label: "None"});
-        offhandReference?.current?.setValue({value: "None", label: "None"});
-        helmetReference?.current?.setValue({value: "None", label: "None"});
-        chestplateReference?.current?.setValue({value: "None", label: "None"});
-        leggingsReference?.current?.setValue({value: "None", label: "None"});
-        bootsReference?.current?.setValue({value: "None", label: "None"});
+        mainhandReference?.current?.setValue({ value: "None", label: "None" });
+        offhandReference?.current?.setValue({ value: "None", label: "None" });
+        helmetReference?.current?.setValue({ value: "None", label: "None" });
+        chestplateReference?.current?.setValue({ value: "None", label: "None" });
+        leggingsReference?.current?.setValue({ value: "None", label: "None" });
+        bootsReference?.current?.setValue({ value: "None", label: "None" });
         let stats = recalcBuild(emptyBuild);
         update(stats);
         router.push('/builder', `/builder/`, { shallow: true });
@@ -111,26 +110,35 @@ export default function UpdateForm({ update, build }) {
     refs["leggingsReference"] = leggingsReference;
     refs["bootsReference"] = bootsReference;
     refs["updateFunction"] = update;
-    
+
     function copyBuild(event) {
         let baseUrl = `${window.location.origin}/builder/`;
         event.target.value = "Copied!";
         event.target.classList.add("fw-bold");
-        setTimeout(() => {event.target.value = "Share"; event.target.classList.remove("fw-bold")}, 3000);
-    
+        setTimeout(() => { event.target.value = "Share"; event.target.classList.remove("fw-bold") }, 3000);
+
         if (!navigator.clipboard) {
             window.alert("Couldn't copy build to clipboard. Sadness. :(");
             return;
         }
-        navigator.clipboard.writeText(`${baseUrl}${makeBuildString()}`).then(function() {
+        navigator.clipboard.writeText(`${baseUrl}${makeBuildString()}`).then(function () {
             console.log('Copying to clipboard was successful!');
-        }, function(err) {
+        }, function (err) {
             console.error('Could not copy text: ', err);
         });
     }
 
+    function getEquipName(type) {
+        if (!build) return undefined
+        let buildParts = decodeURI(build).split("&");
+        let allowedTypes = ["mainhand", "offhand", "helmet", "chestplate", "leggings", "boots"]
+        let name = (allowedTypes.includes(type)) ? buildParts.find(str => str.includes(`${type[0]}=`))?.split(`${type[0]}=`)[1] : "None";
+        return { "value": name, "label": name };
+
+    }
+
     if (build && !initialized) {
-        let buildParts = build.split("&");
+        let buildParts = decodeURI(build).split("&");
         let itemNames = {
             mainhand: (buildParts.find(str => str.includes("m="))?.split("m=")[1]),
             offhand: (buildParts.find(str => str.includes("o="))?.split("o=")[1]),
@@ -139,19 +147,11 @@ export default function UpdateForm({ update, build }) {
             leggings: (buildParts.find(str => str.includes("l="))?.split("l=")[1]),
             boots: (buildParts.find(str => str.includes("b="))?.split("b=")[1])
         };
-
         Object.keys(itemNames).forEach(name => {
             if (itemNames[name] === undefined) {
                 itemNames[name] = "None";
             }
         });
-
-        mainhandReference?.current?.setValue({ "value": itemNames.mainhand, "label": itemNames.mainhand });
-        offhandReference?.current?.setValue({ "value": itemNames.offhand, "label": itemNames.offhand });
-        helmetReference?.current?.setValue({ "value": itemNames.helmet, "label": itemNames.helmet });
-        chestplateReference?.current?.setValue({ "value": itemNames.chestplate, "label": itemNames.chestplate });
-        leggingsReference?.current?.setValue({ "value": itemNames.leggings, "label": itemNames.leggings });
-        bootsReference?.current?.setValue({ "value": itemNames.boots, "label": itemNames.boots });
 
         let stats = recalcBuild(itemNames);
         update(stats);
@@ -163,29 +163,29 @@ export default function UpdateForm({ update, build }) {
             <div className="row justify-content-center mb-3">
                 <div className="col-12 col-md-5 col-lg-2 text-center">
                     <p className="mb-1">Mainhand</p>
-                    <SelectInput reference={mainhandReference} name="mainhand" noneOption={true} sortableStats={getRelevantItems(["mainhand", "sword", "axe", "wand", "scythe", "bow", "crossbow", "throwable", "trident"])}></SelectInput>
+                    <SelectInput reference={mainhandReference} name="mainhand" default={getEquipName("mainhand")} noneOption={true} sortableStats={getRelevantItems(["mainhand", "sword", "axe", "wand", "scythe", "bow", "crossbow", "throwable", "trident"])}></SelectInput>
                 </div>
                 <div className="col-12 col-md-5 col-lg-2 text-center">
                     <p className="mb-1">Offhand</p>
-                    <SelectInput reference={offhandReference} name="offhand" noneOption={true} sortableStats={getRelevantItems(["offhand", "offhand shield", "offhand sword"])}></SelectInput>
+                    <SelectInput reference={offhandReference} name="offhand" default={getEquipName("offhand")} noneOption={true} sortableStats={getRelevantItems(["offhand", "offhand shield", "offhand sword"])}></SelectInput>
                 </div>
             </div>
             <div className="row justify-content-center mb-4 pt-2">
                 <div className="col-12 col-md-3 col-lg-2 text-center">
                     <p className="mb-1">Helmet</p>
-                    <SelectInput reference={helmetReference} noneOption={true} name="helmet" sortableStats={getRelevantItems(["helmet"])}></SelectInput>
+                    <SelectInput reference={helmetReference} noneOption={true} name="helmet" default={getEquipName("helmet")} sortableStats={getRelevantItems(["helmet"])}></SelectInput>
                 </div>
                 <div className="col-12 col-md-3 col-lg-2 text-center">
                     <p className="mb-1">Chestplate</p>
-                    <SelectInput reference={chestplateReference} noneOption={true} name="chestplate" sortableStats={getRelevantItems(["chestplate"])}></SelectInput>
+                    <SelectInput reference={chestplateReference} noneOption={true} name="chestplate" default={getEquipName("chestplate")} sortableStats={getRelevantItems(["chestplate"])}></SelectInput>
                 </div>
                 <div className="col-12 col-md-3 col-lg-2 text-center">
                     <p className="mb-1">Leggings</p>
-                    <SelectInput reference={leggingsReference} noneOption={true} name="leggings" sortableStats={getRelevantItems(["leggings"])}></SelectInput>
+                    <SelectInput reference={leggingsReference} noneOption={true} name="leggings" default={getEquipName("leggings")} sortableStats={getRelevantItems(["leggings"])}></SelectInput>
                 </div>
                 <div className="col-12 col-md-3 col-lg-2 text-center">
                     <p className="mb-1">Boots</p>
-                    <SelectInput reference={bootsReference} noneOption={true} name="boots" sortableStats={getRelevantItems(["boots"])}></SelectInput>
+                    <SelectInput reference={bootsReference} noneOption={true} name="boots" default={getEquipName("boots")} sortableStats={getRelevantItems(["boots"])}></SelectInput>
                 </div>
             </div>
             <div className="row justify-content-center mb-3">

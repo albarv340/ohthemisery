@@ -9,7 +9,7 @@ function checkExists(type, itemsToDisplay) {
     return (itemsToDisplay.itemStats) ? itemsToDisplay.itemStats[type] !== undefined : false;
 }
 
-export default function Builder({ build }) {
+function Builder({ build }) {
     const [itemsToDisplay, setItemsToDisplay] = React.useState({});
     function change(itemData) {
         setItemsToDisplay(itemData);
@@ -17,71 +17,71 @@ export default function Builder({ build }) {
 
     const itemTypes = ["mainhand", "offhand", "helmet", "chestplate", "leggings", "boots"];
     const miscStats = [
-        {type: "armor", name: "Armor", percent: false},
-        {type: "agility", name: "Agility", percent: false},
-        {type: "speedPercent", name: "Speed", percent: true},
-        {type: "knockbackRes", name: "KB Resistance", percent: true},
-        {type: "thorns", name: "Thorns Damage", percent: false}
+        { type: "armor", name: "Armor", percent: false },
+        { type: "agility", name: "Agility", percent: false },
+        { type: "speedPercent", name: "Speed", percent: true },
+        { type: "knockbackRes", name: "KB Resistance", percent: true },
+        { type: "thorns", name: "Thorns Damage", percent: false }
     ];
     const healthStats = [
-        {type: "healthFinal", name: "Max Health", percent: false},
-        {type: "currentHealth", name: "Current Health", percent: false},
-        {type: "healingRate", name: "Healing Rate", percent: true},
-        {type: "effHealingRate", name: "Eff. Healing Rate", percent: true},
-        {type: "regenPerSec", name: "Regen/sec", percent: false},
-        {type: "regenPerSecPercent", name: "%HP regen/sec", percent: true},
-        {type: "lifeDrainOnCrit", name: "Life Drain Crit", percent: false},
-        {type: "lifeDrainOnCritPercent", name: "Life Drain %HP Crit", percent: true}
+        { type: "healthFinal", name: "Max Health", percent: false },
+        { type: "currentHealth", name: "Current Health", percent: false },
+        { type: "healingRate", name: "Healing Rate", percent: true },
+        { type: "effHealingRate", name: "Eff. Healing Rate", percent: true },
+        { type: "regenPerSec", name: "Regen/sec", percent: false },
+        { type: "regenPerSecPercent", name: "%HP regen/sec", percent: true },
+        { type: "lifeDrainOnCrit", name: "Life Drain Crit", percent: false },
+        { type: "lifeDrainOnCritPercent", name: "Life Drain %HP Crit", percent: true }
     ];
     const DRStats = [
-        {type: "meleeDR", name: "Melee", percent: true},
-        {type: "projectileDR", name: "Projectile", percent: true},
-        {type: "magicDR", name: "Magic", percent: true},
-        {type: "blastDR", name: "Blast", percent: true},
-        {type: "fireDR", name: "Fire", percent: true},
-        {type: "fallDR", name: "Fall", percent: true},
-        {type: "ailmentDR", name: "Ailment", percent: true}
+        { type: "meleeDR", name: "Melee", percent: true },
+        { type: "projectileDR", name: "Projectile", percent: true },
+        { type: "magicDR", name: "Magic", percent: true },
+        { type: "blastDR", name: "Blast", percent: true },
+        { type: "fireDR", name: "Fire", percent: true },
+        { type: "fallDR", name: "Fall", percent: true },
+        { type: "ailmentDR", name: "Ailment", percent: true }
     ];
     const healthNormalizedDRStats = [
-        {type: "meleeHNDR", name: "Melee", percent: true},
-        {type: "projectileHNDR", name: "Projectile", percent: true},
-        {type: "magicHNDR", name: "Magic", percent: true},
-        {type: "blastHNDR", name: "Blast", percent: true},
-        {type: "fireHNDR", name: "Fire", percent: true},
-        {type: "fallHNDR", name: "Fall", percent: true},
-        {type: "ailmentHNDR", name: "Ailment", percent: true}
+        { type: "meleeHNDR", name: "Melee", percent: true },
+        { type: "projectileHNDR", name: "Projectile", percent: true },
+        { type: "magicHNDR", name: "Magic", percent: true },
+        { type: "blastHNDR", name: "Blast", percent: true },
+        { type: "fireHNDR", name: "Fire", percent: true },
+        { type: "fallHNDR", name: "Fall", percent: true },
+        { type: "ailmentHNDR", name: "Ailment", percent: true }
     ];
     const EHPStats = [
-        {type: "meleeEHP", name: "Melee", percent: false},
-        {type: "projectileEHP", name: "Projectile", percent: false},
-        {type: "magicEHP", name: "Magic", percent: false},
-        {type: "blastEHP", name: "Blast", percent: false},
-        {type: "fireEHP", name: "Fire", percent: false},
-        {type: "fallEHP", name: "Fall", percent: false},
-        {type: "ailmentEHP", name: "Ailment", percent: false}
+        { type: "meleeEHP", name: "Melee", percent: false },
+        { type: "projectileEHP", name: "Projectile", percent: false },
+        { type: "magicEHP", name: "Magic", percent: false },
+        { type: "blastEHP", name: "Blast", percent: false },
+        { type: "fireEHP", name: "Fire", percent: false },
+        { type: "fallEHP", name: "Fall", percent: false },
+        { type: "ailmentEHP", name: "Ailment", percent: false }
     ];
     const meleeStats = [
-        {type: "attackSpeedPercent", name: "Attack Speed", percent: true},
-        {type: "attackSpeed", name: "Weapon Attack Speed", percent: false},
-        {type: "attackDamagePercent", name: "Damage", percent: true},
-        {type: "attackDamage", name: "Weapon Damage", percent: false},
-        {type: "attackDamageCrit", name: "Weapon Crit Damage", percent: false},
-        {type: "iframeDPS", name: "IFrame-Capped DPS", percent: false},
-        {type: "iframeCritDPS", name: "IFrame-Capped Crit DPS", percent: false}
+        { type: "attackSpeedPercent", name: "Attack Speed", percent: true },
+        { type: "attackSpeed", name: "Weapon Attack Speed", percent: false },
+        { type: "attackDamagePercent", name: "Damage", percent: true },
+        { type: "attackDamage", name: "Weapon Damage", percent: false },
+        { type: "attackDamageCrit", name: "Weapon Crit Damage", percent: false },
+        { type: "iframeDPS", name: "IFrame-Capped DPS", percent: false },
+        { type: "iframeCritDPS", name: "IFrame-Capped Crit DPS", percent: false }
     ];
     const projectileStats = [
-        {type: "projectileDamagePercent", name: "Proj Damage", percent: true},
-        {type: "projectileDamage", name: "Weapon Proj Damage", percent: false},
-        {type: "projectileSpeedPercent", name: "Proj Speed", percent: true},
-        {type: "projectileSpeed", name: "Weapon Proj Speed", percent: false},
-        {type: "throwRatePercent", name: "Throw Rate", percent: true},
-        {type: "throwRate", name: "Weapon Throw Rate", percent: false}
+        { type: "projectileDamagePercent", name: "Proj Damage", percent: true },
+        { type: "projectileDamage", name: "Weapon Proj Damage", percent: false },
+        { type: "projectileSpeedPercent", name: "Proj Speed", percent: true },
+        { type: "projectileSpeed", name: "Weapon Proj Speed", percent: false },
+        { type: "throwRatePercent", name: "Throw Rate", percent: true },
+        { type: "throwRate", name: "Weapon Throw Rate", percent: false }
     ];
     const magicStats = [
-        {type: "magicDamagePercent", name: "Magic Damage", percent: true},
-        {type: "spellPowerPercent", name: "Spell Power", percent: true},
-        {type: "spellDamage", name: "Total Magic Damage", percent: true},
-        {type: "spellCooldownPercent", name: "Cooldown Duration", percent: true}
+        { type: "magicDamagePercent", name: "Magic Damage", percent: true },
+        { type: "spellPowerPercent", name: "Spell Power", percent: true },
+        { type: "spellDamage", name: "Total Magic Damage", percent: true },
+        { type: "spellCooldownPercent", name: "Cooldown Duration", percent: true }
     ];
 
     return (
@@ -116,7 +116,7 @@ export default function Builder({ build }) {
                         <h5 className="text-center fw-bold mb-0">Misc</h5>
                         <h6 className="text-center fw-bold">&nbsp;</h6>
                         {
-                            miscStats.map(stat => 
+                            miscStats.map(stat =>
                                 (itemsToDisplay[stat.type] !== undefined) ?
                                     <div key={stat.type}>
                                         <p className="mb-1 mt-1"><b>{stat.name}: </b>{itemsToDisplay[stat.type]}{stat.percent ? "%" : ""}</p>
@@ -128,7 +128,7 @@ export default function Builder({ build }) {
                         <h5 className="text-center fw-bold mb-0">Health</h5>
                         <h6 className="text-center fw-bold">&nbsp;</h6>
                         {
-                            healthStats.map(stat => 
+                            healthStats.map(stat =>
                                 (itemsToDisplay[stat.type] !== undefined) ?
                                     <div key={stat.type}>
                                         <p className="mb-1 mt-1"><b>{stat.name}: </b>{itemsToDisplay[stat.type]}{stat.percent ? "%" : ""}</p>
@@ -140,7 +140,7 @@ export default function Builder({ build }) {
                         <h5 className="text-center fw-bold mb-0">Damage Reduction</h5>
                         <h6 className="text-center fw-bold">(Regular)</h6>
                         {
-                            DRStats.map(stat => 
+                            DRStats.map(stat =>
                                 (itemsToDisplay[stat.type] !== undefined) ?
                                     <div key={stat.type}>
                                         <p className="mb-1 mt-1"><b>{stat.name}: </b>{itemsToDisplay[stat.type]}{stat.percent ? "%" : ""}</p>
@@ -152,7 +152,7 @@ export default function Builder({ build }) {
                         <h5 className="text-center fw-bold mb-0">Damage Reduction</h5>
                         <h6 className="text-center fw-bold">(Health Normalized)</h6>
                         {
-                            healthNormalizedDRStats.map(stat => 
+                            healthNormalizedDRStats.map(stat =>
                                 (itemsToDisplay[stat.type] !== undefined) ?
                                     <div key={stat.type}>
                                         <p className="mb-1 mt-1"><b>{stat.name}: </b>{itemsToDisplay[stat.type]}{stat.percent ? "%" : ""}</p>
@@ -164,7 +164,7 @@ export default function Builder({ build }) {
                         <h5 className="text-center fw-bold mb-0">Effective Health</h5>
                         <h6 className="text-center fw-bold">&nbsp;</h6>
                         {
-                            EHPStats.map(stat => 
+                            EHPStats.map(stat =>
                                 (itemsToDisplay[stat.type] !== undefined) ?
                                     <div key={stat.type}>
                                         <p className="mb-1 mt-1"><b>{stat.name}: </b>{itemsToDisplay[stat.type]}{stat.percent ? "%" : ""}</p>
@@ -176,7 +176,7 @@ export default function Builder({ build }) {
                         <h5 className="text-center fw-bold mb-0">Melee</h5>
                         <h6 className="text-center fw-bold">&nbsp;</h6>
                         {
-                            meleeStats.map(stat => 
+                            meleeStats.map(stat =>
                                 (itemsToDisplay[stat.type] !== undefined) ?
                                     <div key={stat.type}>
                                         <p className="mb-1 mt-1"><b>{stat.name}: </b>{itemsToDisplay[stat.type]}{stat.percent ? "%" : ""}</p>
@@ -188,7 +188,7 @@ export default function Builder({ build }) {
                         <h5 className="text-center fw-bold mb-0">Projectile</h5>
                         <h6 className="text-center fw-bold">&nbsp;</h6>
                         {
-                            projectileStats.map(stat => 
+                            projectileStats.map(stat =>
                                 (itemsToDisplay[stat.type] !== undefined) ?
                                     <div key={stat.type}>
                                         <p className="mb-1 mt-1"><b>{stat.name}: </b>{itemsToDisplay[stat.type]}{stat.percent ? "%" : ""}</p>
@@ -200,7 +200,7 @@ export default function Builder({ build }) {
                         <h5 className="text-center fw-bold mb-0">Magic</h5>
                         <h6 className="text-center fw-bold">&nbsp;</h6>
                         {
-                            magicStats.map(stat => 
+                            magicStats.map(stat =>
                                 (itemsToDisplay[stat.type] !== undefined) ?
                                     <div key={stat.type}>
                                         <p className="mb-1 mt-1"><b>{stat.name}: </b>{itemsToDisplay[stat.type]}{stat.percent ? "%" : ""}</p>
@@ -214,3 +214,9 @@ export default function Builder({ build }) {
         </div>
     )
 }
+
+Builder.getInitialProps = async ({ query }) => {
+    return { build: query?.build ? query?.build[0] : undefined }
+}
+
+export default Builder
