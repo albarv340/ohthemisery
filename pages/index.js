@@ -9,6 +9,7 @@ export default function Home() {
     <div className={styles.container}>
       <Head>
         <title>Oh the Misery</title>
+        <meta property="og:image" content="/favicon.ico" />
         <meta name="description" content="Websiite of Monumenta guild Oh the Misery [Enemy]" />
         <link rel="icon" href="/favicon.ico" />
       </Head>

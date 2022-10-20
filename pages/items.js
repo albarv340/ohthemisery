@@ -59,6 +59,7 @@ export default function Items() {
         <div className={styles.container}>
             <Head>
                 <title>Monumenta Items</title>
+                <meta property="og:image" content="/favicon.ico" />
                 <meta name="description" content="Monumenta item guide to make it easier to find items." />
                 <meta name="keywords" content="Monumenta, Minecraft, MMORPG, Items, Item Guide" />
             </Head>
