@@ -89,7 +89,8 @@ function Builder({ build }) {
             <Head>
                 <title>Monumenta Builder</title>
                 <meta property="og:site_name" content="OHTHEMISERY.TK" />
-                <meta name="description" content={`Monumenta builder.${(build ? `\n${build.split(/\&.=/)?.join("\n")?.substr(2)}` : "")}`} />
+                <meta property="og:image" content="/favicon.ico" />
+                <meta name="description" content={`Monumenta builder.${(build ? `\n${decodeURI(build).split(/\&.=/)?.join("\n")?.substring(2)}` : "")}`} />
                 <meta name="keywords" content="Monumenta, Minecraft, MMORPG, Items, Builder" />
             </Head>
             <HomeButton />
