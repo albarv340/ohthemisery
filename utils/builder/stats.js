@@ -196,7 +196,7 @@ class Stats {
         let evasionSit = (this.situationals.evasion.enabled) ? situationalAgility * this.situationals.evasion.level : 0;
         let reflexesSit = (this.situationals.reflexes.enabled) ? situationalAgility * this.situationals.reflexes.level : 0;
         let shieldingSit = (this.situationals.shielding.enabled) ? situationalArmor * this.situationals.shielding.level : 0;
-        let poiseSit = (this.situationals.poise.enabled) ? ((health.current / health.final >= 0.9) ? situationalArmor * this.situationals.poise.level : 0) : 0;
+        let poiseSit = (this.situationals.poise.enabled) ? ((this.currentHealthPercent.val >= 0.9) ? situationalArmor * this.situationals.poise.level : 0) : 0;
         let inureSit = (this.situationals.inure.enabled) ? situationalArmor * this.situationals.inure.level : 0;
 
         let steadfastArmor = (1 - Math.max(0.2, this.currentHealthPercent.val)) * 0.25 *
