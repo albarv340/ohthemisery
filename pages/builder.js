@@ -110,6 +110,9 @@ function Builder({ build }) {
                 <div className="row mb-2 pt-2">
                     <span className="text-center text-danger fs-2 fw-bold">{(itemsToDisplay.corruption > 1) ? "YOU HAVE MORE THAN ONE CURSE OF CORRUPTION ITEM" : ""}</span>
                 </div>
+                <div className="row mb-2 pt-2">
+                    <span className="text-center text-danger fs-2 fw-bold">{(itemsToDisplay.twoHanded && !itemsToDisplay.weightless && itemsToDisplay.itemNames.offhand != "None") ? "YOU ARE USING A TWO HANDED MAINHAND WITH A NON WEIGHTLESS OFFHAND" : ""}</span>
+                </div>
                 <div className="row justify-content-center mb-2">
                     {
                         itemTypes.map(type =>
