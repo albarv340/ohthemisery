@@ -21,25 +21,30 @@ class Percentage {
     }
 
     addP(percentage) {
-        this.perc += percentage.perc;
-        this.val += percentage.val;
+        // Add function with another percentage object
+        this.perc = Number((this.perc + percentage.perc).toFixed(2));
+        this.val = Number((this.val + percentage.val).toFixed(2));
         return this;
     }
 
     mulP(percentage) {
-        this.perc *= percentage.val;
-        this.val *= percentage.val;
+        // Add function with another percentage object
+        this.perc = Number((this.perc * percentage.val).toFixed(2));
+        this.val = Number((this.val * percentage.val).toFixed(2));
         return this;
     }
 
     add(value, percent) {
         // Add function with a standalone value
         if (this.isPercent(percent)) {
-            this.perc += Number(value);
-            this.val += Number(value) / 100;
+            this.perc = Number((this.perc + Number(value)).toFixed(2));
+            // Re-Fix the value in order to fix potential precision errors.
+            // Happened for example equipping poet's tome and auric tiara, has weird calculations for HP.
+            this.val = Number((this.val + Number(value) / 100).toFixed(2));
         } else {
-            this.perc += Number(value) * 100;
-            this.val += Number(value);
+            this.perc = Number((this.perc + Number(value) * 100).toFixed(2));
+            // Same as above.
+            this.val = Number((this.val + Number(value)).toFixed(2));
         }
         return this;
     }
@@ -47,11 +52,11 @@ class Percentage {
     mul(value, percent) {
         // Mul function with a standalone value
         if (this.isPercent(percent)) {
-            this.perc *= Number(value) / 100;
-            this.val *= Number(value) / 100;
+            this.perc = Number((this.perc * (Number(value) / 100)).toFixed(2));
+            this.val = Number((this.val * (Number(value) / 100)).toFixed(2));
         } else {
-            this.perc *= Number(value);
-            this.val *= Number(value);
+            this.perc = Number((this.perc * Number(value)).toFixed(2));
+            this.val = Number((this.val * Number(value)).toFixed(2));
         }
         return this;
     }
