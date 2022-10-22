@@ -11,13 +11,21 @@ class Stats {
             "leggings": formData.leggings,
             "boots": formData.boots
         };
-        this.itemStats = {
+        this.fullItemData = {
             "mainhand": (formData.mainhand != "None") ? itemData[formData.mainhand] : undefined,
             "offhand": (formData.offhand != "None") ? itemData[formData.offhand] : undefined,
             "helmet": (formData.helmet != "None") ? itemData[formData.helmet] : undefined,
             "chestplate": (formData.chestplate != "None") ? itemData[formData.chestplate] : undefined,
             "leggings": (formData.leggings != "None") ? itemData[formData.leggings] : undefined,
             "boots": (formData.boots != "None") ? itemData[formData.boots] : undefined
+        }
+        this.itemStats = {
+            "mainhand": (formData.mainhand != "None") ? itemData[formData.mainhand]["stats"] : undefined,
+            "offhand": (formData.offhand != "None") ? itemData[formData.offhand]["stats"] : undefined,
+            "helmet": (formData.helmet != "None") ? itemData[formData.helmet]["stats"] : undefined,
+            "chestplate": (formData.chestplate != "None") ? itemData[formData.chestplate]["stats"] : undefined,
+            "leggings": (formData.leggings != "None") ? itemData[formData.leggings]["stats"] : undefined,
+            "boots": (formData.boots != "None") ? itemData[formData.boots]["stats"] : undefined
         };
         this.situationals = {
             shielding: { enabled: enabledBoxes.shielding, level: 0 },
@@ -55,7 +63,7 @@ class Stats {
         }
 
         // Melee Stats
-        let attackDamage = this.sumNumberStat(this.itemStats.mainhand, "Base Attack Damage", this.attackDamage)
+        let attackDamage = this.sumNumberStat(this.itemStats.mainhand, "attack_damage_base", this.attackDamage)
             * this.attackDamagePercent.val
             * ((this.enabledBoxes.strength) ? 1.1 : 1)
             * ((this.enabledBoxes.fol) ? 1.15 : 1)
@@ -64,7 +72,7 @@ class Stats {
             * ((this.currentHealthPercent.perc <= 50) ? 1 - 0.1 * this.crippling : 1);
         this.attackDamagePercent = this.attackDamagePercent.toFixedPerc(2);
         this.attackDamage = attackDamage.toFixed(2);
-        let attackSpeed = (this.sumNumberStat(this.itemStats.mainhand, "Base Attack Speed", this.attackSpeed) + this.attackSpeedFlatBonus) * this.attackSpeedPercent.val;
+        let attackSpeed = (this.sumNumberStat(this.itemStats.mainhand, "attack_speed_base", this.attackSpeed) + this.attackSpeedFlatBonus) * this.attackSpeedPercent.val;
         this.attackSpeedPercent = this.attackSpeedPercent.toFixedPerc(2);
         this.attackSpeed = attackSpeed.toFixed(2);
         let attackDamageCrit = (attackDamage * 1.5)
@@ -73,7 +81,7 @@ class Stats {
         this.iframeCritDPS = ((attackSpeed >= 2) ? attackDamageCrit * 2 : attackDamageCrit * attackSpeed).toFixed(2);
 
         // Projectile Stats
-        let projectileDamage = this.sumNumberStat(this.itemStats.mainhand, "Base Proj Damage", this.projectileDamage)
+        let projectileDamage = this.sumNumberStat(this.itemStats.mainhand, "projectile_damage_base", this.projectileDamage)
             * this.projectileDamagePercent.val
             * ((this.enabledBoxes.strength) ? 1.1 : 1)
             * ((this.enabledBoxes.fol) ? 1.15 : 1)
@@ -81,15 +89,15 @@ class Stats {
             * (1 + 0.01 * Number(this.focus));
         this.projectileDamagePercent = this.projectileDamagePercent.toFixedPerc(2);
         this.projectileDamage = projectileDamage.toFixed(2);
-        let projectileSpeed = this.sumNumberStat(this.itemStats.mainhand, "Base Proj Speed", this.projectileSpeed) * this.projectileSpeedPercent.val;
+        let projectileSpeed = this.sumNumberStat(this.itemStats.mainhand, "projectile_speed_base", this.projectileSpeed) * this.projectileSpeedPercent.val;
         this.projectileSpeedPercent = this.projectileSpeedPercent.toFixedPerc(2);
         this.projectileSpeed = projectileSpeed.toFixed(2);
-        let throwRate = this.sumNumberStat(this.itemStats.mainhand, "Base Throw Rate", this.throwRate) * this.throwRatePercent.val;
+        let throwRate = this.sumNumberStat(this.itemStats.mainhand, "throw_rate_base", this.throwRate) * this.throwRatePercent.val;
         this.throwRatePercent = this.throwRatePercent.toFixedPerc(2);
         this.throwRate = throwRate.toFixed(2);
 
         // Magic Stats
-        this.spellPowerPercent.add(this.sumNumberStat(this.itemStats.mainhand, "Base Spell Power", 0));
+        this.spellPowerPercent.add(this.sumNumberStat(this.itemStats.mainhand, "spell_power_base", 0));
         this.spellDamage = (
             this.spellPowerPercent.duplicate()
                 .mulP(this.magicDamagePercent)
@@ -297,63 +305,54 @@ class Stats {
         Object.keys(this.itemStats).forEach(type => {
             let itemStats = this.itemStats[type];
             if (itemStats !== undefined) {
-                if (itemStats["Health"]) {
-                    let healthString = (typeof (itemStats["Health"]) === "string") ?
-                        itemStats["Health"] : itemStats["Health"].join(", ");
-
-                    // Try matching for % health
-                    let result = healthString.match(/([-+]\d+)% Max Health/);
-                    this.healthPercent.add((result) ? Number(result[1]) : 0);
-                    // Try matching for regular health
-                    result = healthString.match(/([-+]\d+) Max Health/);
-                    this.healthFlat += (result) ? Number(result[1]) : 0;
-                }
-                this.agility += this.sumNumberStat(itemStats, "Agility");
-                this.armor += this.sumNumberStat(itemStats, "Armor");
-                this.speedPercent.add(this.sumNumberStat(itemStats, "Speed %"));
-                this.speedFlat += this.sumNumberStat(itemStats, "Speed");
-                this.knockbackRes += this.sumNumberStat(itemStats, "Knockback Res.");
-                this.thorns += this.sumNumberStat(itemStats, "Thorns");
-                this.thornsPercent.add(this.sumNumberStat(itemStats, "Thorns Damage"));
+                this.healthPercent.add(this.sumNumberStat(itemStats, "max_health_percent"));
+                this.healthFlat += this.sumNumberStat(itemStats, "max_health_flat");
+                this.agility += this.sumNumberStat(itemStats, "agility");
+                this.armor += this.sumNumberStat(itemStats, "armor");
+                this.speedPercent.add(this.sumNumberStat(itemStats, "speed_percent"));
+                this.speedFlat += this.sumNumberStat(itemStats, "speed_flat");
+                this.knockbackRes += this.sumNumberStat(itemStats, "knockback_resistance_flat");
+                this.thorns += this.sumNumberStat(itemStats, "thorns_flat");
+                this.thornsPercent.add(this.sumNumberStat(itemStats, "thorns_percent"));
 
                 this.healingRate
-                    .add(this.sumEnchantmentStat(itemStats, "Anemia", -10))
-                    .add(this.sumEnchantmentStat(itemStats, "Sustenance", 10));
-                this.regenPerSec += this.sumEnchantmentStat(itemStats, "Regen", 1);
-                this.lifeDrainOnCrit += this.sumEnchantmentStat(itemStats, "Life Drain", 1);
+                    .add(this.sumEnchantmentStat(itemStats, "anemia", -10))
+                    .add(this.sumEnchantmentStat(itemStats, "sustenance", 10));
+                this.regenPerSec += this.sumEnchantmentStat(itemStats, "regen", 1);
+                this.lifeDrainOnCrit += this.sumEnchantmentStat(itemStats, "life_drain", 1);
 
-                this.meleeProt += this.sumNumberStat(itemStats, "Melee Prot.");
-                this.projectileProt += this.sumNumberStat(itemStats, "Projectile Prot.");
-                this.magicProt += this.sumNumberStat(itemStats, "Magic Prot.");
-                this.blastProt += this.sumNumberStat(itemStats, "Blast Prot.");
-                this.fireProt += this.sumNumberStat(itemStats, "Fire Prot.");
-                this.fallProt += this.sumNumberStat(itemStats, "Feather Falling");
+                this.meleeProt += this.sumNumberStat(itemStats, "melee_prot");
+                this.projectileProt += this.sumNumberStat(itemStats, "projectile_prot");
+                this.magicProt += this.sumNumberStat(itemStats, "magic_prot");
+                this.blastProt += this.sumNumberStat(itemStats, "blast_prot");
+                this.fireProt += this.sumNumberStat(itemStats, "fire_prot");
+                this.fallProt += this.sumNumberStat(itemStats, "feather_falling");
 
-                this.attackDamagePercent.add(this.sumNumberStat(itemStats, "Attack Damage"));
-                this.attackSpeedPercent.add(this.sumNumberStat(itemStats, "Attack Speed %"));
-                this.attackSpeedFlatBonus += this.sumNumberStat(itemStats, "Attack Speed");
+                this.attackDamagePercent.add(this.sumNumberStat(itemStats, "attack_damage_percent"));
+                this.attackSpeedPercent.add(this.sumNumberStat(itemStats, "attack_speed_percent"));
+                this.attackSpeedFlatBonus += this.sumNumberStat(itemStats, "attack_speed_flat");
 
-                this.projectileDamagePercent.add(this.sumNumberStat(itemStats, "Proj Damage"));
-                this.projectileSpeedPercent.add(this.sumNumberStat(itemStats, "Proj Speed"));
+                this.projectileDamagePercent.add(this.sumNumberStat(itemStats, "projectile_damage_percent"));
+                this.projectileSpeedPercent.add(this.sumNumberStat(itemStats, "projectile_speed_percent"));
 
-                this.magicDamagePercent.add(this.sumNumberStat(itemStats, "Magic Damage"));
+                this.magicDamagePercent.add(this.sumNumberStat(itemStats, "magic_damage_percent"));
 
-                this.aptitude += this.sumEnchantmentStat(itemStats, "Aptitude", 1);
-                this.ineptitude += this.sumEnchantmentStat(itemStats, "Ineptitude", -1);
+                this.aptitude += this.sumEnchantmentStat(itemStats, "aptitude", 1);
+                this.ineptitude += this.sumEnchantmentStat(itemStats, "ineptitude", -1);
 
-                this.situationals.shielding.level += this.sumNumberStat(itemStats, "Shielding");
-                this.situationals.poise.level += this.sumNumberStat(itemStats, "Poise");
-                this.situationals.inure.level += this.sumNumberStat(itemStats, "Inure");
-                this.situationals.steadfast.level += this.sumNumberStat(itemStats, "Steadfast");
-                this.situationals.ethereal.level += this.sumNumberStat(itemStats, "Ethereal ");
-                this.situationals.reflexes.level += this.sumNumberStat(itemStats, "Reflexes ");
-                this.situationals.evasion.level += this.sumNumberStat(itemStats, "Evasion");
-                this.situationals.tempo.level += this.sumNumberStat(itemStats, "Tempo ");
-                this.situationals.adaptability.level += this.sumNumberStat(itemStats, "Adaptability");
-                this.situationals.secondwind.level += this.sumNumberStat(itemStats, "Second Wind");
+                this.situationals.shielding.level += this.sumNumberStat(itemStats, "shielding");
+                this.situationals.poise.level += this.sumNumberStat(itemStats, "poise");
+                this.situationals.inure.level += this.sumNumberStat(itemStats, "inure");
+                this.situationals.steadfast.level += this.sumNumberStat(itemStats, "steadfast");
+                this.situationals.ethereal.level += this.sumNumberStat(itemStats, "ethereal");
+                this.situationals.reflexes.level += this.sumNumberStat(itemStats, "reflexes");
+                this.situationals.evasion.level += this.sumNumberStat(itemStats, "evasion");
+                this.situationals.tempo.level += this.sumNumberStat(itemStats, "tempo");
+                this.situationals.adaptability.level += this.sumNumberStat(itemStats, "adaptability");
+                this.situationals.secondwind.level += this.sumNumberStat(itemStats, "second_wind");
 
-                this.crippling += this.sumNumberStat(itemStats, "Crippling");
-                this.corruption += this.sumNumberStat(itemStats, "Corruption");
+                this.crippling += this.sumNumberStat(itemStats, "crippling");
+                this.corruption += this.sumNumberStat(itemStats, "corruption");
             }
         });
     }

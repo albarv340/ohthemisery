@@ -1,6 +1,6 @@
 import SelectInput from '../items/selectInput';
 import CheckboxWithLabel from '../items/checkboxWithLabel';
-import itemData from '../../public/items/itemData.json';
+import itemData from '../../public/items/condensedItemData.json';
 import React from 'react';
 import { useRouter } from 'next/router';
 
@@ -42,7 +42,7 @@ const refs = {
 
 function getRelevantItems(types) {
     let items = Object.keys(itemData);
-    return items.filter(name => types.includes(itemData[name].Type.toLowerCase().replace(/<.*>/, "").trim()));
+    return items.filter(name => types.includes(itemData[name].type.toLowerCase().replace(/<.*>/, "").trim()));
 }
 
 function checkboxChanged(event) {

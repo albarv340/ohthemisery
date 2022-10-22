@@ -117,7 +117,7 @@ function Builder({ build }) {
                     {
                         itemTypes.map(type =>
                             (checkExists(type, itemsToDisplay)) ?
-                                <ItemTile key={type} name={itemsToDisplay.itemNames[type]} item={itemsToDisplay.itemStats[type]}></ItemTile> : ""
+                                <ItemTile key={type} name={itemsToDisplay.itemNames[type]} item={itemsToDisplay.fullItemData[type]}></ItemTile> : ""
                         )
                     }
                 </div>
