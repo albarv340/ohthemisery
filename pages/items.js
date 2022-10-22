@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import styles from '../styles/Items.module.css'
-import itemData from '../public/items/itemData.json'
+import itemData from '../public/items/condensedItemData.json'
 import ItemTile from '../components/items/itemTile'
 import SearchForm from '../components/items/searchForm'
 import HomeButton from '../components/homeButton'
@@ -15,20 +15,20 @@ function getRelevantItems(data) {
         items = items.filter(name => name.toLowerCase().includes(data.search.toLowerCase()))
     }
     if (data.regionSelect != "Any Region") {
-        items = items.filter(name => itemData[name].Region == data.regionSelect)
+        items = items.filter(name => itemData[name].region == data.regionSelect)
     }
     if (data.tierSelect != "Any Tier") {
-        items = items.filter(name => itemData[name].Tier == data.tierSelect)
+        items = items.filter(name => itemData[name].tier == data.tierSelect)
     }
     if (data.locationSelect != "Any Location") {
-        items = items.filter(name => itemData[name].Location == data.locationSelect)
+        items = items.filter(name => itemData[name].location == data.locationSelect)
     }
     if (data.baseItemSelect != "Any Item") {
-        items = items.filter(name => itemData[name]["Base Item"] == data.baseItemSelect)
+        items = items.filter(name => itemData[name]["base_item"] == data.baseItemSelect)
     }
     if (data.sortSelect != "-") {
-        items = items.filter(name => typeof (itemData[name][data.sortSelect]) != "undefined")
-        items = items.sort((item1, item2) => (itemData[item2][data.sortSelect] || 0) - (itemData[item1][data.sortSelect] || 0))
+        items = items.filter(name => typeof (itemData[name]["stats"][data.sortSelect.toLowerCase().replaceAll(" ", "_")]) != "undefined")
+        items = items.sort((item1, item2) => (itemData[item2]["stats"][data.sortSelect.toLowerCase().replaceAll(" ", "_")] || 0) - (itemData[item1]["stats"][data.sortSelect.toLowerCase().replaceAll(" ", "_")] || 0))
     }
     let includedTypes = []
     for (const key in data) {
@@ -36,7 +36,7 @@ function getRelevantItems(data) {
             includedTypes.push(key)
         }
     }
-    items = items.filter(name => includedTypes.includes(itemData[name].Type.toLowerCase().replace(/<.*>/, "").trim()))
+    items = items.filter(name => includedTypes.includes(itemData[name].type.toLowerCase().replace(/<.*>/, "").trim()))
 
     return items
 }

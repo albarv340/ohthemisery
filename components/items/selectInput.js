@@ -3,6 +3,7 @@ import React from 'react';
 
 export default function SelectInput(data) {
     const options = data.sortableStats.map(item => { return { "value": item, "label": item } });
+    
     if (data.noneOption) {
         options.unshift({ "value": "None", "label": "None" });
     }

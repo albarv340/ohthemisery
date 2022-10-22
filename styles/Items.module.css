@@ -129,15 +129,15 @@
     color: #ce2d27;
 }
 
-.armorAttribrutes, .positiveStat {
+.attribrutes, .positiveStat {
     color: #5454fc;
 }
 
-.weaponBaseStats {
+.baseStats {
     color: #00a800;
 }
 
-.armor, .agility {
+.positiveDefence {
     color: #32cafc;
 }
 
