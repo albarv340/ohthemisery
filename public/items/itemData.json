@@ -459,7 +459,7 @@
       "base_item":"Iron Chestplate",
       "stats":{
          "armor":"7.5",
-         "attack_speed_base":0.1,
+         "attack_speed_flat":0.1,
          "max_health_flat":4.0,
          "unbreaking":5.0,
          "corruption":1.0
@@ -2418,7 +2418,7 @@
       "stats":{
          "armor":"4.5",
          "attack_damage_percent":10.0,
-         "attack_speed_base":0.1,
+         "attack_speed_flat":0.1,
          "attack_speed_percent":10.0,
          "melee_prot":3.0,
          "unbreakable":1.0
@@ -2865,7 +2865,7 @@
       "base_item":"Shield",
       "stats":{
          "attack_damage_percent":20.0,
-         "attack_speed_base":0.1,
+         "attack_speed_flat":0.1,
          "knockback_resistance_flat":3.0,
          "max_health_flat":4.0,
          "feather_falling":2.0,
@@ -3627,7 +3627,7 @@
       "base_item":"Chainmail Leggings",
       "stats":{
          "armor":"8",
-         "attack_speed_base":0.1,
+         "attack_speed_flat":0.1,
          "speed_percent":5.0,
          "blast_prot":3.0,
          "unbreaking":4.0
@@ -4057,7 +4057,7 @@
       "base_item":"Iron Sword",
       "stats":{
          "agility":"5",
-         "attack_speed_base":0.1,
+         "attack_speed_flat":0.1,
          "regen":2.0,
          "unbreakable":1.0,
          "regicide":1.0
@@ -4476,7 +4476,7 @@
       "stats":{
          "armor":"2",
          "attack_damage_percent":10.0,
-         "attack_speed_base":0.1,
+         "attack_speed_flat":0.1,
          "max_health_flat":2.0,
          "sustenance":1.0,
          "unbreaking":2.0
@@ -6449,7 +6449,7 @@
       "stats":{
          "armor":"3",
          "attack_damage_percent":25.0,
-         "attack_speed_base":0.1,
+         "attack_speed_flat":0.1,
          "max_health_percent":-10.0,
          "shielding":1.0,
          "melee_prot":2.0,
@@ -7319,7 +7319,7 @@
       "stats":{
          "armor":"5",
          "attack_damage_percent":10.0,
-         "attack_speed_base":0.1,
+         "attack_speed_flat":0.1,
          "steadfast":1.0,
          "unbreaking":4.0
       }
@@ -8131,7 +8131,7 @@
       "stats":{
          "armor":"3",
          "attack_damage_percent":13.0,
-         "attack_speed_base":0.1,
+         "attack_speed_flat":0.1,
          "knockback_resistance_flat":3.0,
          "unbreaking":2.0
       }
@@ -8343,7 +8343,7 @@
       "base_item":"Shield",
       "stats":{
          "agility":"4.5",
-         "attack_speed_base":0.1,
+         "attack_speed_flat":0.1,
          "ethereal":1.0,
          "unbreaking":3.0
       }
@@ -16489,7 +16489,7 @@
       "stats":{
          "agility":"3",
          "attack_damage_percent":25.0,
-         "attack_speed_base":0.1,
+         "attack_speed_flat":0.1,
          "unbreakable":1.0
       }
    },

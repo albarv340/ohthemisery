@@ -12,7 +12,7 @@ const Formats = {
 
 const categories = {
     "speed": [
-        ...["adrenaline"]
+        ...["adrenaline", "soul_speed"]
             .map(entry => ({ name: entry, format: Formats.ENCHANT})),
         ...["speed_flat", "speed_percent"]
             .map(entry => ({ name: entry, format: Formats.ATTRIBUTE})),
@@ -21,7 +21,7 @@ const categories = {
     ],
     "melee": [
         ...["ice_aspect_m", "fire_aspect_m", "thunder_aspect_m", "sweeping_edge",
-            "knockback", "quake", "smite", "slayer", "duelist", "chaotic", "hex_eater"]
+            "knockback", "quake", "smite", "slayer", "duelist", "chaotic", "hex_eater", "decay"]
             .map(entry => ({ name: entry, format: Formats.ENCHANT}))
     ],
     "misc": [
@@ -50,9 +50,9 @@ const categories = {
             .map(entry => ({ name: entry, format: Formats.CURSE}))
     ],
     "tool": [
-        ...["efficiency", "eruption", "sapper", "infinity_tool", "multitool", "fortune"]
+        ...["efficiency", "eruption", "sapper", "multitool", "fortune", "lure"]
             .map(entry => ({ name: entry, format: Formats.ENCHANT})),
-        ...["silk_touch"]
+        ...["silk_touch", "infinity_tool"]
             .map(entry => ({ name: entry, format: Formats.SINGLE_ENCHANT}))
     ],
     "epic": [
@@ -63,8 +63,10 @@ const categories = {
     ],
     "ranged": [
         ...["quick_charge", "point_blank", "sniper", "multishot", "piercing", "retrieval",
-            "punch", "infinity_bow", "ice_aspect_p", "fire_aspect_p", "thunder_aspect_p"]
-            .map(entry => ({ name: entry, format: Formats.ENCHANT}))
+            "punch", "ice_aspect_p", "fire_aspect_p", "thunder_aspect_p", "recoil"]
+            .map(entry => ({ name: entry, format: Formats.ENCHANT})),
+        ...["infinity_bow"]
+            .map(entry => ({ name: entry, format: Formats.SINGLE_ENCHANT}))
     ],
     "specialist": [
         ...["shielding", "poise", "inure", "steadfast", "ethereal", "reflexes", "evasion", "tempo"]
@@ -73,13 +75,13 @@ const categories = {
             .map(entry => ({ name: entry, format: Formats.SINGLE_ENCHANT}))
     ],
     "other_curse": [
-        ...["ineptitude"]
+        ...["ineptitude", "shrapnel", "vanishing"]
             .map(entry => ({ name: entry, format: Formats.CURSE})),
-        ...["two_handed", "corruption"]
+        ...["two_handed", "corruption", "irreparability"]
             .map(entry => ({ name: entry, format: Formats.SINGLE_CURSE}))
     ],
     "water": [
-        ...["depth_strider", "abyssal", "respiration"]
+        ...["depth_strider", "abyssal", "respiration", "riptide"]
             .map(entry => ({ name: entry, format: Formats.ENCHANT})),
         ...["gills", "aqua_affinity"]
             .map(entry => ({ name: entry, format: Formats.SINGLE_ENCHANT}))
