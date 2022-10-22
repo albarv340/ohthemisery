@@ -1,6 +1,6 @@
 import SelectInput from '../items/selectInput';
 import CheckboxWithLabel from '../items/checkboxWithLabel';
-import itemData from '../../public/items/condensedItemData.json';
+import itemData from '../../public/items/itemData.json';
 import React from 'react';
 import { useRouter } from 'next/router';
 

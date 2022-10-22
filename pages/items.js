@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import styles from '../styles/Items.module.css'
-import itemData from '../public/items/condensedItemData.json'
+import itemData from '../public/items/itemData.json'
 import ItemTile from '../components/items/itemTile'
 import SearchForm from '../components/items/searchForm'
 import HomeButton from '../components/homeButton'
