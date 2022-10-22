@@ -439,8 +439,8 @@ class Stats {
         this.crippling = 0,
         this.corruption = 0
 
-        this.twoHanded = (this.itemStats.mainhand && this.itemStats.mainhand["Two Handed"] == 1) ? true : false;
-        this.weightless = (this.itemStats.offhand && this.itemStats.offhand["Weightless"] == 1) ? true : false;
+        this.twoHanded = (this.itemStats.mainhand && this.itemStats.mainhand["two_handed"] == 1) ? true : false;
+        this.weightless = (this.itemStats.offhand && this.itemStats.offhand["weightless"] == 1) ? true : false;
     }
 }
 
