@@ -52,6 +52,10 @@ class Stats {
         this.adjustStats();
         this.calculateDefenseStats();
         this.calculateOffenseStats();
+
+        // This hopefully finally fixes the precision errors with HP calculations.
+        this.healthFinal = Number(this.healthFinal.toFixed(2));
+        this.currentHealth = Number(this.currentHealth.toFixed(2));
     }
 
     calculateOffenseStats() {
