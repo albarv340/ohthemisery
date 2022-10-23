@@ -12,15 +12,23 @@ function checkExists(type, itemsToDisplay) {
 
 function getLinkPreviewDescription(build) {
     if (!build) return ""
-    const buildParts = decodeURI(build).substring(2).split(/\&.=/)
     let res = "";
-    for (const item of buildParts) {
-        if (Object.keys(itemData).includes(item)) {
-            res += `${item}\n`
+    const buildParts = decodeURI(build).split("&");
+    let itemNames = {
+        mainhand: (buildParts.find(str => str.includes("m="))?.split("m=")[1]),
+        offhand: (buildParts.find(str => str.includes("o="))?.split("o=")[1]),
+        helmet: (buildParts.find(str => str.includes("h="))?.split("h=")[1]),
+        chestplate: (buildParts.find(str => str.includes("c="))?.split("c=")[1]),
+        leggings: (buildParts.find(str => str.includes("l="))?.split("l=")[1]),
+        boots: (buildParts.find(str => str.includes("b="))?.split("b=")[1])
+    };
+    for (const type in itemNames) {
+        if (itemNames[type] === undefined || !Object.keys(itemData).includes(itemNames[type])) {
+            res += "None\n";
         } else {
-            res += `None\n`
+            res += `${itemNames[type]}\n`
         }
-    }
+    };
 
     return res;
 }
