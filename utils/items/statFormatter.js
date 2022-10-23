@@ -172,7 +172,7 @@ class StatFormatter {
         for (const category in categories) {
             for (const stat of categories[category]) {
                 if (stats[stat.name]) {
-                    formattedStats.push(<span className={styles[this.statStyle(stat, stats[stat.name], category)]} key={stat}>{this.toHumanReadable(stat, stats[stat.name])}</span>);
+                    formattedStats.push(<span className={styles[this.statStyle(stat, stats[stat.name], category)]} title={enchantmentsData[stat.name]} key={stat}>{this.toHumanReadable(stat, stats[stat.name])}</span>);
                 }
             }
         }
