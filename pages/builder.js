@@ -4,9 +4,25 @@ import UpdateForm from '../components/builder/updateForm'
 import HomeButton from '../components/homeButton';
 import ItemTile from '../components/items/itemTile';
 import Footer from '../components/footer'
+import itemData from '../public/items/itemData.json'
 
 function checkExists(type, itemsToDisplay) {
     return (itemsToDisplay.itemStats) ? itemsToDisplay.itemStats[type] !== undefined : false;
+}
+
+function getLinkPreviewDescription(build) {
+    if (!build) return ""
+    const buildParts = decodeURI(build).substring(2).split(/\&.=/)
+    let res = "";
+    for (const item of buildParts) {
+        if (Object.keys(itemData).includes(item)) {
+            res += `${item}\n`
+        } else {
+            res += `None\n`
+        }
+    }
+
+    return res;
 }
 
 function Builder({ build }) {
@@ -96,7 +112,7 @@ function Builder({ build }) {
                 <title>Monumenta Builder</title>
                 <meta property="og:site_name" content="OHTHEMISERY.TK" />
                 <meta property="og:image" content="/favicon.ico" />
-                <meta name="description" content={`${(build ? `\n${decodeURI(build).split(/\&.=/)?.join("\n")?.substring(2)}` : "")}`} />
+                <meta name="description" content={`${getLinkPreviewDescription(build)}`} />
                 <meta name="keywords" content="Monumenta, Minecraft, MMORPG, Items, Builder" />
             </Head>
             <HomeButton />
