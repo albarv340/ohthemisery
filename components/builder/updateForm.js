@@ -89,9 +89,9 @@ export default function UpdateForm({ update, build, parentLoaded }) {
                 leggings: (buildParts.find(str => str.includes("l="))?.split("l=")[1]),
                 boots: (buildParts.find(str => str.includes("b="))?.split("b=")[1])
             };
-            Object.keys(itemNames).forEach(name => {
-                if (itemNames[name] === undefined) {
-                    itemNames[name] = "None";
+            Object.keys(itemNames).forEach(type => {
+                if (itemNames[type] === undefined || !Object.keys(itemData).includes(itemNames[type])) {
+                    itemNames[type] = "None";
                 }
             });
 
@@ -153,6 +153,9 @@ export default function UpdateForm({ update, build, parentLoaded }) {
         let buildParts = decodeURI(build).split("&");
         let allowedTypes = ["mainhand", "offhand", "helmet", "chestplate", "leggings", "boots"]
         let name = (allowedTypes.includes(type)) ? buildParts.find(str => str.includes(`${type[0]}=`))?.split(`${type[0]}=`)[1] : "None";
+        if (!Object.keys(itemData).includes(name)) {
+            return { "value": "None", "label": "None" };
+        }
         return { "value": name, "label": name };
     }
 
