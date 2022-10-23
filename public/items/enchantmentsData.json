@@ -85,7 +85,7 @@
     "ashes_of_eternity": "Saves player from death once a week using the same mechanics as Resurrection and Void Tether. The enchant is then removed until the next weekly reset.",
     "rage_of_the_keter": "The food restores 6 hunger points and 6 saturation points and can be eaten at full hunger. Gives the player +15% to all damage and +15% speed for 15 seconds.",
     "throwing_knife": "Right-click to use the item and instantly fire an arrow.",
-    "corruption": "Debuffs the player if more than one item with this enchantment is in their inventory.",
+    "corruption": "Debuffs the player if more than one item with this enchantment is equipped.",
     "irreparability": "Prevents the enchanted item from being repaired.",
     "two_handed": "Debuffs the player if they are also holding something in their off hand, unless it has the weightless enchantment. Two Handed swords count as two swords for Rogue.",
     "emphemerality": "Item vanishes when changing inventories or when the player teleports or logs out.",
