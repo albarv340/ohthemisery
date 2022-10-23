@@ -52,7 +52,7 @@ const categories = {
     "tool": [
         ...["efficiency", "eruption", "sapper", "multitool", "fortune", "lure"]
             .map(entry => ({ name: entry, format: Formats.ENCHANT})),
-        ...["silk_touch", "infinity_tool"]
+        ...["silk_touch", "infinity_tool", "jungle_s_nourishment"]
             .map(entry => ({ name: entry, format: Formats.SINGLE_ENCHANT}))
     ],
     "epic": [
@@ -118,7 +118,8 @@ class StatFormatter {
             .map(part => part[0].toUpperCase() + part.substring(1))
             .join(" ")
             .replaceAll("Prot", "Protection")
-            .replaceAll("Regen", "Regeneration");
+            .replaceAll("Regen", "Regeneration")
+            .replace("Jungle S Nourishment", "Jungle's Nourishment");
         switch (stat.format) {
             case Formats.ENCHANT: {
                 humanStr = `${humanStr} ${value}`;

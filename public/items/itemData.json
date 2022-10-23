@@ -12844,7 +12844,8 @@
       "location":"Kaul",
       "base_item":"Apple",
       "stats":{
-         "infinity_tool":1.0
+         "infinity_tool":1.0,
+         "jungle_s_nourishment":1.0
       }
    },
    "Jungle's Requiem":{
@@ -23024,7 +23025,8 @@
       "base_item":"Apple",
       "original_item":"Heart of the Jungle",
       "stats":{
-         "infinity_tool":1.0
+         "infinity_tool":1.0,
+         "jungle_s_nourishment":1.0
       }
    },
    "Forest's Gambit":{
@@ -23434,7 +23436,8 @@
       "base_item":"Apple",
       "original_item":"Heart of the Jungle",
       "stats":{
-         "infinity_tool":1.0
+         "infinity_tool":1.0,
+         "jungle_s_nourishment":1.0
       }
    },
    "Holiday's End":{
