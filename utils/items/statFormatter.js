@@ -118,6 +118,7 @@ class StatFormatter {
             .map(part => part[0].toUpperCase() + part.substring(1))
             .join(" ")
             .replaceAll("Prot", "Protection")
+            .replaceAll("Protectionection", "Protection")
             .replaceAll("Regen", "Regeneration")
             .replace("Jungle S Nourishment", "Jungle's Nourishment");
         switch (stat.format) {
