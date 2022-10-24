@@ -38,7 +38,7 @@ const categories = {
     "attributes": [
         ...["knockback_resistance_flat", "attack_damage_percent", "attack_speed_flat",
             "attack_speed_percent", "magic_damage_percent", "projectile_damage_percent",
-            "projectile_speed_percent", "thorns_flat", "thorns_percent"]
+            "projectile_speed_percent", "thorns_flat", "thorns_percent", "throw_rate_percent"]
             .map(entry => ({ name: entry, format: Formats.ATTRIBUTE }))
     ],
     "health": [

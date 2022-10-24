@@ -318,6 +318,7 @@ class Stats {
                 this.knockbackRes += this.sumNumberStat(itemStats, "knockback_resistance_flat");
                 this.thorns += this.sumNumberStat(itemStats, "thorns_flat");
                 this.thornsPercent.add(this.sumNumberStat(itemStats, "thorns_percent"));
+                this.throwRatePercent.add(this.sumNumberStat(itemStats, "throw_rate_percent"));
 
                 this.healingRate
                     .add(this.sumEnchantmentStat(itemStats, "anemia", -10))
