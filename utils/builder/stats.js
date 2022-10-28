@@ -72,7 +72,7 @@ class Stats {
             * ((this.enabledBoxes.strength) ? 1.1 : 1)
             * ((this.enabledBoxes.fol) ? 1.15 : 1)
             * ((this.enabledBoxes.clericblessing) ? 1.35 : 1)
-            * (1 + 0.01 * Number(this.vigor))
+            * (1 + 0.0075 * Number(this.vigor))
             * ((this.currentHealthPercent.perc <= 50) ? 1 - 0.1 * this.crippling : 1);
         this.attackDamagePercent = this.attackDamagePercent.toFixedPerc(2);
         this.attackDamage = attackDamage.toFixed(2);
@@ -90,7 +90,7 @@ class Stats {
             * ((this.enabledBoxes.strength) ? 1.1 : 1)
             * ((this.enabledBoxes.fol) ? 1.15 : 1)
             * ((this.enabledBoxes.clericblessing) ? 1.35 : 1)
-            * (1 + 0.01 * Number(this.focus));
+            * (1 + 0.0075 * Number(this.focus));
         this.projectileDamagePercent = this.projectileDamagePercent.toFixedPerc(2);
         this.projectileDamage = projectileDamage.toFixed(2);
         let projectileSpeed = this.sumNumberStat(this.itemStats.mainhand, "projectile_speed_base", this.projectileSpeed) * this.projectileSpeedPercent.val;
@@ -107,7 +107,7 @@ class Stats {
                 .mulP(this.magicDamagePercent)
                 .mul((this.enabledBoxes.strength) ? 1.1 : 1, false)
                 .mul((this.enabledBoxes.fol) ? 1.15 : 1, false)
-                .mul(1 + 0.01 * Number(this.perspicacity), false)
+                .mul(1 + 0.0075 * Number(this.perspicacity), false)
         ).toFixedPerc(2);
         this.spellPowerPercent = this.spellPowerPercent.toFixedPerc(2);
         this.magicDamagePercent = this.magicDamagePercent.toFixedPerc(2);
