@@ -302,6 +302,38 @@
     color: #a90000;
 }
 
+.alchemist {
+    color: #5ea819;
+}
+
+.warrior {
+    color: #db2445;
+}
+
+.cleric {
+    color: #fcc443;
+}
+
+.rogue {
+    color: #35383c;
+}
+
+.mage {
+    color: #a11ecc;
+}
+
+.scout {
+    color: #2488c6;
+}
+
+.warlock {
+    color: #c524b7;
+}
+
+.generalist {
+    color: #9d8d8f;
+}
+
 .islesDelves {
     color: rgb(255, 237, 184);
 }

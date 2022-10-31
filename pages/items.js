@@ -3,6 +3,7 @@ import styles from '../styles/Items.module.css'
 import itemData from '../public/items/itemData.json'
 import ItemTile from '../components/items/itemTile'
 import MasterworkableItemTile from '../components/items/masterworkableItemTile'
+import CharmTile from '../components/items/charmTile'
 import SearchForm from '../components/items/searchForm'
 import HomeButton from '../components/homeButton'
 import React from 'react';
@@ -79,6 +80,11 @@ export default function Items() {
                         if (itemData[name].masterwork) {
                             return (
                                 <MasterworkableItemTile key={name} name={itemData[name].name} item={itemData[name]}></MasterworkableItemTile>
+                            )
+                        }
+                        if (itemData[name].type == "Charm") {
+                            return (
+                                <CharmTile key={name} name={itemData[name].name} item={itemData[name]}></CharmTile>
                             )
                         }
                         return (
