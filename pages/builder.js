@@ -3,6 +3,7 @@ import React from 'react';
 import UpdateForm from '../components/builder/updateForm'
 import HomeButton from '../components/homeButton';
 import ItemTile from '../components/items/itemTile';
+import MasterworkableItemTile from '../components/items/masterworkableItemTile';
 import Footer from '../components/footer'
 import itemData from '../public/items/itemData.json'
 
@@ -141,6 +142,7 @@ function Builder({ build }) {
                     {
                         itemTypes.map(type =>
                             (checkExists(type, itemsToDisplay)) ?
+                                (itemsToDisplay.fullItemData[type].masterwork) ? <MasterworkableItemTile key={type} name={itemsToDisplay.itemNames[type]} item={itemsToDisplay.fullItemData[type]}></MasterworkableItemTile> :
                                 <ItemTile key={type} name={itemsToDisplay.itemNames[type]} item={itemsToDisplay.fullItemData[type]}></ItemTile> : ""
                         )
                     }
