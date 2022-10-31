@@ -22,11 +22,11 @@ const categories = {
     "melee": [
         ...["ice_aspect_m", "fire_aspect_m", "thunder_aspect_m", "sweeping_edge",
             "knockback", "quake", "smite", "slayer", "duelist", "chaotic", "hex_eater",
-            "decay", "bleeding"]
+            "decay", "bleeding", "wind_aspect_m", "earth_aspect_m", "stamina"]
             .map(entry => ({ name: entry, format: Formats.ENCHANT }))
     ],
     "misc": [
-        ...["second_wind", "inferno", "regicide", "aptitude", "triage"]
+        ...["second_wind", "inferno", "regicide", "aptitude", "triage", "trivium"]
             .map(entry => ({ name: entry, format: Formats.ENCHANT })),
         ...["intuition", "weightless", "radiant", "darksight", "void_tether", "resurrection"]
             .map(entry => ({ name: entry, format: Formats.SINGLE_ENCHANT }))
@@ -53,7 +53,7 @@ const categories = {
     "tool": [
         ...["efficiency", "eruption", "sapper", "multitool", "fortune", "lure"]
             .map(entry => ({ name: entry, format: Formats.ENCHANT })),
-        ...["silk_touch", "infinity_tool", "jungle_s_nourishment"]
+        ...["silk_touch", "infinity_tool", "jungle_s_nourishment", "excavator"]
             .map(entry => ({ name: entry, format: Formats.SINGLE_ENCHANT }))
     ],
     "epic": [
@@ -64,19 +64,22 @@ const categories = {
     ],
     "ranged": [
         ...["quick_charge", "point_blank", "sniper", "multishot", "piercing", "retrieval",
-            "punch", "ice_aspect_p", "fire_aspect_p", "thunder_aspect_p", "recoil"]
+            "punch", "ice_aspect_p", "fire_aspect_p", "thunder_aspect_p", "recoil", "explosive",
+            "multiload"]
             .map(entry => ({ name: entry, format: Formats.ENCHANT })),
         ...["infinity_bow"]
             .map(entry => ({ name: entry, format: Formats.SINGLE_ENCHANT }))
     ],
     "specialist": [
-        ...["shielding", "poise", "inure", "steadfast", "ethereal", "reflexes", "evasion", "tempo"]
+        ...["shielding", "poise", "inure", "steadfast", "ethereal", "reflexes", "evasion", "tempo",
+            "cloaked", "guard"]
             .map(entry => ({ name: entry, format: Formats.ENCHANT })),
         ...["adaptability"]
             .map(entry => ({ name: entry, format: Formats.SINGLE_ENCHANT }))
     ],
     "other_curse": [
-        ...["ineptitude", "shrapnel", "vanishing"]
+        ...["ineptitude", "shrapnel", "vanishing", "projectile_fragility", "melee_fragility",
+            "magic_fragility", "blast_fragility", "fire_fragility"]
             .map(entry => ({ name: entry, format: Formats.CURSE })),
         ...["two_handed", "corruption", "irreparability"]
             .map(entry => ({ name: entry, format: Formats.SINGLE_CURSE }))

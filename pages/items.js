@@ -2,6 +2,7 @@ import Head from 'next/head'
 import styles from '../styles/Items.module.css'
 import itemData from '../public/items/itemData.json'
 import ItemTile from '../components/items/itemTile'
+import MasterworkableItemTile from '../components/items/masterworkableItemTile'
 import SearchForm from '../components/items/searchForm'
 import HomeButton from '../components/homeButton'
 import React from 'react';
@@ -75,6 +76,11 @@ export default function Items() {
                     loader={<h4>No items found</h4>}
                 >
                     {relevantItems.slice(0, itemsToShow).map(name => {
+                        if (itemData[name].masterwork) {
+                            return (
+                                <MasterworkableItemTile key={name} name={itemData[name].name} item={itemData[name]}></MasterworkableItemTile>
+                            )
+                        }
                         return (
                             <ItemTile key={name} name={name} item={itemData[name]}></ItemTile>
                         )

@@ -102,5 +102,19 @@
     "gilded": "Players gain an aura of particles when used. Voting reward.",
     "stylish": "Players gain an aura of black particles.",
     "festive": "Players gain an aura of festive particles.",
-    "divine_aura": "Players and attacked enemies gain an aura of divine particles."
+    "divine_aura": "Players and attacked enemies gain an aura of divine particles.",
+    "stamina": "After taking damage, or dealing melee/projectile damage, gain (level * 2.5)% melee and projectile damage per level, for 5 seconds. Stacks up to 4 times.",
+    "explosive": "Critical arrows you shoot deal an additional (level * 10)% splash damage in a 2-block radius, which also applies any aspects, decay and bleeding you may have.",
+    "multiload": "Upon reloading the crossbow, consume up to (level) extra arrows and instantly reload the crossbow after firing for each extra arrow consumed.",
+    "excavator": "Mine blocks in a 3x3 shape around the target block. Doesn't break spawners or chests.",
+    "wind_aspect_m": "Launch mobs on melee hit by (level) blocks and apply Slow Falling for 1 second.",
+    "wind_aspect_p": "Launch mobs on projectile hit by (level) blocks and apply Slow Falling for 1 second.",
+    "earth_aspect_m": "On melee hit, grants (level * 5)% damage reduction for 3 seconds. Also applies upon mining a spawner.",
+    "earth_aspect_p": "On projectile hit, grants (level * 5)% damage reduction for 3 seconds. Also applies upon mining a spawner.",
+    "trivium": "When hitting 3 or more mobs with a magical ability, ddeal (level * 10)% more magic damage.",
+    "projectile_fragility": "Increases projectile damage by 1 - 0.92 ^ (-2 * level).",
+    "melee_fragility": "Increases melee damage by 1 - 0.92 ^ (-2 * level).",
+    "magic_fragility": "Increases magic damage by 1 - 0.92 ^ (-2 * level).",
+    "blast_fragility": "Increases blast damage by 1 - 0.92 ^ (-2 * level).",
+    "fire_fragility": "Increases fire damage by 1 - 0.92 ^ (-2 * level)."
 }
