@@ -77,7 +77,7 @@ export default function Items() {
                     loader={<h4>No items found</h4>}
                 >
                     {relevantItems.slice(0, itemsToShow).map(name => {
-                        if (itemData[name].masterwork) {
+                        if (itemData[name].masterwork != undefined) {
                             return (
                                 <MasterworkableItemTile key={name} name={itemData[name].name} item={itemData[name]}></MasterworkableItemTile>
                             )

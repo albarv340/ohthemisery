@@ -142,7 +142,7 @@ function Builder({ build }) {
                     {
                         itemTypes.map(type =>
                             (checkExists(type, itemsToDisplay)) ?
-                                (itemsToDisplay.fullItemData[type].masterwork) ? <MasterworkableItemTile key={type} name={itemsToDisplay.itemNames[type]} item={itemsToDisplay.fullItemData[type]}></MasterworkableItemTile> :
+                                (itemsToDisplay.fullItemData[type].masterwork != undefined) ? <MasterworkableItemTile key={type} name={itemsToDisplay.itemNames[type]} item={itemsToDisplay.fullItemData[type]}></MasterworkableItemTile> :
                                 <ItemTile key={type} name={itemsToDisplay.itemNames[type]} item={itemsToDisplay.fullItemData[type]}></ItemTile> : ""
                         )
                     }
