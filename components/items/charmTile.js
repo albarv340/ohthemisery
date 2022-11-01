@@ -40,7 +40,7 @@ export default function CharmTile(data) {
             {formattedCharm}
             <span>
                 <span className={styles.infoText}>{`${item.region} `}</span>
-                <span className={styles[camelCase(item.tier)]}>{item.tier} Charm</span>
+                <span className={styles[camelCase(item.tier)]}>{(item.tier != "Base") ? `${item.tier} ` : ""}Charm</span>
             </span>
             <span className={styles[camelCase(item.location)]}>{item.location}</span>
             {item.notes ? <span className={styles.infoText}>{`${item.notes} `}</span> : ""}
