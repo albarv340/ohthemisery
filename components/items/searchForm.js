@@ -16,7 +16,7 @@ const sortableStats = ["-", "Abyssal", "Adaptability", "Adrenaline", "Agility", 
     "Sniper", "Soul Speed", "Speed Flat", "Speed Percent", "Steadfast", "Sustenance", "Sweeping Edge", "Tempo", "Thorns Flat", "Thorns Percent",
     "Thunder Aspect M", "Thunder Aspect P", "Triage", "Two Handed", "Unbreakable", "Unbreaking", "Vanishing", "Weightless", "Excavator",
     "Explosive", "Multiload", "Stamina", "Trivium", "First Strike", "Wind Aspect M", "Wind Aspect P", "Earth Aspect M", "Earth Aspect P",
-    "Melee Fragility", "Projectile Fragility", "Fire Fragility", "Magic Fragility", "Blast Fragility", "Cloaked", "Guard"]
+    "Melee Fragility", "Projectile Fragility", "Fire Fragility", "Magic Fragility", "Blast Fragility", "Cloaked", "Guard", "First Strike"]
 const regions = ["Any Region", "Isles", "Valley", "Ring"]
 const tiers = ['Any Tier', 'Epic', 'Artifact', 'Uncommon', 'Rare', 'Unique', 'Patron', 'Event', 'Tier 5', 'Tier 4', 'Tier 3',
     'Tier 2', 'Tier 1', 'Tier 0']
