@@ -22,7 +22,7 @@ const categories = {
     "melee": [
         ...["ice_aspect_m", "fire_aspect_m", "thunder_aspect_m", "sweeping_edge",
             "knockback", "quake", "smite", "slayer", "duelist", "chaotic", "hex_eater",
-            "decay", "bleeding", "wind_aspect_m", "earth_aspect_m", "stamina"]
+            "decay", "bleeding", "wind_aspect_m", "earth_aspect_m", "stamina", "first_strike"]
             .map(entry => ({ name: entry, format: Formats.ENCHANT }))
     ],
     "misc": [
