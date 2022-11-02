@@ -20,7 +20,9 @@ class CharmFormatter {
     }
 
     static statStyle(stat, value) {
-        return (value < 0) ? "negativeStat" : (stat.name == "armor" || stat.name == "agility") ? "positiveDefence" : "positiveStat";
+        return (stat.includes("cooldown")) ?
+            (value < 0) ? "positiveCharm" : "negativeCharm" :
+            (value < 0) ? "negativeCharm" : "positiveCharm";
     }
 
     static formatCharm(charm) {

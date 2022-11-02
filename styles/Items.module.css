@@ -162,6 +162,15 @@
 }
 
 .epic {
+    color: #b114e0;
+    font-weight: bold;
+}
+
+.name.legendary {
+    text-decoration: underline;
+}
+
+.legendary {
     color: #fcd400;
     font-weight: bold;
 }
@@ -308,6 +317,14 @@
 
 .base {
     color: #fcf774;
+}
+
+.positiveCharm {
+    color: #49c0e2;
+}
+
+.negativeCharm {
+    color: #ce2d27;
 }
 
 .alchemist {
