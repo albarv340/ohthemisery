@@ -26,6 +26,7 @@ const locations = ["Any Location", "Isles Delves", "Hekawt", "Eldrask", "Depths"
     "Lowtide Smuggler", "Willows", "Yellow", "Light Blue", "Magenta", "Orange", "White", "Labs", "Valley Casino", "Valley Overworld",
     "King's Valley", "Architect's Ring", "The Wolfswood", "Pelias' Keep", "Blue", "SKT", "Sanguine Halls", "PORTAL", "Ruin",
     "Quest Reward"]
+const charmClasses = ["Any Class", "Alchemist", "Mage", "Warlock", "Rogue", "Warrior", "Cleric", "Scout", "Generalist"]
 const baseItems = ["Any Item", "Blaze Rod", "Shield", "Chainmail Boots", "Cyan Shulker Box", "Iron Axe", "Chorus Fruit", "Golden Leggings", "Golden Hoe", "Diamond Sword", "Crossbow", "Chainmail Helmet", "Bow", "Leather Chestplate", "Iron Leggings", "Iron Chestplate", "Player Head", "Leather Leggings", "Iron Hoe", "Iron Sword", "Bone", "Stone Sword", "Iron Pickaxe", "Leather Helmet", "Iron Boots", "Book", "Snowball", "Music Disc", "Jukebox", "Soul Lantern", "Chainmail Leggings", "Wooden Sword", "Trident", "Chainmail Chestplate", "Nether Brick", "Bell", "Iron Helmet", "Dragon Breath", "Flower Banner Pattern", "Diamond Boots", "Leather Boots", "Nether Star", "Golden Helmet", "Golden Pickaxe", "Golden Boots", "Heart of the Sea", "Gold Nugget", "Potion", "Flint and Steel", "Red Shulker Box", "Stone Hoe", "Golden Axe", "Dead Bush", "Totem of Undying", "Golden Sword", "Stick", "Turtle Helmet", "Ghast Tear", "Wooden Axe", "Flint", "Stone Axe", "Spruce Sapling", "Golden Chestplate", "Clock", "Stone Pickaxe", "Lantern", "White Tulip", "Scute", "Wooden Pickaxe", "Emerald", "Iron Axe/Iron Shovel", "Tropical Fish", "Shears", "Torch", "Compass", "Orange Tulip", "Red Dye", "Iron Nugget", "Light Blue Dye", "Blue Dye", "Pink Stained Glass", "Lime Stained Glass", "Light Gray Stained Glass", "Light Blue Stained Glass", "Magneta Stained Glass", "Orange Stained Glass", "Cyan Stained Glass", "White Stained Glass", "Sugar", "Cornflower", "Bamboo", "Crimson Fungus", "Gold Ingot", "Dried Kelp", "Wooden Hoe", "Bowl", "Paper", "Cooked Mutton", "Bread", "Firework Rocket", "Diamond Axe", "Fishing Rod", "Sea Pickle", "Kelp", "Gray Stained Glass", "Purple Stained Glass", "Magenta Stained Glass", "Yellow Stained Glass", "Ender Eye", "Iron Shovel", "Golden Shovel", "Blue Orchid", "Quartz", "Wooden Shovel", "Yellow Shulker Box", "Blaze Powder", "Cooked Beef", "Iron Pickaxe / Iron Axe / Iron Shovel", "Apple", "Fermented Spider Eye", "Black Shulker Box", "Rabbit Hide", "Clay Ball", "Spruce Leaves", "Rabbit Foot", "Jungle Sapling", "Green Dye", "Yellow Dye", "Light Gray Shulker Box", "Pink Tulip", "Leather", "Pumpkin Pie", "Green Shulker Box", "Allium", "Carrot", "Pufferfish", "Cookie", "End Rod", "Zombie Head", "Prismarine Shard", "Rotten Flesh", "Feather", "Stone Shovel", "Music Disc Cat", "Banner Pattern", "Brewing Stand", "Wet Sponge", "Creeper Head", "Conduit", "Charcoal", "Baked Potato", "Carved Pumpkin", "Magma Cream"]
 
 function getResetKey(name) {
@@ -37,6 +38,7 @@ export default function SearchForm({ update }) {
     const [regionKey, setRegionKey] = React.useState(getResetKey("region"))
     const [tierKey, setTierKey] = React.useState(getResetKey("tier"))
     const [locationKey, setLocationKey] = React.useState(getResetKey("location"))
+    const [classKey, setClassKey] = React.useState(getResetKey("class"))
     const [baseItemKey, setBaseItemKey] = React.useState(getResetKey("baseItem"))
     const form = React.useRef()
 
@@ -57,6 +59,7 @@ export default function SearchForm({ update }) {
         setRegionKey(getResetKey("region"))
         setTierKey(getResetKey("tier"))
         setLocationKey(getResetKey("location"))
+        setClassKey(getResetKey("class"))
         setBaseItemKey(getResetKey("baseItem"))
     }
 
@@ -138,6 +141,10 @@ export default function SearchForm({ update }) {
                     <div className={styles.selects}>
                         <span>Location:</span>
                         <SelectInput key={locationKey} name="locationSelect" sortableStats={locations} />
+                    </div>
+                    <div className={styles.selects}>
+                        <span>Charm Class:</span>
+                        <SelectInput key={classKey} name="classSelect" sortableStats={charmClasses} />
                     </div>
                     <div className={styles.selects}>
                         <span>Base Item:</span>

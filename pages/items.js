@@ -25,6 +25,9 @@ function getRelevantItems(data) {
     if (data.locationSelect != "Any Location") {
         items = items.filter(name => itemData[name].location == data.locationSelect)
     }
+    if (data.classSelect != "Any Class") {
+        items = items.filter(name => itemData[name].class_name == data.classSelect)
+    }
     if (data.baseItemSelect != "Any Item") {
         items = items.filter(name => itemData[name]["base_item"] == data.baseItemSelect)
     }
