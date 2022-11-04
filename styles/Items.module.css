@@ -109,6 +109,19 @@
     flex-direction: column;
 }
 
+.starSpan {
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.starSpan:hover {
+    text-decoration: underline;
+}
+
+.undiscovered {
+    color: #d80a3a;
+}
+
 .tier1, .tier2, .tier3, .tier4, .tier5, .infoText {
     color: #545454;
 }

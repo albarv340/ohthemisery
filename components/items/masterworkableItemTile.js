@@ -1,6 +1,7 @@
 import CustomImage from './customImage'
 import Enchants from './enchants'
 import styles from '../../styles/Items.module.css'
+import React from 'react'
 
 function camelCase(str) {
     if (!str) return "";
@@ -14,37 +15,106 @@ const maxMasterwork = {
     "Epic": 6
 }
 
-function makeMasterworkString(masterwork, tier) {
-    let emptyStars = maxMasterwork[tier] - masterwork;
-    return <span>Masterwork: <span className={styles.masterworkStar}>{"★".repeat(masterwork)}</span>{"☆".repeat(emptyStars)}</span>;
+const undiscovered = {
+    UNDISCOVERED: 1,
+    DOES_NOT_EXIST: 2
+}
+
+function getLowestMasterworkItem(items) {
+    let min = items[0];
+    for (let i = 1; i < items.length; i++) {
+        if (items[i].masterwork < min) {
+            min = items[i];
+        }
+    }
+    return min;
+}
+
+function getItemWithMasterwork(items, masterwork) {
+    let minMasterwork = getLowestMasterworkItem(items).masterwork;
+    if (masterwork >= minMasterwork) {
+        for (let item of items) {
+            if (Number(item.masterwork) == masterwork) {
+                return item;
+            }
+        }
+    }
+    let undiscoveredItem = {};
+    // Need to create a copy of the object or it will modify the original object if I simply equal them.
+    for (let key of Object.keys(items[0])) {
+        switch (key) {
+            case "stats": {
+                undiscoveredItem.stats = {};
+                break;
+            }
+            case "masterwork": {
+                undiscoveredItem.masterwork = masterwork;
+                break;
+            }
+            default: {
+                undiscoveredItem[key] = items[0][key];
+                break;
+            }
+        }
+    }
+    (masterwork < minMasterwork) ? undiscoveredItem.undiscovered = undiscovered.DOES_NOT_EXIST : undiscoveredItem.undiscovered = undiscovered.UNDISCOVERED;
+    return undiscoveredItem;
 }
 
 export default function MasterworkableItemTile(data) {
-    const item = data.item
+    // This is an array
+    const item = data.item;
+    const [activeItem, setActiveItem] = React.useState(getLowestMasterworkItem(item));
+
+    function spanClicked(event) {
+        let masterworkClicked = Number(event.target.id.split("-")[1]);
+        setActiveItem(getItemWithMasterwork(item, masterworkClicked));
+    }
+    
     return (
         <div className={`${styles.itemTile} ${data.hidden ? styles.hidden : ""}`}>
             <div className={styles.imageIcon}>
                 <CustomImage key={data.name}
                     alt={data.name}
-                    src={`/items/monumenta_icons/${item.name.replace(/\(.*\)/g, '').trim().replaceAll(" ", "_")}.png`}
+                    src={`/items/monumenta_icons/${activeItem.name.replace(/\(.*\)/g, '').trim().replaceAll(" ", "_")}.png`}
                     width={64}
                     height={64}
-                    altsrc={`/items/vanilla_icons/${item['base_item'].replaceAll(" ", "_").toLowerCase()}.png`}
+                    altsrc={`/items/vanilla_icons/${activeItem['base_item'].replaceAll(" ", "_").toLowerCase()}.png`}
                 />
             </div>
-            <span className={`${styles[camelCase(item.location)]} ${styles[camelCase(item.tier)]} ${styles.name}`}>
-                <a href={`https://monumentammo.fandom.com/wiki/${item.name.replace(/\(.*\)/g, '').trim().replaceAll(" ", "_",)}`} target="_blank" rel="noreferrer">{item.name}</a>
+            <span className={`${styles[camelCase(activeItem.location)]} ${styles[camelCase(activeItem.tier)]} ${styles.name}`}>
+                <a href={`https://monumentammo.fandom.com/wiki/${activeItem.name.replace(/\(.*\)/g, '').trim().replaceAll(" ", "_",)}`} target="_blank" rel="noreferrer">{activeItem.name}</a>
             </span>
-            <span className={styles.infoText}>{`${item.type} - ${item['base_item']} `}</span>
-            {item['original_item'] ? <span className={styles.infoText}>{`Skin for ${item['original_item']} `}</span> : ""}
-            <span className={styles.infoText}>{makeMasterworkString(item.masterwork, item.tier)}</span>
-            <Enchants item={item}></Enchants>
-            <span>
-                <span className={styles.infoText}>{`${item.region} `}</span>
-                <span className={styles[camelCase(item.tier)]}>{item.tier}</span>
+            <span className={styles.infoText}>{`${activeItem.type} - ${activeItem['base_item']} `}</span>
+            {activeItem['original_item'] ? <span className={styles.infoText}>{`Skin for ${activeItem['original_item']} `}</span> : ""}
+            <span className={styles.infoText}>
+                <span onClick={spanClicked} id="mw-0" className={styles["starSpan"]}>Masterwork</span>: <span>
+                    {
+                        [...Array(maxMasterwork[activeItem.tier]).keys()].map(num => num + 1).map(num => {
+                            if (num <= activeItem.masterwork) {
+                                return <span key={`mw-${num}`} onClick={spanClicked} id={`mw-${num}`} className={[styles["starSpan"], styles["masterworkStar"]].join(" ")}>★</span>
+                            } else {
+                                return <span key={`mw-${num}`} onClick={spanClicked} id={`mw-${num}`} className={styles["starSpan"]}>☆</span>
+                            }
+                        })
+                    }
+                </span>
             </span>
-            <span className={styles[camelCase(item.location)]}>{item.location}</span>
-            {item.notes ? <span className={styles.infoText}>{`${item.notes} `}</span> : ""}
+            {
+                (activeItem.undiscovered) ? (
+                    (activeItem.undiscovered == undiscovered.UNDISCOVERED) ? <span className={styles["undiscovered"]}>This item has not yet been discovered! Tag FlamingoBike#6228 on discord with a screenshot of the item.</span> :
+                        (activeItem.undiscovered == undiscovered.DOES_NOT_EXIST) ? <span className={styles["undiscovered"]}>This item does not appear ingame with this level of masterwork.</span> : ""
+                ) :
+                    <div>
+                        <Enchants item={activeItem}></Enchants>
+                        <span>
+                            <span className={styles.infoText}>{`${activeItem.region} `}</span>
+                            <span className={styles[camelCase(activeItem.tier)]}>{activeItem.tier}</span>
+                        </span>
+                        {activeItem.notes ? <span className={styles.infoText}>{`${activeItem.notes} `}</span> : ""}
+                    </div>
+            }
+            <span className={styles[camelCase(activeItem.location)]}>{activeItem.location}</span>
         </div>
     )
 }

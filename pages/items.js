@@ -12,7 +12,8 @@ import Footer from '../components/footer'
 
 
 function getRelevantItems(data) {
-    let items = Object.keys(itemData)
+    let items = Object.keys(itemData);
+    
     if (data.search) {
         items = items.filter(name => name.toLowerCase().includes(data.search.toLowerCase()))
     }
@@ -41,9 +42,31 @@ function getRelevantItems(data) {
             includedTypes.push(key)
         }
     }
+
     items = items.filter(name => includedTypes.includes(itemData[name].type.toLowerCase().replace(/<.*>/, "").trim()))
 
-    return items
+    // Group up masterwork tiers by their name using an object, removing them from items.
+    let masterworkItems = {};
+    // Go through the array in reverse order to have the splice work properly
+    // (items will go down in position if not removed from the end)
+    for (let i = items.length - 1; i >= 0; i--) {
+        let name = items[i];
+        if (itemData[name].masterwork != undefined) {
+            let itemName = itemData[name].name;
+            if (!masterworkItems[itemName]) {
+                masterworkItems[itemName] = [];
+            }
+            masterworkItems[itemName].push(itemData[name]);
+            items.splice(i, 1);
+        }
+    }
+    
+    // Re-insert the groups as arrays into the items array.
+    Object.keys(masterworkItems).forEach(item => {
+        items.push(masterworkItems[item]);
+    });
+
+    return items;
 }
 
 export default function Items() {
@@ -80,9 +103,9 @@ export default function Items() {
                     loader={<h4>No items found</h4>}
                 >
                     {relevantItems.slice(0, itemsToShow).map(name => {
-                        if (itemData[name].masterwork != undefined) {
+                        if (typeof name == "object") {
                             return (
-                                <MasterworkableItemTile key={name} name={itemData[name].name} item={itemData[name]}></MasterworkableItemTile>
+                                <MasterworkableItemTile key={name[0].name} name={name[0].name} item={name}></MasterworkableItemTile>
                             )
                         }
                         if (itemData[name].type == "Charm") {
