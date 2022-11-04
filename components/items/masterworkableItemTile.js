@@ -23,7 +23,7 @@ const undiscovered = {
 function getLowestMasterworkItem(items) {
     let min = items[0];
     for (let i = 1; i < items.length; i++) {
-        if (items[i].masterwork < min) {
+        if (items[i].masterwork < min.masterwork) {
             min = items[i];
         }
     }
@@ -34,7 +34,7 @@ function getItemWithMasterwork(items, masterwork) {
     let minMasterwork = getLowestMasterworkItem(items).masterwork;
     if (masterwork >= minMasterwork) {
         for (let item of items) {
-            if (Number(item.masterwork) == masterwork) {
+            if (Number(item.masterwork) === masterwork) {
                 return item;
             }
         }
@@ -64,6 +64,9 @@ function getItemWithMasterwork(items, masterwork) {
 export default function MasterworkableItemTile(data) {
     // This is an array
     const item = data.item;
+    if (item[0].name == "Mycelian Crescent") {
+        console.log(getLowestMasterworkItem(item));
+    }
     let defaultItem;
     if (data.default) {
         defaultItem = getItemWithMasterwork(item, data.default);
