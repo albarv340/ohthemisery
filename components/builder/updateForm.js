@@ -205,9 +205,10 @@ export default function UpdateForm({ update, build, parentLoaded }) {
         const name = event.target.name;
         enabledBoxes[name] = event.target.checked;
         const itemNames = Object.fromEntries(new FormData(formRef.current).entries());
-        const tempStats = recalcBuild(itemNames)
+        const tempStats = recalcBuild(itemNames);
+        console.log(enabledBoxes);
         setStats(tempStats);
-        updateFunction(tempStats);
+        update(tempStats);
     }
 
     return (
