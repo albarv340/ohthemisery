@@ -2,14 +2,8 @@ import Head from 'next/head'
 import React from 'react';
 import UpdateForm from '../components/builder/updateForm'
 import HomeButton from '../components/homeButton';
-import ItemTile from '../components/items/itemTile';
-import MasterworkableItemTile from '../components/items/masterworkableItemTile';
 import Footer from '../components/footer'
 import itemData from '../public/items/itemData.json'
-
-function checkExists(type, itemsToDisplay) {
-    return (itemsToDisplay.itemStats) ? itemsToDisplay.itemStats[type] !== undefined : false;
-}
 
 function getLinkPreviewDescription(build) {
     if (!build) return ""
@@ -45,7 +39,6 @@ function Builder({ build }) {
         setParentLoaded(true);
     }, []);
 
-    const itemTypes = ["mainhand", "offhand", "helmet", "chestplate", "leggings", "boots"];
     const miscStats = [
         { type: "armor", name: "Armor", percent: false },
         { type: "agility", name: "Agility", percent: false },
@@ -132,21 +125,6 @@ function Builder({ build }) {
                     </div>
                 </div>
                 <UpdateForm update={change} build={build} parentLoaded={parentLoaded}></UpdateForm>
-                <div className="row mb-2 pt-2">
-                    <span className="text-center text-danger fs-2 fw-bold">{(itemsToDisplay.corruption > 1) ? "YOU HAVE MORE THAN ONE CURSE OF CORRUPTION ITEM" : ""}</span>
-                </div>
-                <div className="row mb-2 pt-2">
-                    <span className="text-center text-danger fs-2 fw-bold">{(itemsToDisplay.twoHanded && !itemsToDisplay.weightless && itemsToDisplay.itemNames.offhand != "None") ? "YOU ARE USING A TWO HANDED MAINHAND WITH A NON WEIGHTLESS OFFHAND" : ""}</span>
-                </div>
-                <div className="row justify-content-center mb-2">
-                    {
-                        itemTypes.map(type =>
-                            (checkExists(type, itemsToDisplay)) ?
-                                (itemsToDisplay.fullItemData[type].masterwork != undefined) ? <MasterworkableItemTile key={type} name={itemsToDisplay.itemNames[type]} item={itemsToDisplay.fullItemData[type]}></MasterworkableItemTile> :
-                                <ItemTile key={type} name={itemsToDisplay.itemNames[type]} item={itemsToDisplay.fullItemData[type]}></ItemTile> : ""
-                        )
-                    }
-                </div>
                 <div className="row justify-content-center mb-2">
                     <div className="col-auto text-center border border-dark mx-2 py-2">
                         <h5 className="text-center fw-bold mb-0">Misc</h5>

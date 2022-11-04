@@ -1,5 +1,7 @@
 import Percentage from './percentage';
 
+const types = ["mainhand", "offhand", "helmet", "chestplate", "leggings", "boots"];
+
 class Stats {
     constructor(itemData, formData, enabledBoxes) {
         this.enabledBoxes = enabledBoxes;
@@ -11,22 +13,19 @@ class Stats {
             "leggings": formData.leggings,
             "boots": formData.boots
         };
-        this.fullItemData = {
-            "mainhand": (formData.mainhand != "None") ? itemData[formData.mainhand] : undefined,
-            "offhand": (formData.offhand != "None") ? itemData[formData.offhand] : undefined,
-            "helmet": (formData.helmet != "None") ? itemData[formData.helmet] : undefined,
-            "chestplate": (formData.chestplate != "None") ? itemData[formData.chestplate] : undefined,
-            "leggings": (formData.leggings != "None") ? itemData[formData.leggings] : undefined,
-            "boots": (formData.boots != "None") ? itemData[formData.boots] : undefined
-        }
-        this.itemStats = {
-            "mainhand": (formData.mainhand != "None") ? itemData[formData.mainhand]["stats"] : undefined,
-            "offhand": (formData.offhand != "None") ? itemData[formData.offhand]["stats"] : undefined,
-            "helmet": (formData.helmet != "None") ? itemData[formData.helmet]["stats"] : undefined,
-            "chestplate": (formData.chestplate != "None") ? itemData[formData.chestplate]["stats"] : undefined,
-            "leggings": (formData.leggings != "None") ? itemData[formData.leggings]["stats"] : undefined,
-            "boots": (formData.boots != "None") ? itemData[formData.boots]["stats"] : undefined
-        };
+
+        this.fullItemData = {};
+        types.forEach(type => {
+            this.fullItemData[type] = (this.itemNames[type] != "None") ? 
+                (itemData[this.itemNames[type]]) ? itemData[this.itemNames[type]] : {masterwork: 0} : {masterwork: 0};
+        });
+
+        this.itemStats = {};
+        types.forEach(type => {
+            this.itemStats[type] = (this.itemNames[type] != "None") ?
+                (itemData[this.itemNames[type]]) ? itemData[this.itemNames[type]].stats : undefined : undefined
+        })
+
         this.situationals = {
             shielding: { enabled: enabledBoxes.shielding, level: 0 },
             poise: { enabled: enabledBoxes.poise, level: 0 },
@@ -56,6 +55,11 @@ class Stats {
         // This hopefully finally fixes the precision errors with HP calculations.
         this.healthFinal = Number(this.healthFinal.toFixed(2));
         this.currentHealth = Number(this.currentHealth.toFixed(2));
+    }
+
+    getSupposedMasterwork(itemName) {
+        item.stats = {};
+        return item;
     }
 
     calculateOffenseStats() {

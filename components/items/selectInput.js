@@ -2,7 +2,7 @@ import Select from 'react-select';
 import React from 'react';
 
 export default function SelectInput(data) {
-    const options = data.sortableStats.map(item => { return { "value": item, "label": item } });
+    const options = data.sortableStats.map(item => { return (typeof item == "object") ? item : { "value": item, "label": item } });
     
     if (data.noneOption) {
         options.unshift({ "value": "None", "label": "None" });

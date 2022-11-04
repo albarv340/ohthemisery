@@ -1,5 +1,7 @@
 import SelectInput from '../items/selectInput';
 import CheckboxWithLabel from '../items/checkboxWithLabel';
+import ItemTile from '../../components/items/itemTile';
+import MasterworkableItemTile from '../../components/items/masterworkableItemTile';
 import itemData from '../../public/items/itemData.json';
 import React from 'react';
 import { useRouter } from 'next/router';
@@ -29,52 +31,69 @@ const enabledBoxes = {
     clericblessing: false
 };
 
-const refs = {
-    formRef: undefined,
-    mainhandReference: undefined,
-    offhandReference: undefined,
-    helmetReference: undefined,
-    chestplateReference: undefined,
-    leggingsReference: undefined,
-    bootsReference: undefined,
-    updateFunction: undefined
-};
+function groupMasterwork(items) {
+    // Group up masterwork tiers by their name using an object, removing them from items.
+    let masterworkItems = {};
+    // Go through the array in reverse order to have the splice work properly
+    // (items will go down in position if not removed from the end)
+    for (let i = items.length - 1; i >= 0; i--) {
+        let name = items[i];
+        if (itemData[name].masterwork != undefined) {
+            let itemName = itemData[name].name;
+            if (!masterworkItems[itemName]) {
+                masterworkItems[itemName] = [];
+            }
+            masterworkItems[itemName].push(itemData[name]);
+            items.splice(i, 1);
+        }
+    }
+    
+    // Re-insert the groups as arrays into the items array.
+    Object.keys(masterworkItems).forEach(item => {
+        items.push({ value: `${item}-${masterworkItems[item][0].masterwork}`, label: item });
+    });
+
+    return items;
+}
 
 function getRelevantItems(types) {
     let items = Object.keys(itemData);
-    return items.filter(name => types.includes(itemData[name].type.toLowerCase().replace(/<.*>/, "").trim()));
-}
-
-function checkboxChanged(event) {
-    let name = event.target.name;
-    enabledBoxes[name] = event.target.checked;
-    let itemNames = Object.fromEntries(new FormData(refs.formRef.current).entries());
-    let stats = recalcBuild(itemNames);
-    refs.updateFunction(stats);
+    return groupMasterwork(items.filter(name => types.includes(itemData[name].type.toLowerCase().replace(/<.*>/, "").trim())));
 }
 
 function recalcBuild(data) {
-    return new Stats(itemData, data, enabledBoxes);
+    let tempStats = new Stats(itemData, data, enabledBoxes);
+    return tempStats
 }
 
-function makeBuildString() {
-    let data = new FormData(refs.formRef.current).entries();
-    let buildString = "";
-    let keysToShare = ["mainhand", "offhand", "helmet", "chestplate", "leggings", "boots"];
-    for (const [key, value] of data) {
-        buildString += (keysToShare.includes(key)) ? `${key[0]}=${value.replaceAll(" ", "%20")}&` : "";
+function createMasterworkData(name) {
+    return Object.keys(itemData).filter(itemName => itemData[itemName].name == name).map(itemName => itemData[itemName]);
+}
+
+function removeMasterworkFromName(name) {
+    return name.split("-")[0];
+}
+
+function checkExists(type, itemsToDisplay) {
+    let retVal = false;
+    if (itemsToDisplay.itemStats) {
+        retVal = itemsToDisplay.itemStats[type] !== undefined;
     }
-    buildString = buildString.substring(0, buildString.length - 1);
-    return buildString;
+    if (itemsToDisplay.itemNames && itemsToDisplay.itemNames[type] && createMasterworkData(removeMasterworkFromName(itemsToDisplay.itemNames[type]))[0]?.masterwork) {
+        retVal = true;
+    }
+    return retVal;
 }
-
 
 export default function UpdateForm({ update, build, parentLoaded }) {
+    const [stats, setStats] = React.useState({});
+
     function sendUpdate(event) {
         event.preventDefault();
-        let itemNames = Object.fromEntries(new FormData(event.target).entries());
-        let stats = recalcBuild(itemNames);
-        update(stats);
+        const itemNames = Object.fromEntries(new FormData(event.target).entries());
+        const tempStats = recalcBuild(itemNames);
+        setStats(tempStats);
+        update(tempStats);
         router.push(`/builder?${makeBuildString()}`, `/builder/${makeBuildString()}`, { shallow: true });
     }
 
@@ -94,42 +113,53 @@ export default function UpdateForm({ update, build, parentLoaded }) {
                     itemNames[type] = "None";
                 }
             });
-
-            let stats = recalcBuild(itemNames);
-            update(stats);
+            const tempStats = recalcBuild(itemNames);
+            setStats(tempStats);
+            update(tempStats);
         }
     }, [parentLoaded]);
 
-    const formRef = React.useRef();
-    const mainhandReference = React.useRef();
-    const offhandReference = React.useRef();
-    const helmetReference = React.useRef();
-    const chestplateReference = React.useRef();
-    const leggingsReference = React.useRef();
-    const bootsReference = React.useRef();
+    const itemTypes = ["mainhand", "offhand", "helmet", "chestplate", "leggings", "boots"];
 
+    const formRef = React.useRef();
     const router = useRouter();
+    const itemRefs = {
+        mainhand: React.useRef(),
+        offhand: React.useRef(),
+        helmet: React.useRef(),
+        chestplate: React.useRef(),
+        leggings: React.useRef(),
+        boots: React.useRef()
+    }
 
     function resetForm(event) {
-        mainhandReference?.current?.setValue({ value: "None", label: "None" });
-        offhandReference?.current?.setValue({ value: "None", label: "None" });
-        helmetReference?.current?.setValue({ value: "None", label: "None" });
-        chestplateReference?.current?.setValue({ value: "None", label: "None" });
-        leggingsReference?.current?.setValue({ value: "None", label: "None" });
-        bootsReference?.current?.setValue({ value: "None", label: "None" });
-        let stats = recalcBuild(emptyBuild);
-        update(stats);
+        for (let ref in itemRefs) {
+            itemRefs[ref].current.setValue({ value: "None", label: "None" });
+        }
+        const tempStats = recalcBuild(emptyBuild)
+        setStats(tempStats);
+        update(tempStats);
         router.push('/builder', `/builder/`, { shallow: true });
     }
 
-    refs["formRef"] = formRef;
-    refs["mainhandReference"] = mainhandReference;
-    refs["offhandReference"] = offhandReference;
-    refs["helmetReference"] = helmetReference;
-    refs["chestplateReference"] = chestplateReference;
-    refs["leggingsReference"] = leggingsReference;
-    refs["bootsReference"] = bootsReference;
-    refs["updateFunction"] = update;
+    function receiveMasterworkUpdate(newActiveItem, itemType) {
+        let newBuild = {};
+        for (let ref in itemRefs) {
+            newBuild[ref] = itemRefs[ref].current.getValue()[0].value;
+        }
+        let mainhands = ["mainhand", "sword", "axe", "wand", "scythe", "bow", "crossbow", "throwable", "trident"];
+        let offhands = ["offhand", "offhand shield", "offhand sword"];
+        let actualItemType = (mainhands.includes(itemType.toLowerCase())) ? "mainhand" : (offhands.includes(itemType.toLowerCase())) ? "offhand" : itemType.toLowerCase();
+        
+        const manualBuildString = encodeURI(decodeURI(makeBuildString()).replace(newBuild[actualItemType.toLowerCase()], `${newActiveItem.name}-${newActiveItem.masterwork}`));
+        newBuild[actualItemType.toLowerCase()] = `${newActiveItem.name}-${newActiveItem.masterwork}`;
+        itemRefs[actualItemType.toLowerCase()].current.setValue({ "value": `${newActiveItem.name}-${newActiveItem.masterwork}`, "label": newActiveItem.name });
+        router.push(`/builder?${manualBuildString}`, `/builder/${manualBuildString}`, { shallow: true });
+
+        const tempStats = recalcBuild(newBuild)
+        setStats(tempStats);
+        update(tempStats);
+    }
 
     function copyBuild(event) {
         let baseUrl = `${window.location.origin}/builder/`;
@@ -156,7 +186,27 @@ export default function UpdateForm({ update, build, parentLoaded }) {
         if (!Object.keys(itemData).includes(name)) {
             return { "value": "None", "label": "None" };
         }
-        return { "value": name, "label": name };
+        return { "value": name, "label": removeMasterworkFromName(name) };
+    }
+
+    function makeBuildString() {
+        let data = new FormData(formRef.current).entries();
+        let buildString = "";
+        let keysToShare = ["mainhand", "offhand", "helmet", "chestplate", "leggings", "boots"];
+        for (const [key, value] of data) {
+            buildString += (keysToShare.includes(key)) ? `${key[0]}=${value.replaceAll(" ", "%20")}&` : "";
+        }
+        buildString = buildString.substring(0, buildString.length - 1);
+        return buildString;
+    }
+
+    function checkboxChanged(event) {
+        const name = event.target.name;
+        enabledBoxes[name] = event.target.checked;
+        const itemNames = Object.fromEntries(new FormData(formRef.current).entries());
+        const tempStats = recalcBuild(itemNames)
+        setStats(tempStats);
+        updateFunction(tempStats);
     }
 
     return (
@@ -164,29 +214,29 @@ export default function UpdateForm({ update, build, parentLoaded }) {
             <div className="row justify-content-center mb-3">
                 <div className="col-12 col-md-5 col-lg-2 text-center">
                     <p className="mb-1">Mainhand</p>
-                    <SelectInput reference={mainhandReference} name="mainhand" default={getEquipName("mainhand")} noneOption={true} sortableStats={getRelevantItems(["mainhand", "sword", "axe", "wand", "scythe", "bow", "crossbow", "throwable", "trident"])}></SelectInput>
+                    <SelectInput reference={itemRefs.mainhand} name="mainhand" default={getEquipName("mainhand")} noneOption={true} sortableStats={getRelevantItems(["mainhand", "sword", "axe", "wand", "scythe", "bow", "crossbow", "throwable", "trident"])}></SelectInput>
                 </div>
                 <div className="col-12 col-md-5 col-lg-2 text-center">
                     <p className="mb-1">Offhand</p>
-                    <SelectInput reference={offhandReference} name="offhand" default={getEquipName("offhand")} noneOption={true} sortableStats={getRelevantItems(["offhand", "offhand shield", "offhand sword"])}></SelectInput>
+                    <SelectInput reference={itemRefs.offhand} name="offhand" default={getEquipName("offhand")} noneOption={true} sortableStats={getRelevantItems(["offhand", "offhand shield", "offhand sword"])}></SelectInput>
                 </div>
             </div>
             <div className="row justify-content-center mb-4 pt-2">
                 <div className="col-12 col-md-3 col-lg-2 text-center">
                     <p className="mb-1">Helmet</p>
-                    <SelectInput reference={helmetReference} noneOption={true} name="helmet" default={getEquipName("helmet")} sortableStats={getRelevantItems(["helmet"])}></SelectInput>
+                    <SelectInput reference={itemRefs.helmet} noneOption={true} name="helmet" default={getEquipName("helmet")} sortableStats={getRelevantItems(["helmet"])}></SelectInput>
                 </div>
                 <div className="col-12 col-md-3 col-lg-2 text-center">
                     <p className="mb-1">Chestplate</p>
-                    <SelectInput reference={chestplateReference} noneOption={true} name="chestplate" default={getEquipName("chestplate")} sortableStats={getRelevantItems(["chestplate"])}></SelectInput>
+                    <SelectInput reference={itemRefs.chestplate} noneOption={true} name="chestplate" default={getEquipName("chestplate")} sortableStats={getRelevantItems(["chestplate"])}></SelectInput>
                 </div>
                 <div className="col-12 col-md-3 col-lg-2 text-center">
                     <p className="mb-1">Leggings</p>
-                    <SelectInput reference={leggingsReference} noneOption={true} name="leggings" default={getEquipName("leggings")} sortableStats={getRelevantItems(["leggings"])}></SelectInput>
+                    <SelectInput reference={itemRefs.leggings} noneOption={true} name="leggings" default={getEquipName("leggings")} sortableStats={getRelevantItems(["leggings"])}></SelectInput>
                 </div>
                 <div className="col-12 col-md-3 col-lg-2 text-center">
                     <p className="mb-1">Boots</p>
-                    <SelectInput reference={bootsReference} noneOption={true} name="boots" default={getEquipName("boots")} sortableStats={getRelevantItems(["boots"])}></SelectInput>
+                    <SelectInput reference={itemRefs.boots} noneOption={true} name="boots" default={getEquipName("boots")} sortableStats={getRelevantItems(["boots"])}></SelectInput>
                 </div>
             </div>
             <div className="row justify-content-center mb-3">
@@ -245,6 +295,22 @@ export default function UpdateForm({ update, build, parentLoaded }) {
                     <p className="mb-1">Perspicacity</p>
                     <input type="number" name="perspicacity" min="0" max="24" defaultValue="0" className="" />
                 </div>
+            </div>
+            <div className="row mb-2 pt-2">
+                <span className="text-center text-danger fs-2 fw-bold">{(stats.corruption > 1) ? "YOU HAVE MORE THAN ONE CURSE OF CORRUPTION ITEM" : ""}</span>
+            </div>
+            <div className="row mb-2 pt-2">
+                <span className="text-center text-danger fs-2 fw-bold">{(stats.twoHanded && !stats.weightless && stats.itemNames.offhand != "None") ? "YOU ARE USING A TWO HANDED MAINHAND WITH A NON WEIGHTLESS OFFHAND" : ""}</span>
+            </div>
+            <div className="row justify-content-center mb-2">
+                {
+                    itemTypes.map(type =>
+                        (checkExists(type, stats)) ?
+                            (stats.fullItemData[type].masterwork != undefined) ?
+                                <MasterworkableItemTile update={receiveMasterworkUpdate} key={type} name={removeMasterworkFromName(stats.itemNames[type])} item={createMasterworkData(removeMasterworkFromName(stats.itemNames[type]))} default={Number(stats.itemNames[type].split("-")[1])}></MasterworkableItemTile> :
+                                <ItemTile key={type} name={stats.itemNames[type]} item={stats.fullItemData[type]}></ItemTile> : ""
+                    )
+                }
             </div>
         </form>
     )

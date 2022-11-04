@@ -64,11 +64,21 @@ function getItemWithMasterwork(items, masterwork) {
 export default function MasterworkableItemTile(data) {
     // This is an array
     const item = data.item;
-    const [activeItem, setActiveItem] = React.useState(getLowestMasterworkItem(item));
+    let defaultItem;
+    if (data.default) {
+        defaultItem = getItemWithMasterwork(item, data.default);
+    } else {
+        defaultItem = getLowestMasterworkItem(item);
+    }
+    const [activeItem, setActiveItem] = React.useState(defaultItem);
 
     function spanClicked(event) {
         let masterworkClicked = Number(event.target.id.split("-")[1]);
-        setActiveItem(getItemWithMasterwork(item, masterworkClicked));
+        const tempActiveItem = getItemWithMasterwork(item, masterworkClicked)
+        setActiveItem(tempActiveItem);
+        if (data.update) {
+            data.update(tempActiveItem, tempActiveItem.type);
+        }
     }
     
     return (
