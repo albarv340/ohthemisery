@@ -71,7 +71,7 @@ function createMasterworkData(name) {
 }
 
 function removeMasterworkFromName(name) {
-    return name.split("-")[0];
+    return name.replace(/-\d$/g, "");
 }
 
 function checkExists(type, itemsToDisplay) {
@@ -79,7 +79,7 @@ function checkExists(type, itemsToDisplay) {
     if (itemsToDisplay.itemStats) {
         retVal = itemsToDisplay.itemStats[type] !== undefined;
     }
-    if (itemsToDisplay.itemNames && itemsToDisplay.itemNames[type] && createMasterworkData(removeMasterworkFromName(itemsToDisplay.itemNames[type]))[0]?.masterwork) {
+    if (itemsToDisplay.itemNames && itemsToDisplay.itemNames[type] && createMasterworkData(removeMasterworkFromName(itemsToDisplay.itemNames[type]))[0]?.masterwork != undefined) {
         retVal = true;
     }
     return retVal;
@@ -150,6 +150,7 @@ export default function UpdateForm({ update, build, parentLoaded }) {
         let mainhands = ["mainhand", "sword", "axe", "wand", "scythe", "bow", "crossbow", "throwable", "trident"];
         let offhands = ["offhand", "offhand shield", "offhand sword"];
         let actualItemType = (mainhands.includes(itemType.toLowerCase())) ? "mainhand" : (offhands.includes(itemType.toLowerCase())) ? "offhand" : itemType.toLowerCase();
+        console.log(newActiveItem);
         
         const manualBuildString = encodeURI(decodeURI(makeBuildString()).replace(newBuild[actualItemType.toLowerCase()], `${newActiveItem.name}-${newActiveItem.masterwork}`));
         newBuild[actualItemType.toLowerCase()] = `${newActiveItem.name}-${newActiveItem.masterwork}`;
