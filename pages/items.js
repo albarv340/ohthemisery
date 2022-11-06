@@ -13,7 +13,7 @@ import Footer from '../components/footer'
 
 function getRelevantItems(data) {
     let items = Object.keys(itemData);
-    
+
     if (data.search) {
         items = items.filter(name => name.toLowerCase().includes(data.search.toLowerCase()))
     }
@@ -60,10 +60,10 @@ function getRelevantItems(data) {
             items.splice(i, 1);
         }
     }
-    
+
     // Re-insert the groups as arrays into the items array.
     Object.keys(masterworkItems).forEach(item => {
-        items.push(masterworkItems[item]);
+        items.unshift(masterworkItems[item]);
     });
 
     return items;
