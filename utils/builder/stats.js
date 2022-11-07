@@ -293,13 +293,14 @@ class Stats {
         this.effHealingRate = effHealingNonRounded.toFixedPerc(2);
         // Fix regen to the actual value per second
         let regenPerSecNonRounded = 0.33 * Math.sqrt(this.regenPerSec) * this.healingRate.val;
-        this.healingRate = this.healingRate.toFixedPerc(2);
         this.regenPerSec = regenPerSecNonRounded.toFixed(2);
         // Calculate %hp regen per sec
         this.regenPerSecPercent = new Percentage(((regenPerSecNonRounded / this.healthFinal)), false).toFixedPerc(2);
         // Fix life drain on crit
-        let lifeDrainOnCritFixedNonRounded = (Math.sqrt(this.lifeDrainOnCrit)) * effHealingNonRounded.val;
+        let lifeDrainOnCritFixedNonRounded = (Math.sqrt(this.lifeDrainOnCrit)) * this.healingRate.val;
         this.lifeDrainOnCrit = lifeDrainOnCritFixedNonRounded.toFixed(2);
+        // Don't need healingRate as a percentage object anymore, turn it into the display string
+        this.healingRate = this.healingRate.toFixedPerc(2);
         // Calculate %hp regained from life drain on crit
         this.lifeDrainOnCritPercent = new Percentage((lifeDrainOnCritFixedNonRounded / this.healthFinal), false).toFixedPerc(2);
         // Add to thorns damage
