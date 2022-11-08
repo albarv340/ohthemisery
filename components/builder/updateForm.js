@@ -16,10 +16,12 @@ const enabledBoxes = {
     poise: false,
     inure: false,
     steadfast: false,
+    guard: false,
     ethereal: false,
     reflexes: false,
     evasion: false,
     tempo: false,
+    cloaked: false,
     secondwind: false,
     // Patron Buffs
     speed: false,
@@ -257,11 +259,13 @@ export default function UpdateForm({ update, build, parentLoaded }) {
                 <CheckboxWithLabel name="Poise" checked={false} onChange={checkboxChanged} />
                 <CheckboxWithLabel name="Inure" checked={false} onChange={checkboxChanged} />
                 <CheckboxWithLabel name="Steadfast" checked={false} onChange={checkboxChanged} />
+                <CheckboxWithLabel name="Guard" checked={false} onChange={checkboxChanged} />
                 <CheckboxWithLabel name="SecondWind" checked={false} onChange={checkboxChanged} />
                 <CheckboxWithLabel name="Ethereal" checked={false} onChange={checkboxChanged} />
                 <CheckboxWithLabel name="Reflexes" checked={false} onChange={checkboxChanged} />
                 <CheckboxWithLabel name="Evasion" checked={false} onChange={checkboxChanged} />
                 <CheckboxWithLabel name="Tempo" checked={false} onChange={checkboxChanged} />
+                <CheckboxWithLabel name="Cloaked" checked={false} onChange={checkboxChanged} />
                 <CheckboxWithLabel name="Scout" checked={false} onChange={checkboxChanged} />
                 <CheckboxWithLabel name="ClericBlessing" checked={false} onChange={checkboxChanged} />
                 <CheckboxWithLabel name="FOL" checked={false} onChange={checkboxChanged} />

@@ -31,10 +31,12 @@ class Stats {
             poise: { enabled: enabledBoxes.poise, level: 0 },
             inure: { enabled: enabledBoxes.inure, level: 0 },
             steadfast: { enabled: enabledBoxes.steadfast, level: 0 },
+            guard: { enabled: enabledBoxes.guard, level: 0 },
             ethereal: { enabled: enabledBoxes.ethereal, level: 0 },
             reflexes: { enabled: enabledBoxes.reflexes, level: 0 },
             evasion: { enabled: enabledBoxes.evasion, level: 0 },
             tempo: { enabled: enabledBoxes.tempo, level: 0 },
+            cloaked: { enabled: enabledBoxes.cloaked, level: 0},
             secondwind: { enabled: enabledBoxes.secondwind, level: 0 },
             adaptability: { enabled: true, level: 0 }
         };
@@ -55,11 +57,6 @@ class Stats {
         // This hopefully finally fixes the precision errors with HP calculations.
         this.healthFinal = Number(this.healthFinal.toFixed(2));
         this.currentHealth = Number(this.currentHealth.toFixed(2));
-    }
-
-    getSupposedMasterwork(itemName) {
-        item.stats = {};
-        return item;
     }
 
     calculateOffenseStats() {
@@ -214,15 +211,17 @@ class Stats {
         let shieldingSit = (this.situationals.shielding.enabled) ? situationalArmor * this.situationals.shielding.level : 0;
         let poiseSit = (this.situationals.poise.enabled) ? ((this.currentHealthPercent.val >= 0.9) ? situationalArmor * this.situationals.poise.level : 0) : 0;
         let inureSit = (this.situationals.inure.enabled) ? situationalArmor * this.situationals.inure.level : 0;
+        let guardSit = (this.situationals.guard.enabled) ? situationalArmor * this.situationals.guard.level : 0;
+        let cloakedSit = (this.situationals.cloaked.enabled) ? situationalAgility * this.situationals.cloaked.level : 0;
 
         let steadfastArmor = (1 - Math.max(0.2, this.currentHealthPercent.val)) * 0.25 *
             Math.min(((this.situationals.adaptability.level > 0 && moreAgility) ? agility : (moreArmor) ? armor : (this.situationals.adaptability.level == 0) ? armor : 0), 30);
 
         let steadfastSit = (this.situationals.steadfast.enabled) ? steadfastArmor * this.situationals.steadfast.level : 0;
 
-        let sumSits = etherealSit + tempoSit + evasionSit + reflexesSit + shieldingSit + poiseSit + inureSit;
-        let sumArmorSits = shieldingSit + poiseSit + inureSit;
-        let sumAgiSits = etherealSit + tempoSit + evasionSit + reflexesSit;
+        let sumSits = etherealSit + tempoSit + evasionSit + reflexesSit + shieldingSit + poiseSit + inureSit + guardSit + cloakedSit;
+        let sumArmorSits = shieldingSit + poiseSit + inureSit + guardSit;
+        let sumAgiSits = etherealSit + tempoSit + evasionSit + reflexesSit + cloakedSit;
 
         let armorPlusSits = armor + ((this.situationals.adaptability.level > 0 && moreArmor) ?
             sumSits : (this.situationals.adaptability.level > 0 && moreAgility) ?
@@ -235,8 +234,6 @@ class Stats {
                 agility : (this.situationals.adaptability.level == 0) ? sumAgiSits : 0);
         let halfArmor = armorPlusSitsSteadfast / 2;
         let halfAgility = agilityPlusSits / 2;
-
-        // there is something weird going on with fall damage. check out: khrosmos/prophetic moonbeam/crest of the tundra/windborn cape/lyrata/mist's wake
 
         let meleeDamage = this.calculateDamageTaken(hasNothing, this.meleeProt, 2, armorPlusSitsSteadfast, agilityPlusSits);
         let projectileDamage = this.calculateDamageTaken(hasNothing, this.projectileProt, 2, armorPlusSitsSteadfast, agilityPlusSits);
@@ -354,10 +351,12 @@ class Stats {
                 this.situationals.poise.level += this.sumNumberStat(itemStats, "poise");
                 this.situationals.inure.level += this.sumNumberStat(itemStats, "inure");
                 this.situationals.steadfast.level += this.sumNumberStat(itemStats, "steadfast");
+                this.situationals.guard.level += this.sumNumberStat(itemStats, "guard");
                 this.situationals.ethereal.level += this.sumNumberStat(itemStats, "ethereal");
                 this.situationals.reflexes.level += this.sumNumberStat(itemStats, "reflexes");
                 this.situationals.evasion.level += this.sumNumberStat(itemStats, "evasion");
                 this.situationals.tempo.level += this.sumNumberStat(itemStats, "tempo");
+                this.situationals.cloaked.level += this.sumNumberStat(itemStats, "cloaked");
                 this.situationals.adaptability.level += this.sumNumberStat(itemStats, "adaptability");
                 this.situationals.secondwind.level += this.sumNumberStat(itemStats, "second_wind");
 
