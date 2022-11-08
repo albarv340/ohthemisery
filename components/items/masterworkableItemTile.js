@@ -116,7 +116,7 @@ export default function MasterworkableItemTile(data) {
             {
                 (activeItem.undiscovered) ? (
                     (activeItem.undiscovered == undiscovered.UNDISCOVERED) ? <span className={styles["undiscovered"]}>This item has not yet been discovered! Tag FlamingoBike#6228 on discord with a screenshot of the item.</span> :
-                        (activeItem.undiscovered == undiscovered.DOES_NOT_EXIST) ? <span className={styles["undiscovered"]}>This item does not appear ingame with this level of masterwork.</span> : ""
+                        (activeItem.undiscovered == undiscovered.DOES_NOT_EXIST) ? <span className={styles["undiscovered"]}>This item does not appear ingame with this level of masterwork, or this level of masterwork does not have the desired stat.</span> : ""
                 ) :
                     <div>
                         <Enchants item={activeItem}></Enchants>

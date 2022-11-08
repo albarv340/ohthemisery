@@ -44,7 +44,8 @@ function Builder({ build }) {
         { type: "agility", name: "Agility", percent: false },
         { type: "speedPercent", name: "Speed", percent: true },
         { type: "knockbackRes", name: "KB Resistance", percent: true },
-        { type: "thorns", name: "Thorns Damage", percent: false }
+        { type: "thorns", name: "Thorns Damage", percent: false },
+        { type: "fireTickDamage", name: "Fire Tick Damage", percent: false }
     ];
     const healthStats = [
         { type: "healthFinal", name: "Max Health", percent: false },
