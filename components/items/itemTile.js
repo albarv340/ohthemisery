@@ -22,7 +22,7 @@ export default function ItemTile(data) {
                     altsrc={`/items/vanilla_icons/${item['base_item'].replaceAll(" ", "_").toLowerCase()}.png`}
                 />
             </div>
-            <span className={`${styles[camelCase(item.location)]} ${styles[camelCase(item.tier)]} ${styles.name}`}>
+            <span className={`${styles[camelCase(item.location)]} ${(item.tier == "Tier 3" && item.region == "Ring") ? styles["tier5"] : styles[camelCase(item.tier)]} ${styles.name}`}>
                 <a href={`https://monumentammo.fandom.com/wiki/${item.name.replace(/\(.*\)/g, '').trim().replaceAll(" ", "_",)}`} target="_blank" rel="noreferrer">{item.name}</a>
             </span>
             <span className={styles.infoText}>{`${item.type} - ${item['base_item']} `}</span>
