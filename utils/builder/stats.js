@@ -163,13 +163,13 @@ class Stats {
         this.ailmentHNDR = new Percentage((1 - ((1 - drs.ailment[drType].val) / (this.healthFinal / 20))), false).toFixedPerc(2);
     }
 
-    calculateDamageTaken(noArmor, prot, protmodifier, earmor, eagility) {
+    calculateDamageTaken(noArmor, prot, fragility, protmodifier, earmor, eagility) {
         let damageTaken = {};
-        damageTaken.base = ((noArmor) ? 100 * Math.pow(0.96, (prot * protmodifier)) :
-            100 * Math.pow(0.96, ((prot * protmodifier) + earmor + eagility) - (0.5 * earmor * eagility / (earmor + eagility))));
+        damageTaken.base = ((noArmor) ? 100 * Math.pow(0.96, (prot * protmodifier - fragility * protmodifier)) :
+            100 * Math.pow(0.96, ((prot * protmodifier - fragility * protmodifier) + earmor + eagility) - (0.5 * earmor * eagility / (earmor + eagility))));
 
-        damageTaken.secondwind = ((noArmor) ? 100 * Math.pow(0.96, (prot * protmodifier)) :
-            100 * Math.pow(0.96, ((prot * protmodifier) + earmor + eagility) - (0.5 * earmor * eagility / (earmor + eagility))));
+        damageTaken.secondwind = ((noArmor) ? 100 * Math.pow(0.96, (prot * protmodifier - fragility * protmodifier)) :
+            100 * Math.pow(0.96, ((prot * protmodifier - fragility * protmodifier) + earmor + eagility) - (0.5 * earmor * eagility / (earmor + eagility))));
         damageTaken.secondwind *= Math.pow(0.9, this.situationals.secondwind.level);
 
         damageTaken.base = damageTaken.base
@@ -235,13 +235,13 @@ class Stats {
         let halfArmor = armorPlusSitsSteadfast / 2;
         let halfAgility = agilityPlusSits / 2;
 
-        let meleeDamage = this.calculateDamageTaken(hasNothing, this.meleeProt, 2, armorPlusSitsSteadfast, agilityPlusSits);
-        let projectileDamage = this.calculateDamageTaken(hasNothing, this.projectileProt, 2, armorPlusSitsSteadfast, agilityPlusSits);
-        let magicDamage = this.calculateDamageTaken(hasNothing, this.magicProt, 2, armorPlusSitsSteadfast, agilityPlusSits);
-        let blastDamage = this.calculateDamageTaken(hasNothing, this.blastProt, 2, armorPlusSitsSteadfast, agilityPlusSits);
-        let fireDamage = this.calculateDamageTaken(hasNothing, this.fireProt, 2, halfArmor, halfAgility);
-        let fallDamage = this.calculateDamageTaken(hasNothing, this.fallProt, 3, halfArmor, halfAgility);
-        let ailmentDamage = this.calculateDamageTaken(true, 0, 0, 0, 0);
+        let meleeDamage = this.calculateDamageTaken(hasNothing, this.meleeProt, this.meleeFragility, 2, armorPlusSitsSteadfast, agilityPlusSits);
+        let projectileDamage = this.calculateDamageTaken(hasNothing, this.projectileProt, this.projectileFragility, 2, armorPlusSitsSteadfast, agilityPlusSits);
+        let magicDamage = this.calculateDamageTaken(hasNothing, this.magicProt, this.magicFragility, 2, armorPlusSitsSteadfast, agilityPlusSits);
+        let blastDamage = this.calculateDamageTaken(hasNothing, this.blastProt, this.blastFragility, 2, armorPlusSitsSteadfast, agilityPlusSits);
+        let fireDamage = this.calculateDamageTaken(hasNothing, this.fireProt, this.fireFragility, 2, halfArmor, halfAgility);
+        let fallDamage = this.calculateDamageTaken(hasNothing, this.fallProt, 0, 3, halfArmor, halfAgility);
+        let ailmentDamage = this.calculateDamageTaken(true, 0, 0, 0, 0, 0);
 
         let reductions = {
             melee: { base: new Percentage(100 - meleeDamage.base), secondwind: new Percentage(100 - meleeDamage.secondwind) },
@@ -336,6 +336,12 @@ class Stats {
                 this.fireProt += this.sumNumberStat(itemStats, "fire_prot");
                 this.fallProt += this.sumNumberStat(itemStats, "feather_falling");
 
+                this.meleeFragility += this.sumNumberStat(itemStats, "melee_fragility");
+                this.projectileFragility += this.sumNumberStat(itemStats, "projectile_fragility");
+                this.magicFragility += this.sumNumberStat(itemStats, "magic_fragility");
+                this.blastFragility += this.sumNumberStat(itemStats, "blast_fragility");
+                this.fireFragility += this.sumNumberStat(itemStats, "fire_fragility");
+
                 this.attackDamagePercent.add(this.sumNumberStat(itemStats, "attack_damage_percent"));
                 this.attackSpeedPercent.add(this.sumNumberStat(itemStats, "attack_speed_percent"));
                 this.attackSpeedFlatBonus += this.sumNumberStat(itemStats, "attack_speed_flat");
@@ -395,6 +401,12 @@ class Stats {
         this.fireProt = 0,
         this.fallProt = 0,
         this.ailmentProt = 0,
+
+        this.meleeFragility = 0,
+        this.projectileFragility = 0,
+        this.magicFragility = 0,
+        this.blastFragility = 0,
+        this.fireFragility = 0,
 
         this.meleeHNDR = new Percentage(0).toFixedPerc(2),
         this.projectileHNDR = new Percentage(0).toFixedPerc(2),
