@@ -20,7 +20,7 @@ class CharmFormatter {
     }
 
     static statStyle(stat, value) {
-        return (stat.includes("cooldown") || stat.includes("requirement")) ?
+        return ((stat.includes("cooldown")  && !stat.includes("reduction")) || stat.includes("requirement")) ?
             (value < 0) ? "positiveCharm" : "negativeCharm" :
             (value < 0) ? "negativeCharm" : "positiveCharm";
     }
