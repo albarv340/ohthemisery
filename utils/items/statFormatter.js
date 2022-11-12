@@ -57,9 +57,9 @@ const categories = {
             .map(entry => ({ name: entry, format: Formats.SINGLE_ENCHANT }))
     ],
     "epic": [
-        ...["arcane_thrust"]
+        ...["arcane_thrust", "worldly_protection"]
             .map(entry => ({ name: entry, format: Formats.ENCHANT })),
-        ...["ashes_of_eternity", "rage_of_the_keter", "protection_of_the_depths"]
+        ...["ashes_of_eternity", "rage_of_the_keter"]
             .map(entry => ({ name: entry, format: Formats.SINGLE_ENCHANT }))
     ],
     "ranged": [
