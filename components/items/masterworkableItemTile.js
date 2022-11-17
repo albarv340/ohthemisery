@@ -124,10 +124,15 @@ export default function MasterworkableItemTile(data) {
                             <span className={styles.infoText}>{`${activeItem.region} `}</span>
                             <span className={styles[camelCase(activeItem.tier)]}>{activeItem.tier}</span>
                         </span>
-                        {activeItem.notes ? <span className={styles.infoText}>{`${activeItem.notes} `}</span> : ""}
                     </div>
             }
             <span className={styles[camelCase(activeItem.location)]}>{activeItem.location}</span>
+            {
+                (!activeItem.undiscovered) ?
+                <div>
+                    {activeItem.notes ? <span className={styles.infoText}>{`${activeItem.notes} `}</span> : ""}
+                </div> : ""
+            }
         </div>
     )
 }
