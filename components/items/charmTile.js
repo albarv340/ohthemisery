@@ -17,6 +17,13 @@ function makeClassString(className) {
     return <span className={styles[className.toLowerCase()]}>{className}</span>
 }
 
+function getImageName(charmTier, charmClass, charmPower) {
+    if (charmTier == "Epic") {
+        return `epic_charm_${charmPower}`;
+    }
+    return `${(charmClass == "Alchemist") ? "alch" : (charmClass == "Generalist") ? "gen" : charmClass.toLowerCase()}_charm_${(charmTier == "Base") ? "" : charmTier.toLowerCase()}_${charmPower}`;
+}
+
 export default function CharmTile(data) {
     const item = data.item;
     let formattedCharm = CharmFormatter.formatCharm(item.stats);
@@ -25,10 +32,10 @@ export default function CharmTile(data) {
             <div className={styles.imageIcon}>
                 <CustomImage key={data.name}
                     alt={data.name}
-                    src={`/items/monumenta_icons/charm_placeholder_${item["power"]}.png`}
+                    src={`/items/monumenta_icons/charms/${item.name.toLowerCase().replaceAll(" ", "_").replaceAll("'", "")}.png`}
                     width={64}
                     height={64}
-                    altsrc={`/items/vanilla_icons/${item['base_item'].replaceAll(" ", "_").toLowerCase()}.png`}
+                    altsrc={`/items/monumenta_icons/charms/${getImageName(item.tier, item.class_name, item.power)}.png`}
                 />
             </div>
             <span className={`${styles[camelCase(item.location)]} ${styles[camelCase(item.tier)]} ${styles.name}`}>
