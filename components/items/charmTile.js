@@ -21,7 +21,7 @@ function getImageName(charmTier, charmClass, charmPower) {
     if (charmTier == "Epic") {
         return `epic_charm_${charmPower}`;
     }
-    return `${(charmClass == "Alchemist") ? "alch" : (charmClass == "Generalist") ? "gen" : charmClass.toLowerCase()}_charm_${(charmTier == "Base") ? "" : charmTier.toLowerCase()}_${charmPower}`;
+    return `${(charmClass == "Alchemist") ? "alch" : (charmClass == "Generalist") ? "gen" : charmClass.toLowerCase()}_charm${(charmTier == "Base") ? "" : `_${charmTier.toLowerCase()}`}_${charmPower}`;
 }
 
 export default function CharmTile(data) {
