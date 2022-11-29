@@ -7,6 +7,7 @@ import React from 'react';
 import { useRouter } from 'next/router';
 
 import Stats from '../../utils/builder/stats';
+import TranslatableText from '../translatableText';
 
 const emptyBuild = { mainhand: "None", offhand: "None", helmet: "None", chestplate: "None", leggings: "None", boots: "None" };
 
@@ -152,7 +153,6 @@ export default function UpdateForm({ update, build, parentLoaded }) {
         let mainhands = ["mainhand", "sword", "axe", "wand", "scythe", "bow", "crossbow", "throwable", "trident"];
         let offhands = ["offhand", "offhand shield", "offhand sword"];
         let actualItemType = (mainhands.includes(itemType.toLowerCase())) ? "mainhand" : (offhands.includes(itemType.toLowerCase())) ? "offhand" : itemType.toLowerCase();
-        console.log(newActiveItem);
         
         const manualBuildString = encodeURI(decodeURI(makeBuildString()).replace(newBuild[actualItemType.toLowerCase()], `${newActiveItem.name}-${newActiveItem.masterwork}`));
         newBuild[actualItemType.toLowerCase()] = `${newActiveItem.name}-${newActiveItem.masterwork}`;
@@ -208,7 +208,6 @@ export default function UpdateForm({ update, build, parentLoaded }) {
         enabledBoxes[name] = event.target.checked;
         const itemNames = Object.fromEntries(new FormData(formRef.current).entries());
         const tempStats = recalcBuild(itemNames);
-        console.log(enabledBoxes);
         setStats(tempStats);
         update(tempStats);
     }
@@ -217,44 +216,49 @@ export default function UpdateForm({ update, build, parentLoaded }) {
         <form ref={formRef} onSubmit={sendUpdate} onReset={resetForm}>
             <div className="row justify-content-center mb-3">
                 <div className="col-12 col-md-5 col-lg-2 text-center">
-                    <p className="mb-1">Mainhand</p>
+                    <TranslatableText identifier="items.type.mainhand"></TranslatableText>
                     <SelectInput reference={itemRefs.mainhand} name="mainhand" default={getEquipName("mainhand")} noneOption={true} sortableStats={getRelevantItems(["mainhand", "sword", "axe", "wand", "scythe", "bow", "crossbow", "throwable", "trident"])}></SelectInput>
                 </div>
                 <div className="col-12 col-md-5 col-lg-2 text-center">
-                    <p className="mb-1">Offhand</p>
+                    <TranslatableText identifier="items.type.offhand"></TranslatableText>
                     <SelectInput reference={itemRefs.offhand} name="offhand" default={getEquipName("offhand")} noneOption={true} sortableStats={getRelevantItems(["offhand", "offhand shield", "offhand sword"])}></SelectInput>
                 </div>
             </div>
             <div className="row justify-content-center mb-4 pt-2">
                 <div className="col-12 col-md-3 col-lg-2 text-center">
-                    <p className="mb-1">Helmet</p>
+                    <TranslatableText identifier="items.type.helmet"></TranslatableText>
                     <SelectInput reference={itemRefs.helmet} noneOption={true} name="helmet" default={getEquipName("helmet")} sortableStats={getRelevantItems(["helmet"])}></SelectInput>
                 </div>
                 <div className="col-12 col-md-3 col-lg-2 text-center">
-                    <p className="mb-1">Chestplate</p>
+                    <TranslatableText identifier="items.type.chestplate"></TranslatableText>
                     <SelectInput reference={itemRefs.chestplate} noneOption={true} name="chestplate" default={getEquipName("chestplate")} sortableStats={getRelevantItems(["chestplate"])}></SelectInput>
                 </div>
                 <div className="col-12 col-md-3 col-lg-2 text-center">
-                    <p className="mb-1">Leggings</p>
+                    <TranslatableText identifier="items.type.leggings"></TranslatableText>
                     <SelectInput reference={itemRefs.leggings} noneOption={true} name="leggings" default={getEquipName("leggings")} sortableStats={getRelevantItems(["leggings"])}></SelectInput>
                 </div>
                 <div className="col-12 col-md-3 col-lg-2 text-center">
-                    <p className="mb-1">Boots</p>
+                    <TranslatableText identifier="items.type.boots"></TranslatableText>
                     <SelectInput reference={itemRefs.boots} noneOption={true} name="boots" default={getEquipName("boots")} sortableStats={getRelevantItems(["boots"])}></SelectInput>
                 </div>
             </div>
             <div className="row justify-content-center mb-3">
                 <div className="col-4 col-md-3 col-lg-1 text-center">
-                    <input type="submit" className="btn btn-dark" value="Recalculate" />
+                    <button type="submit" className="btn btn-dark" value="Recalculate">
+                        <TranslatableText identifier="builder.buttons.recalculate"></TranslatableText>
+                    </button>
                 </div>
                 <div className="col-4 col-md-3 col-lg-1 text-center">
-                    <input type="button" className="btn btn-dark" id="share" onClick={copyBuild} value="Share" />
+                    <button type="button" className="btn btn-dark" id="share" onClick={copyBuild}>
+                        <TranslatableText identifier="builder.buttons.share"></TranslatableText>
+                    </button>
                 </div>
                 <div className="col-4 col-md-3 col-lg-1 text-center">
                     <input type="reset" className="btn btn-danger" />
                 </div>
             </div>
             <div className="row justify-content-center pt-2">
+                <TranslatableText identifier="builder.misc.situationals" className="text-center mb-1"></TranslatableText>
                 <CheckboxWithLabel name="Shielding" checked={false} onChange={checkboxChanged} />
                 <CheckboxWithLabel name="Poise" checked={false} onChange={checkboxChanged} />
                 <CheckboxWithLabel name="Inure" checked={false} onChange={checkboxChanged} />
@@ -271,15 +275,15 @@ export default function UpdateForm({ update, build, parentLoaded }) {
                 <CheckboxWithLabel name="FOL" checked={false} onChange={checkboxChanged} />
             </div>
             <div className="row justify-content-center pt-2">
-                <p className="text-center mb-1">Patron Buffs</p>
+                <TranslatableText identifier="builder.misc.patronBuffs" className="text-center mb-1"></TranslatableText>
                 <CheckboxWithLabel name="Speed" checked={false} onChange={checkboxChanged} />
                 <CheckboxWithLabel name="Resistance" checked={false} onChange={checkboxChanged} />
                 <CheckboxWithLabel name="Strength" checked={false} onChange={checkboxChanged} />
             </div>
             <div className="row justify-content-center mb-3 pt-2">
                 <div className="col text-center">
-                    <p className="mb-1">Health%</p>
-                    <input type="number" name="health" min="1" max="100" defaultValue="100" className="" />
+                <TranslatableText identifier="builder.misc.maxHealthPercent"></TranslatableText>
+                <input type="number" name="health" min="1" max="100" defaultValue="100" className="mt-1" />
                 </div>
                 <div className="col text-center">
                     <p className="mb-1">Tenacity</p>

@@ -2,6 +2,7 @@ import CustomImage from './customImage'
 import Enchants from './enchants'
 import styles from '../../styles/Items.module.css'
 import React from 'react'
+import TranslatableText from '../translatableText';
 
 function camelCase(str) {
     if (!str) return "";
@@ -64,9 +65,6 @@ function getItemWithMasterwork(items, masterwork) {
 export default function MasterworkableItemTile(data) {
     // This is an array
     const item = data.item;
-    if (item[0].name == "Mycelian Crescent") {
-        console.log(getLowestMasterworkItem(item));
-    }
     let defaultItem;
     if (data.default) {
         defaultItem = getItemWithMasterwork(item, data.default);
@@ -98,7 +96,7 @@ export default function MasterworkableItemTile(data) {
             <span className={`${styles[camelCase(activeItem.location)]} ${styles[camelCase(activeItem.tier)]} ${styles.name}`}>
                 <a href={`https://monumentammo.fandom.com/wiki/${activeItem.name.replace(/\(.*\)/g, '').trim().replaceAll(" ", "_",)}`} target="_blank" rel="noreferrer">{activeItem.name}</a>
             </span>
-            <span className={styles.infoText}>{`${activeItem.type} - ${activeItem['base_item']} `}</span>
+            <span className={styles.infoText}><TranslatableText identifier={`items.type.${camelCase(activeItem.type)}`}></TranslatableText>{` - ${activeItem['base_item']} `}</span>
             {activeItem['original_item'] ? <span className={styles.infoText}>{`Skin for ${activeItem['original_item']} `}</span> : ""}
             <span className={styles.infoText}>
                 <span onClick={spanClicked} id="mw-0" className={styles["starSpan"]}>Masterwork</span>: <span>

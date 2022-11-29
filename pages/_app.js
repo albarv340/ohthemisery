@@ -1,7 +1,38 @@
+import React from 'react';
+import Footer from '../components/footer';
+import Header from '../components/header';
 import '../styles/globals.css'
 
-function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />
+export const LanguageContext = React.createContext({
+  lang: 'en',
+  setLang: () => {}
+})
+
+export const LanguageContextProvider = ({children}) => {
+  const [lang, setLang] = React.useState('en');
+
+  return (
+    <LanguageContext.Provider
+      value={{
+        lang: lang,
+        setLang: setLang
+      }}
+    >
+      {children}
+    </LanguageContext.Provider>
+  )
 }
 
-export default MyApp
+export const useLanguageContext = () => React.useContext(LanguageContext);
+
+function App({ Component, pageProps }) {
+  return (
+    <LanguageContextProvider>
+      <Header />
+      <Component {...pageProps} />
+      <Footer />
+    </LanguageContextProvider>
+  )
+}
+
+export default App;

@@ -1,15 +1,15 @@
-import Head from 'next/head'
-import styles from '../styles/Items.module.css'
-import itemData from '../public/items/itemData.json'
-import ItemTile from '../components/items/itemTile'
-import MasterworkableItemTile from '../components/items/masterworkableItemTile'
-import CharmTile from '../components/items/charmTile'
-import SearchForm from '../components/items/searchForm'
-import HomeButton from '../components/homeButton'
+import Head from 'next/head';
+import styles from '../styles/Items.module.css';
+import itemData from '../public/items/itemData.json';
+import ItemTile from '../components/items/itemTile';
+import MasterworkableItemTile from '../components/items/masterworkableItemTile';
+import CharmTile from '../components/items/charmTile';
+import SearchForm from '../components/items/searchForm';
+import HomeButton from '../components/homeButton';
 import React from 'react';
 import InfiniteScroll from "react-infinite-scroll-component";
-import Footer from '../components/footer'
-
+import Footer from '../components/footer';
+import LanguageSelector from '../components/languageSelector';
 
 function getRelevantItems(data) {
     let items = Object.keys(itemData);
@@ -91,7 +91,6 @@ export default function Items() {
                 <meta name="description" content="Monumenta item guide to make it easier to find items." />
                 <meta name="keywords" content="Monumenta, Minecraft, MMORPG, Items, Item Guide" />
             </Head>
-            <HomeButton />
             <main className={styles.main}>
                 <h1>Monumenta Items</h1>
                 <SearchForm update={handleChange} />
@@ -119,7 +118,6 @@ export default function Items() {
                     })}
                 </InfiniteScroll>
             </main>
-            <Footer />
         </div>
     )
 }

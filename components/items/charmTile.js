@@ -1,6 +1,7 @@
 import CustomImage from './customImage'
 import styles from '../../styles/Items.module.css'
 import CharmFormatter from '../../utils/items/charmFormatter'
+import TranslatableText from '../translatableText';
 
 function camelCase(str) {
     if (!str) return "";
@@ -41,7 +42,7 @@ export default function CharmTile(data) {
             <span className={`${styles[camelCase(item.location)]} ${styles[camelCase(item.tier)]} ${styles.name}`}>
                 <a href={`https://monumentammo.fandom.com/wiki/${item.name.replace(/\(.*\)/g, '').trim().replaceAll(" ", "_",)}`} target="_blank" rel="noreferrer">{item.name}</a>
             </span>
-            <span className={styles.infoText}>{`${item.type} - ${item['base_item']} `}</span>
+            <span className={styles.infoText}><TranslatableText identifier="items.type.charm"></TranslatableText>{` - ${item['base_item']} `}</span>
             {item['original_item'] ? <span className={styles.infoText}>{`Skin for ${item['original_item']} `}</span> : ""}
             <span className={styles.infoText}>{makePowerString(item.power)} - {makeClassString(item.class_name)}</span>
             {formattedCharm}
