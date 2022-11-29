@@ -4,6 +4,7 @@ import UpdateForm from '../components/builder/updateForm'
 import HomeButton from '../components/homeButton';
 import Footer from '../components/footer'
 import itemData from '../public/items/itemData.json'
+import TranslatableText from '../components/translatableText';
 
 function getLinkPreviewDescription(build) {
     if (!build) return ""
@@ -40,72 +41,72 @@ function Builder({ build }) {
     }, []);
 
     const miscStats = [
-        { type: "armor", name: "Armor", percent: false },
-        { type: "agility", name: "Agility", percent: false },
-        { type: "speedPercent", name: "Speed", percent: true },
-        { type: "knockbackRes", name: "KB Resistance", percent: true },
-        { type: "thorns", name: "Thorns Damage", percent: false },
-        { type: "fireTickDamage", name: "Fire Tick Damage", percent: false }
+        { type: "armor", name: "builder.stats.misc.armor", percent: false },
+        { type: "agility", name: "builder.stats.misc.agility", percent: false },
+        { type: "speedPercent", name: "builder.stats.misc.speed", percent: true },
+        { type: "knockbackRes", name: "builder.stats.misc.kbResistance", percent: true },
+        { type: "thorns", name: "builder.stats.misc.thorns", percent: false },
+        { type: "fireTickDamage", name: "builder.stats.misc.fireTickDamage", percent: false }
     ];
     const healthStats = [
-        { type: "healthFinal", name: "Max Health", percent: false },
-        { type: "currentHealth", name: "Current Health", percent: false },
-        { type: "healingRate", name: "Healing Rate", percent: true },
-        { type: "effHealingRate", name: "Eff. Healing Rate", percent: true },
-        { type: "regenPerSec", name: "Regen/sec", percent: false },
-        { type: "regenPerSecPercent", name: "%HP regen/sec", percent: true },
-        { type: "lifeDrainOnCrit", name: "Life Drain Crit", percent: false },
-        { type: "lifeDrainOnCritPercent", name: "Life Drain %HP Crit", percent: true }
+        { type: "healthFinal", name: "builder.stats.health.healthFinal", percent: false },
+        { type: "currentHealth", name: "builder.stats.health.currentHealth", percent: false },
+        { type: "healingRate", name: "builder.stats.health.healingRate", percent: true },
+        { type: "effHealingRate", name: "builder.stats.health.effectiveHealingRate", percent: true },
+        { type: "regenPerSec", name: "builder.stats.health.regenPerSecond", percent: false },
+        { type: "regenPerSecPercent", name: "builder.stats.health.regenPerSecondPercent", percent: true },
+        { type: "lifeDrainOnCrit", name: "builder.stats.health.lifeDrainOnCrit", percent: false },
+        { type: "lifeDrainOnCritPercent", name: "builder.stats.health.lifeDrainOnCritPercent", percent: true }
     ];
     const DRStats = [
-        { type: "meleeDR", name: "Melee", percent: true },
-        { type: "projectileDR", name: "Projectile", percent: true },
-        { type: "magicDR", name: "Magic", percent: true },
-        { type: "blastDR", name: "Blast", percent: true },
-        { type: "fireDR", name: "Fire", percent: true },
-        { type: "fallDR", name: "Fall", percent: true },
-        { type: "ailmentDR", name: "Ailment", percent: true }
+        { type: "meleeDR", name: "builder.stats.dr-ehp.melee", percent: true },
+        { type: "projectileDR", name: "builder.stats.dr-ehp.projectile", percent: true },
+        { type: "magicDR", name: "builder.stats.dr-ehp.magic", percent: true },
+        { type: "blastDR", name: "builder.stats.dr-ehp.blast", percent: true },
+        { type: "fireDR", name: "builder.stats.dr-ehp.fire", percent: true },
+        { type: "fallDR", name: "builder.stats.dr-ehp.fall", percent: true },
+        { type: "ailmentDR", name: "builder.stats.dr-ehp.ailment", percent: true }
     ];
     const healthNormalizedDRStats = [
-        { type: "meleeHNDR", name: "Melee", percent: true },
-        { type: "projectileHNDR", name: "Projectile", percent: true },
-        { type: "magicHNDR", name: "Magic", percent: true },
-        { type: "blastHNDR", name: "Blast", percent: true },
-        { type: "fireHNDR", name: "Fire", percent: true },
-        { type: "fallHNDR", name: "Fall", percent: true },
-        { type: "ailmentHNDR", name: "Ailment", percent: true }
+        { type: "meleeHNDR", name: "builder.stats.dr-ehp.melee", percent: true },
+        { type: "projectileHNDR", name: "builder.stats.dr-ehp.projectile", percent: true },
+        { type: "magicHNDR", name: "builder.stats.dr-ehp.magic", percent: true },
+        { type: "blastHNDR", name: "builder.stats.dr-ehp.blast", percent: true },
+        { type: "fireHNDR", name: "builder.stats.dr-ehp.fire", percent: true },
+        { type: "fallHNDR", name: "builder.stats.dr-ehp.fall", percent: true },
+        { type: "ailmentHNDR", name: "builder.stats.dr-ehp.ailment", percent: true }
     ];
     const EHPStats = [
-        { type: "meleeEHP", name: "Melee", percent: false },
-        { type: "projectileEHP", name: "Projectile", percent: false },
-        { type: "magicEHP", name: "Magic", percent: false },
-        { type: "blastEHP", name: "Blast", percent: false },
-        { type: "fireEHP", name: "Fire", percent: false },
-        { type: "fallEHP", name: "Fall", percent: false },
-        { type: "ailmentEHP", name: "Ailment", percent: false }
+        { type: "meleeEHP", name: "builder.stats.dr-ehp.melee", percent: false },
+        { type: "projectileEHP", name: "builder.stats.dr-ehp.projectile", percent: false },
+        { type: "magicEHP", name: "builder.stats.dr-ehp.magic", percent: false },
+        { type: "blastEHP", name: "builder.stats.dr-ehp.blast", percent: false },
+        { type: "fireEHP", name: "builder.stats.dr-ehp.fire", percent: false },
+        { type: "fallEHP", name: "builder.stats.dr-ehp.fall", percent: false },
+        { type: "ailmentEHP", name: "builder.stats.dr-ehp.ailment", percent: false }
     ];
     const meleeStats = [
-        { type: "attackSpeedPercent", name: "Attack Speed", percent: true },
-        { type: "attackSpeed", name: "Weapon Attack Speed", percent: false },
-        { type: "attackDamagePercent", name: "Damage", percent: true },
-        { type: "attackDamage", name: "Weapon Damage", percent: false },
-        { type: "attackDamageCrit", name: "Weapon Crit Damage", percent: false },
-        { type: "iframeDPS", name: "IFrame-Capped DPS", percent: false },
-        { type: "iframeCritDPS", name: "IFrame-Capped Crit DPS", percent: false }
+        { type: "attackSpeedPercent", name: "builder.stats.melee.attackSpeedPercent", percent: true },
+        { type: "attackSpeed", name: "builder.stats.melee.attackSpeed", percent: false },
+        { type: "attackDamagePercent", name: "builder.stats.melee.attackDamagePercent", percent: true },
+        { type: "attackDamage", name: "builder.stats.melee.attackDamage", percent: false },
+        { type: "attackDamageCrit", name: "builder.stats.melee.attackDamageCrit", percent: false },
+        { type: "iframeDPS", name: "builder.stats.melee.iframeDps", percent: false },
+        { type: "iframeCritDPS", name: "builder.stats.melee.iframeCritDps", percent: false }
     ];
     const projectileStats = [
-        { type: "projectileDamagePercent", name: "Proj Damage", percent: true },
-        { type: "projectileDamage", name: "Weapon Proj Damage", percent: false },
-        { type: "projectileSpeedPercent", name: "Proj Speed", percent: true },
-        { type: "projectileSpeed", name: "Weapon Proj Speed", percent: false },
-        { type: "throwRatePercent", name: "Throw Rate", percent: true },
-        { type: "throwRate", name: "Weapon Throw Rate", percent: false }
+        { type: "projectileDamagePercent", name: "builder.stats.projectile.projectileDamagePercent", percent: true },
+        { type: "projectileDamage", name: "builder.stats.projectile.projectileDamage", percent: false },
+        { type: "projectileSpeedPercent", name: "builder.stats.projectile.projectileSpeedPercent", percent: true },
+        { type: "projectileSpeed", name: "builder.stats.projectile.projectileSpeed", percent: false },
+        { type: "throwRatePercent", name: "builder.stats.projectile.throwRatePercent", percent: true },
+        { type: "throwRate", name: "builder.stats.projectile.throwRate", percent: false }
     ];
     const magicStats = [
-        { type: "magicDamagePercent", name: "Magic Damage", percent: true },
-        { type: "spellPowerPercent", name: "Spell Power", percent: true },
-        { type: "spellDamage", name: "Total Magic Damage", percent: true },
-        { type: "spellCooldownPercent", name: "Cooldown Duration", percent: true }
+        { type: "magicDamagePercent", name: "builder.stats.magic.magicDamagePercent", percent: true },
+        { type: "spellPowerPercent", name: "builder.stats.magic.spellPowerPercent", percent: true },
+        { type: "spellDamage", name: "builder.stats.magic.spellDamage", percent: true },
+        { type: "spellCooldownPercent", name: "builder.stats.magic.spellCooldownPercent", percent: true }
     ];
 
 
@@ -118,7 +119,6 @@ function Builder({ build }) {
                 <meta name="description" content={`${getLinkPreviewDescription(build)}`} />
                 <meta name="keywords" content="Monumenta, Minecraft, MMORPG, Items, Builder" />
             </Head>
-            <HomeButton />
             <main>
                 <div className="row mb-5">
                     <div className="col-12">
@@ -128,104 +128,103 @@ function Builder({ build }) {
                 <UpdateForm update={change} build={build} parentLoaded={parentLoaded}></UpdateForm>
                 <div className="row justify-content-center mb-2">
                     <div className="col-auto text-center border border-dark mx-2 py-2">
-                        <h5 className="text-center fw-bold mb-0">Misc</h5>
+                        <h5 className="text-center fw-bold mb-0"><TranslatableText identifier="builder.statCategories.misc"></TranslatableText></h5>
                         <h6 className="text-center fw-bold">&nbsp;</h6>
                         {
                             miscStats.map(stat =>
                                 (itemsToDisplay[stat.type] !== undefined) ?
                                     <div key={stat.type}>
-                                        <p className="mb-1 mt-1"><b>{stat.name}: </b>{itemsToDisplay[stat.type]}{stat.percent ? "%" : ""}</p>
+                                        <p className="mb-1 mt-1"><b><TranslatableText identifier={stat.name}></TranslatableText>: </b>{itemsToDisplay[stat.type]}{stat.percent ? "%" : ""}</p>
                                     </div> : ""
                             )
                         }
                     </div>
                     <div className="col-auto text-center border border-dark mx-2 py-2">
-                        <h5 className="text-center fw-bold mb-0">Health</h5>
+                        <h5 className="text-center fw-bold mb-0"><TranslatableText identifier="builder.statCategories.health"></TranslatableText></h5>
                         <h6 className="text-center fw-bold">&nbsp;</h6>
                         {
                             healthStats.map(stat =>
                                 (itemsToDisplay[stat.type] !== undefined) ?
                                     <div key={stat.type}>
-                                        <p className="mb-1 mt-1"><b>{stat.name}: </b>{itemsToDisplay[stat.type]}{stat.percent ? "%" : ""}</p>
+                                        <p className="mb-1 mt-1"><b><TranslatableText identifier={stat.name}></TranslatableText>: </b>{itemsToDisplay[stat.type]}{stat.percent ? "%" : ""}</p>
                                     </div> : ""
                             )
                         }
                     </div>
                     <div className="col-auto text-center border border-dark mx-2 py-2">
-                        <h5 className="text-center fw-bold mb-0">Damage Reduction</h5>
-                        <h6 className="text-center fw-bold">(Regular)</h6>
+                        <h5 className="text-center fw-bold mb-0"><TranslatableText identifier="builder.statCategories.damageReduction"></TranslatableText></h5>
+                        <h6 className="text-center fw-bold"><TranslatableText identifier="builder.statCategories.damageReduction.sub"></TranslatableText></h6>
                         {
                             DRStats.map(stat =>
                                 (itemsToDisplay[stat.type] !== undefined) ?
                                     <div key={stat.type}>
-                                        <p className="mb-1 mt-1"><b>{stat.name}: </b>{itemsToDisplay[stat.type]}{stat.percent ? "%" : ""}</p>
+                                        <p className="mb-1 mt-1"><b><TranslatableText identifier={stat.name}></TranslatableText>: </b>{itemsToDisplay[stat.type]}{stat.percent ? "%" : ""}</p>
                                     </div> : ""
                             )
                         }
                     </div>
                     <div className="col-auto text-center border border-dark mx-2 py-2">
-                        <h5 className="text-center fw-bold mb-0">Damage Reduction</h5>
-                        <h6 className="text-center fw-bold">(Health Normalized)</h6>
+                        <h5 className="text-center fw-bold mb-0"><TranslatableText identifier="builder.statCategories.damageReductionHealthNormalized"></TranslatableText></h5>
+                        <h6 className="text-center fw-bold"><TranslatableText identifier="builder.statCategories.damageReductionHealthNormalized.sub"></TranslatableText></h6>
                         {
                             healthNormalizedDRStats.map(stat =>
                                 (itemsToDisplay[stat.type] !== undefined) ?
                                     <div key={stat.type}>
-                                        <p className="mb-1 mt-1"><b>{stat.name}: </b>{itemsToDisplay[stat.type]}{stat.percent ? "%" : ""}</p>
+                                        <p className="mb-1 mt-1"><b><TranslatableText identifier={stat.name}></TranslatableText>: </b>{itemsToDisplay[stat.type]}{stat.percent ? "%" : ""}</p>
                                     </div> : ""
                             )
                         }
                     </div>
                     <div className="col-auto text-center border border-dark mx-2 py-2">
-                        <h5 className="text-center fw-bold mb-0">Effective Health</h5>
+                        <h5 className="text-center fw-bold mb-0"><TranslatableText identifier="builder.statCategories.effectiveHealth"></TranslatableText></h5>
                         <h6 className="text-center fw-bold">&nbsp;</h6>
                         {
                             EHPStats.map(stat =>
                                 (itemsToDisplay[stat.type] !== undefined) ?
                                     <div key={stat.type}>
-                                        <p className="mb-1 mt-1"><b>{stat.name}: </b>{itemsToDisplay[stat.type]}{stat.percent ? "%" : ""}</p>
+                                        <p className="mb-1 mt-1"><b><TranslatableText identifier={stat.name}></TranslatableText>: </b>{itemsToDisplay[stat.type]}{stat.percent ? "%" : ""}</p>
                                     </div> : ""
                             )
                         }
                     </div>
                     <div className="col-auto text-center border border-dark mx-2 py-2">
-                        <h5 className="text-center fw-bold mb-0">Melee</h5>
+                        <h5 className="text-center fw-bold mb-0"><TranslatableText identifier="builder.statCategories.melee"></TranslatableText></h5>
                         <h6 className="text-center fw-bold">&nbsp;</h6>
                         {
                             meleeStats.map(stat =>
                                 (itemsToDisplay[stat.type] !== undefined) ?
                                     <div key={stat.type}>
-                                        <p className="mb-1 mt-1"><b>{stat.name}: </b>{itemsToDisplay[stat.type]}{stat.percent ? "%" : ""}</p>
+                                        <p className="mb-1 mt-1"><b><TranslatableText identifier={stat.name}></TranslatableText>: </b>{itemsToDisplay[stat.type]}{stat.percent ? "%" : ""}</p>
                                     </div> : ""
                             )
                         }
                     </div>
                     <div className="col-auto text-center border border-dark mx-2 py-2">
-                        <h5 className="text-center fw-bold mb-0">Projectile</h5>
+                        <h5 className="text-center fw-bold mb-0"><TranslatableText identifier="builder.statCategories.projectile"></TranslatableText></h5>
                         <h6 className="text-center fw-bold">&nbsp;</h6>
                         {
                             projectileStats.map(stat =>
                                 (itemsToDisplay[stat.type] !== undefined) ?
                                     <div key={stat.type}>
-                                        <p className="mb-1 mt-1"><b>{stat.name}: </b>{itemsToDisplay[stat.type]}{stat.percent ? "%" : ""}</p>
+                                        <p className="mb-1 mt-1"><b><TranslatableText identifier={stat.name}></TranslatableText>: </b>{itemsToDisplay[stat.type]}{stat.percent ? "%" : ""}</p>
                                     </div> : ""
                             )
                         }
                     </div>
                     <div className="col-auto text-center border border-dark mx-2 py-2">
-                        <h5 className="text-center fw-bold mb-0">Magic</h5>
+                        <h5 className="text-center fw-bold mb-0"><TranslatableText identifier="builder.statCategories.magic"></TranslatableText></h5>
                         <h6 className="text-center fw-bold">&nbsp;</h6>
                         {
                             magicStats.map(stat =>
                                 (itemsToDisplay[stat.type] !== undefined) ?
                                     <div key={stat.type}>
-                                        <p className="mb-1 mt-1"><b>{stat.name}: </b>{itemsToDisplay[stat.type]}{stat.percent ? "%" : ""}</p>
+                                        <p className="mb-1 mt-1"><b><TranslatableText identifier={stat.name}></TranslatableText>: </b>{itemsToDisplay[stat.type]}{stat.percent ? "%" : ""}</p>
                                     </div> : ""
                             )
                         }
                     </div>
                 </div>
             </main>
-            <Footer />
         </div>
     )
 }

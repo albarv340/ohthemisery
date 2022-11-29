@@ -1,5 +1,5 @@
 import styles from '../../styles/Items.module.css'
-import enchantmentsData from '../../public/items/enchantmentsData.json'
+import TranslatableEnchant from '../../components/translatableEnchant';
 
 const Formats = {
     "ENCHANT": 0,
@@ -178,7 +178,7 @@ class StatFormatter {
         for (const category in categories) {
             for (const stat of categories[category]) {
                 if (stats[stat.name]) {
-                    formattedStats.push(<span className={styles[this.statStyle(stat, stats[stat.name], category)]} title={enchantmentsData[stat.name]} key={stat.name}>{this.toHumanReadable(stat, stats[stat.name])}</span>);
+                    formattedStats.push(<TranslatableEnchant title={stat.name} className={styles[this.statStyle(stat, stats[stat.name], category)]}>{this.toHumanReadable(stat, stats[stat.name])}</TranslatableEnchant>);
                 }
             }
         }

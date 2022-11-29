@@ -2,6 +2,7 @@ import SelectInput from './selectInput'
 import CheckboxWithLabel from './checkboxWithLabel'
 import styles from '../../styles/Items.module.css'
 import React from 'react'
+import TranslatableText from '../translatableText'
 
 const sortableStats = ["-", "Abyssal", "Adaptability", "Adrenaline", "Agility", "Anemia", "Aptitude", "Aqua Affinity", "Arcane Thrust", "Armor",
     "Ashes of Eternity", "Attack Damage Percent", "Attack Speed Flat", "Attack Speed Percent", "Attack Damage Base", "Attack Speed Base",
@@ -93,67 +94,67 @@ export default function SearchForm({ update }) {
                 <div className={styles.checkboxes} title="Right-click a checkbox to deselect all others">
                     <span>Display items of type:</span>
                     <div className={styles.checkboxSubgroup}>
-                        <CheckboxWithLabel name="Helmet" checked={true} />
-                        <CheckboxWithLabel name="Chestplate" checked={true} />
-                        <CheckboxWithLabel name="Leggings" checked={true} />
-                        <CheckboxWithLabel name="Boots" checked={true} />
+                        <CheckboxWithLabel name="Helmet" translatableName="items.type.helmet" checked={true} />
+                        <CheckboxWithLabel name="Chestplate" translatableName="items.type.chestplate" checked={true} />
+                        <CheckboxWithLabel name="Leggings" translatableName="items.type.leggings" checked={true} />
+                        <CheckboxWithLabel name="Boots" translatableName="items.type.boots" checked={true} />
                     </div>
                     <div className={styles.checkboxSubgroup}>
-                        <CheckboxWithLabel name="Axe" checked={true} />
-                        <CheckboxWithLabel name="Wand" checked={true} />
-                        <CheckboxWithLabel name="Sword" checked={true} />
-                        <CheckboxWithLabel name="Scythe" checked={true} />
-                        <CheckboxWithLabel name="Pickaxe" checked={true} />
-                        <CheckboxWithLabel name="Shovel" checked={true} />
+                        <CheckboxWithLabel name="Axe" translatableName="items.type.axe" checked={true} />
+                        <CheckboxWithLabel name="Wand" translatableName="items.type.wand" checked={true} />
+                        <CheckboxWithLabel name="Sword" translatableName="items.type.sword" checked={true} />
+                        <CheckboxWithLabel name="Scythe" translatableName="items.type.scythe" checked={true} />
+                        <CheckboxWithLabel name="Pickaxe" translatableName="items.type.pickaxe" checked={true} />
+                        <CheckboxWithLabel name="Shovel" translatableName="items.type.shovel" checked={true} />
                     </div>
                     <div className={styles.checkboxSubgroup}>
-                        <CheckboxWithLabel name="Bow" checked={true} />
-                        <CheckboxWithLabel name="Crossbow" checked={true} />
-                        <CheckboxWithLabel name="Throwable" checked={true} />
-                        <CheckboxWithLabel name="Trident" checked={true} />
+                        <CheckboxWithLabel name="Bow" translatableName="items.type.bow" checked={true} />
+                        <CheckboxWithLabel name="Crossbow" translatableName="items.type.crossbow" checked={true} />
+                        <CheckboxWithLabel name="Throwable" translatableName="items.type.throwable" checked={true} />
+                        <CheckboxWithLabel name="Trident" translatableName="items.type.trident" checked={true} />
                     </div>
                     <div className={styles.checkboxSubgroup}>
-                        <CheckboxWithLabel name="Offhand Shield" checked={true} />
-                        <CheckboxWithLabel name="Offhand" checked={true} />
-                        <CheckboxWithLabel name="Offhand Sword" checked={true} />
+                        <CheckboxWithLabel name="Offhand Shield" translatableName="items.type.offhandShield" checked={true} />
+                        <CheckboxWithLabel name="Offhand" translatableName="items.type.offhand" checked={true} />
+                        <CheckboxWithLabel name="Offhand Sword" translatableName="items.type.offhandSword" checked={true} />
                     </div>
                     <div className={styles.checkboxSubgroup}>
-                        <CheckboxWithLabel name="Mainhand" checked={true} />
-                        <CheckboxWithLabel name="Consumable" checked={true} />
-                        <CheckboxWithLabel name="Misc" checked={true} />
-                        <CheckboxWithLabel name="Charm" checked={true} />
+                        <CheckboxWithLabel name="Mainhand" translatableName="items.type.mainhand" checked={true} />
+                        <CheckboxWithLabel name="Consumable" translatableName="items.type.consumable" checked={true} />
+                        <CheckboxWithLabel name="Misc" translatableName="items.type.misc" checked={true} />
+                        <CheckboxWithLabel name="Charm" translatableName="items.type.charm" checked={true} />
                     </div>
-                    <span>TIP: Right click a checkbox to deselect all others!</span>
+                    <TranslatableText identifier="items.searchForm.tip"></TranslatableText>
                 </div>
                 <div>
                     <div className={styles.selects}>
-                        <span>Sort By:</span>
+                        <TranslatableText identifier="items.searchForm.sortBy"></TranslatableText>
                         <SelectInput key={searchKey} name="sortSelect" sortableStats={sortableStats} />
                     </div>
                     <div className={styles.selects}>
-                        <span>Region:</span>
+                        <TranslatableText identifier="items.searchForm.region"></TranslatableText>
                         <SelectInput key={regionKey} name="regionSelect" sortableStats={regions} />
                     </div>
                     <div className={styles.selects}>
-                        <span>Tier:</span>
+                        <TranslatableText identifier="items.searchForm.tier"></TranslatableText>
                         <SelectInput key={tierKey} name="tierSelect" sortableStats={tiers} />
                     </div>
                     <div className={styles.selects}>
-                        <span>Location:</span>
+                        <TranslatableText identifier="items.searchForm.location"></TranslatableText>
                         <SelectInput key={locationKey} name="locationSelect" sortableStats={locations} />
                     </div>
                     <div className={styles.selects}>
-                        <span>Charm Class:</span>
+                        <TranslatableText identifier="items.searchForm.charmClass"></TranslatableText>
                         <SelectInput key={classKey} name="classSelect" sortableStats={charmClasses} />
                     </div>
                     <div className={styles.selects}>
-                        <span>Base Item:</span>
+                        <TranslatableText identifier="items.searchForm.baseItem"></TranslatableText>
                         <SelectInput key={baseItemKey} name="baseItemSelect" sortableStats={baseItems} />
                     </div>
                 </div>
 
             </div>
-            <span>Search:</span>
+            <TranslatableText identifier="items.searchForm.search"></TranslatableText>
             <input type="text" name="search" placeholder="Search" />
             <div>
                 <input className={styles.submitButton} type="submit" />

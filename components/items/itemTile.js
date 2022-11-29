@@ -1,6 +1,7 @@
 import CustomImage from './customImage'
 import Enchants from './enchants'
 import styles from '../../styles/Items.module.css'
+import TranslatableText from '../translatableText';
 
 function camelCase(str) {
     if (!str) return "";
@@ -25,7 +26,7 @@ export default function ItemTile(data) {
             <span className={`${styles[camelCase(item.location)]} ${(item.tier == "Tier 3" && item.region == "Ring") ? styles["tier5"] : styles[camelCase(item.tier)]} ${styles.name}`}>
                 <a href={`https://monumentammo.fandom.com/wiki/${item.name.replace(/\(.*\)/g, '').trim().replaceAll(" ", "_",)}`} target="_blank" rel="noreferrer">{item.name}</a>
             </span>
-            <span className={styles.infoText}>{`${item.type} - ${item['base_item']} `}</span>
+            <span className={styles.infoText}><TranslatableText identifier={`items.type.${camelCase(item.type)}`}></TranslatableText>{` - ${item['base_item']} `}</span>
             {item['original_item'] ? <span className={styles.infoText}>{`Skin for ${item['original_item']} `}</span> : ""}
             <Enchants item={item}></Enchants>
             <span>
