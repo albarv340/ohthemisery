@@ -96,7 +96,7 @@ export default function MasterworkableItemTile(data) {
             <span className={`${styles[camelCase(activeItem.location)]} ${styles[camelCase(activeItem.tier)]} ${styles.name}`}>
                 <a href={`https://monumentammo.fandom.com/wiki/${activeItem.name.replace(/\(.*\)/g, '').trim().replaceAll(" ", "_",)}`} target="_blank" rel="noreferrer">{activeItem.name}</a>
             </span>
-            <span className={styles.infoText}><TranslatableText identifier={`items.type.${camelCase(activeItem.type)}`}></TranslatableText>{` - ${activeItem['base_item']} `}</span>
+            <span className={styles.infoText}><TranslatableText identifier={`items.type.${camelCase(activeItem.type.replace("<M>", ""))}`}></TranslatableText>{` - ${activeItem['base_item']} `}</span>
             {activeItem['original_item'] ? <span className={styles.infoText}>{`Skin for ${activeItem['original_item']} `}</span> : ""}
             <span className={styles.infoText}>
                 <span onClick={spanClicked} id="mw-0" className={styles["starSpan"]}>Masterwork</span>: <span>
