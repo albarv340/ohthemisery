@@ -64,8 +64,8 @@ const categories = {
     ],
     "ranged": [
         ...["quick_charge", "point_blank", "sniper", "multishot", "piercing", "retrieval",
-            "punch", "ice_aspect_p", "fire_aspect_p", "thunder_aspect_p", "recoil", "explosive",
-            "multiload"]
+            "ice_aspect_p", "fire_aspect_p", "thunder_aspect_p", "wind_aspect_p", "earth_aspect_p",
+            "punch", "recoil", "explosive", "multiload"]
             .map(entry => ({ name: entry, format: Formats.ENCHANT })),
         ...["infinity_bow"]
             .map(entry => ({ name: entry, format: Formats.SINGLE_ENCHANT }))
@@ -178,7 +178,7 @@ class StatFormatter {
         for (const category in categories) {
             for (const stat of categories[category]) {
                 if (stats[stat.name]) {
-                    formattedStats.push(<TranslatableEnchant title={stat.name} className={styles[this.statStyle(stat, stats[stat.name], category)]}>{this.toHumanReadable(stat, stats[stat.name])}</TranslatableEnchant>);
+                    formattedStats.push(<TranslatableEnchant key={stat.name} title={stat.name} className={styles[this.statStyle(stat, stats[stat.name], category)]}>{this.toHumanReadable(stat, stats[stat.name])}</TranslatableEnchant>);
                 }
             }
         }
