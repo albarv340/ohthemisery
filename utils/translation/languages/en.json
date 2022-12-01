@@ -36,6 +36,7 @@
     "items.searchForm.baseItem": "Base Item:",
     "items.searchForm.tip": "TIP: Right click a checkbox to deselect all others!",
     "items.searchForm.search": "Search:",
+    "items.searchForm.displayItems": "Display items of type:",
 
     "items.enchant.meleeProt": "Reduces melee damage by 1 - 0.96 ^ (2 * level).",
     "items.enchant.projectileProt": "Reduces projectile damage by 1 - 0.96 ^ (2 * level).",

@@ -92,7 +92,7 @@ export default function SearchForm({ update }) {
         <form onSubmit={sendUpdate} onReset={resetForm} onContextMenu={disableRightClick} onMouseDown={uncheckOthers} ref={form} className={styles.searchForm}>
             <div className={styles.inputs}>
                 <div className={styles.checkboxes} title="Right-click a checkbox to deselect all others">
-                    <span>Display items of type:</span>
+                    <TranslatableText identifier="items.searchForm.displayItems"></TranslatableText>
                     <div className={styles.checkboxSubgroup}>
                         <CheckboxWithLabel name="Helmet" translatableName="items.type.helmet" checked={true} />
                         <CheckboxWithLabel name="Chestplate" translatableName="items.type.chestplate" checked={true} />
