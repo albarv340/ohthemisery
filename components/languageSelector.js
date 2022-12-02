@@ -4,8 +4,14 @@ import { setCookie, getCookie } from 'cookies-next';
 import { useLanguageContext } from "../pages/_app";
 import React from 'react';
 
+const languageNames = {
+    'en': "English",
+    'it': "Italiano",
+    'zh_tw': "繁體中文"
+}
+
 function LanguageSelector() {
-    const options = Object.keys(SupportedLanguages).map(lang => { return { "value": lang, "label": lang } });
+    const options = Object.keys(SupportedLanguages).map(lang => { return { "value": lang, "label": languageNames[lang] } });
     const { lang, setLang } = useLanguageContext();
 
     function langSelected(lang) {
@@ -37,10 +43,5 @@ function LanguageSelector() {
         </div>
     )
 }
-
-/*LanguageSelector.getInitialProps = async({ req }) => {
-    console.log("Cookie:", req.rawHeaders);
-    return {};
-}*/
 
 export default LanguageSelector;

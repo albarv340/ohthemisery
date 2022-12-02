@@ -164,6 +164,9 @@
     "builder.buttons.recalculate": "Ricalcola",
     "builder.buttons.share": "Condividi",
 
+    "builder.errors.corruption": "STAI USANDO PIÙ DI UN OGGETTO CON CURSE OF CORRUPTION",
+    "builder.errors.twoHanded": "STAI USANDO UN OGGETTO A DUE MANI CON UN SECONDARIO SENZA WEIGHTLESS",
+
     "builder.statCategories.misc": "Misc",
     "builder.statCategories.health": "Vita",
     "builder.statCategories.damageReduction": "Riduzione Danni",

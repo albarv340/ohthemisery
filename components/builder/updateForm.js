@@ -282,8 +282,8 @@ export default function UpdateForm({ update, build, parentLoaded }) {
             </div>
             <div className="row justify-content-center mb-3 pt-2">
                 <div className="col text-center">
-                <TranslatableText identifier="builder.misc.maxHealthPercent"></TranslatableText>
-                <input type="number" name="health" min="1" max="100" defaultValue="100" className="mt-1" />
+                    <p className="mb-1"><TranslatableText identifier="builder.misc.maxHealthPercent"></TranslatableText></p>
+                    <input type="number" name="health" min="1" max="100" defaultValue="100" className="" />
                 </div>
                 <div className="col text-center">
                     <p className="mb-1">Tenacity</p>
@@ -307,10 +307,10 @@ export default function UpdateForm({ update, build, parentLoaded }) {
                 </div>
             </div>
             <div className="row mb-2 pt-2">
-                <span className="text-center text-danger fs-2 fw-bold">{(stats.corruption > 1) ? "YOU HAVE MORE THAN ONE CURSE OF CORRUPTION ITEM" : ""}</span>
+                <span className="text-center text-danger fs-2 fw-bold">{(stats.corruption > 1) ? <TranslatableText identifier="builder.errors.corruption"></TranslatableText> : ""}</span>
             </div>
             <div className="row mb-2 pt-2">
-                <span className="text-center text-danger fs-2 fw-bold">{(stats.twoHanded && !stats.weightless && stats.itemNames.offhand != "None") ? "YOU ARE USING A TWO HANDED MAINHAND WITH A NON WEIGHTLESS OFFHAND" : ""}</span>
+                <span className="text-center text-danger fs-2 fw-bold">{(stats.twoHanded && !stats.weightless && stats.itemNames.offhand != "None") ? <TranslatableText identifier="builder.errors.twoHanded"></TranslatableText> : ""}</span>
             </div>
             <div className="row justify-content-center mb-2">
                 {
