@@ -283,7 +283,7 @@ export default function UpdateForm({ update, build, parentLoaded }) {
             <div className="row justify-content-center mb-3 pt-2">
                 <div className="col text-center">
                     <p className="mb-1"><TranslatableText identifier="builder.misc.maxHealthPercent"></TranslatableText></p>
-                    <input type="number" name="health" min="1" max="100" defaultValue="100" className="" />
+                    <input type="number" name="health" min="1" defaultValue="100" className="" />
                 </div>
                 <div className="col text-center">
                     <p className="mb-1">Tenacity</p>
