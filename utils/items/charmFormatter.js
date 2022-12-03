@@ -1,4 +1,6 @@
-import styles from '../../styles/Items.module.css'
+import styles from '../../styles/Items.module.css';
+
+
 
 class CharmFormatter {
     static camelCase(str) {
@@ -20,7 +22,8 @@ class CharmFormatter {
     }
 
     static statStyle(stat, value) {
-        return ((stat.includes("cooldown")  && !stat.includes("reduction")) || stat.includes("requirement")) ?
+        return ((stat.includes("cooldown")  && !stat.includes("reduction")) || stat.includes("requirement")
+            || stat.includes("price") || stat.includes("self_damage")) ?
             (value < 0) ? "positiveCharm" : "negativeCharm" :
             (value < 0) ? "negativeCharm" : "positiveCharm";
     }
