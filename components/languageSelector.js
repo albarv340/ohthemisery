@@ -7,7 +7,8 @@ import React from 'react';
 const languageNames = {
     'en': "English",
     'it': "Italiano",
-    'zh_tw': "繁體中文"
+    'zh_tw': "繁體中文",
+    'zh_cn': "简体中文"
 }
 
 function LanguageSelector() {
