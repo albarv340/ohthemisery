@@ -33,6 +33,7 @@
     "items.searchForm.tier": "稀有等級：",
     "items.searchForm.location": "出產地：",
     "items.searchForm.charmClass": "護符所屬職業：",
+    "items.searchForm.charmStat": "Charm Stat: ",
     "items.searchForm.baseItem": "基礎道具類型：",
     "items.searchForm.tip": "註：右鍵點擊任意方框能消除其他所有被勾選的方框選項！",
     "items.searchForm.search": "搜尋：",

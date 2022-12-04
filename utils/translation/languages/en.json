@@ -33,6 +33,7 @@
     "items.searchForm.tier": "Tier:",
     "items.searchForm.location": "Location:",
     "items.searchForm.charmClass": "Charm Class:",
+    "items.searchForm.charmStat": "Charm Stat:",
     "items.searchForm.baseItem": "Base Item:",
     "items.searchForm.tip": "TIP: Right click a checkbox to deselect all others!",
     "items.searchForm.search": "Search:",

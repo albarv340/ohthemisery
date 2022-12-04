@@ -33,6 +33,7 @@
     "items.searchForm.tier": "Grado:",
     "items.searchForm.location": "Luogo:",
     "items.searchForm.charmClass": "Classe dell'Amuleto:",
+    "items.searchForm.charmStat": "Attributo dell'Amuleto:",
     "items.searchForm.baseItem": "Oggetto Base:",
     "items.searchForm.tip": "TIP: Fai Click Destro su una casella per deselezionare tutte le altre!",
     "items.searchForm.search": "Ricerca:",

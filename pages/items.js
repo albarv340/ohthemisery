@@ -29,6 +29,13 @@ function getRelevantItems(data) {
     if (data.classSelect != "Any Class") {
         items = items.filter(name => itemData[name].class_name == data.classSelect)
     }
+    if (data.charmStatSelect != "Any Stat") {
+        let attributeName = data.charmStatSelect.split(" ").map(part => part.toLowerCase()).join("_");
+        attributeName = (attributeName.includes("_%")) ? attributeName.replace("_%", "_percent") : attributeName += "_flat";
+        console.log("Attribute", attributeName);
+        items = items.filter(name => (itemData[name].type == "Charm" && itemData[name].stats[attributeName] != undefined));
+        items = items.sort((item1, item2) => ((itemData[item2].stats[attributeName] || 0)  - (itemData[item1].stats[attributeName] || 0)))
+    }
     if (data.baseItemSelect != "Any Item") {
         items = items.filter(name => itemData[name]["base_item"] == data.baseItemSelect)
     }

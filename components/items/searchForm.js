@@ -3,6 +3,7 @@ import CheckboxWithLabel from './checkboxWithLabel'
 import styles from '../../styles/Items.module.css'
 import React from 'react'
 import TranslatableText from '../translatableText'
+import items from '../../public/items/itemData.json'
 
 const sortableStats = ["-", "Abyssal", "Adaptability", "Adrenaline", "Agility", "Anemia", "Aptitude", "Aqua Affinity", "Arcane Thrust", "Armor",
     "Ashes of Eternity", "Attack Damage Percent", "Attack Speed Flat", "Attack Speed Percent", "Attack Damage Base", "Attack Speed Base",
@@ -30,6 +31,8 @@ const locations = ["Any Location", "Isles Delves", "Hekawt", "Eldrask", "Depths"
 const charmClasses = ["Any Class", "Alchemist", "Mage", "Warlock", "Rogue", "Warrior", "Cleric", "Scout", "Generalist"]
 const baseItems = ["Any Item", "Blaze Rod", "Shield", "Chainmail Boots", "Cyan Shulker Box", "Iron Axe", "Chorus Fruit", "Golden Leggings", "Golden Hoe", "Diamond Sword", "Crossbow", "Chainmail Helmet", "Bow", "Leather Chestplate", "Iron Leggings", "Iron Chestplate", "Player Head", "Leather Leggings", "Iron Hoe", "Iron Sword", "Bone", "Stone Sword", "Iron Pickaxe", "Leather Helmet", "Iron Boots", "Book", "Snowball", "Music Disc", "Jukebox", "Soul Lantern", "Chainmail Leggings", "Wooden Sword", "Trident", "Chainmail Chestplate", "Nether Brick", "Bell", "Iron Helmet", "Dragon Breath", "Flower Banner Pattern", "Diamond Boots", "Leather Boots", "Nether Star", "Golden Helmet", "Golden Pickaxe", "Golden Boots", "Heart of the Sea", "Gold Nugget", "Potion", "Flint and Steel", "Red Shulker Box", "Stone Hoe", "Golden Axe", "Dead Bush", "Totem of Undying", "Golden Sword", "Stick", "Turtle Helmet", "Ghast Tear", "Wooden Axe", "Flint", "Stone Axe", "Spruce Sapling", "Golden Chestplate", "Clock", "Stone Pickaxe", "Lantern", "White Tulip", "Scute", "Wooden Pickaxe", "Emerald", "Iron Axe/Iron Shovel", "Tropical Fish", "Shears", "Torch", "Compass", "Orange Tulip", "Red Dye", "Iron Nugget", "Light Blue Dye", "Blue Dye", "Pink Stained Glass", "Lime Stained Glass", "Light Gray Stained Glass", "Light Blue Stained Glass", "Magneta Stained Glass", "Orange Stained Glass", "Cyan Stained Glass", "White Stained Glass", "Sugar", "Cornflower", "Bamboo", "Crimson Fungus", "Gold Ingot", "Dried Kelp", "Wooden Hoe", "Bowl", "Paper", "Cooked Mutton", "Bread", "Firework Rocket", "Diamond Axe", "Fishing Rod", "Sea Pickle", "Kelp", "Gray Stained Glass", "Purple Stained Glass", "Magenta Stained Glass", "Yellow Stained Glass", "Ender Eye", "Iron Shovel", "Golden Shovel", "Blue Orchid", "Quartz", "Wooden Shovel", "Yellow Shulker Box", "Blaze Powder", "Cooked Beef", "Iron Pickaxe / Iron Axe / Iron Shovel", "Apple", "Fermented Spider Eye", "Black Shulker Box", "Rabbit Hide", "Clay Ball", "Spruce Leaves", "Rabbit Foot", "Jungle Sapling", "Green Dye", "Yellow Dye", "Light Gray Shulker Box", "Pink Tulip", "Leather", "Pumpkin Pie", "Green Shulker Box", "Allium", "Carrot", "Pufferfish", "Cookie", "End Rod", "Zombie Head", "Prismarine Shard", "Rotten Flesh", "Feather", "Stone Shovel", "Music Disc Cat", "Banner Pattern", "Brewing Stand", "Wet Sponge", "Creeper Head", "Conduit", "Charcoal", "Baked Potato", "Carved Pumpkin", "Magma Cream"]
 
+let charmStats = ["Any Stat"];
+
 const checkboxLongTouch = {
     timer: 0,
     duration: 500
@@ -39,14 +42,30 @@ function getResetKey(name) {
     return name + new Date()
 }
 
+function generateSortableStats() {
+    let charmNames = Object.keys(items).filter(item => items[item].type == "Charm");
+    let uniqueCharmAttributes = {};
+    for (let charmName of charmNames) {
+        Object.keys(items[charmName].stats).forEach(attribute => {
+            uniqueCharmAttributes[attribute] = 1;
+        });
+    }
+    Object.keys(uniqueCharmAttributes).forEach(attribute => {
+        charmStats.push(attribute.split("_").map(part => part[0].toUpperCase() + part.substring(1)).join(" ").replace(" Flat", "").replace(" Percent", " %"));
+    });
+}
+
 export default function SearchForm({ update }) {
     const [searchKey, setSearchKey] = React.useState(getResetKey("search"))
     const [regionKey, setRegionKey] = React.useState(getResetKey("region"))
     const [tierKey, setTierKey] = React.useState(getResetKey("tier"))
     const [locationKey, setLocationKey] = React.useState(getResetKey("location"))
     const [classKey, setClassKey] = React.useState(getResetKey("class"))
+    const [charmStatKey, setCharmStatKey] = React.useState(getResetKey("charmStat"))
     const [baseItemKey, setBaseItemKey] = React.useState(getResetKey("baseItem"))
     const form = React.useRef()
+
+    generateSortableStats();
 
     function sendUpdate(event = {}) {
         if (event.type === "submit") {
@@ -66,6 +85,7 @@ export default function SearchForm({ update }) {
         setTierKey(getResetKey("tier"))
         setLocationKey(getResetKey("location"))
         setClassKey(getResetKey("class"))
+        setCharmStatKey(getResetKey("charmStat"))
         setBaseItemKey(getResetKey("baseItem"))
     }
 
@@ -180,6 +200,10 @@ export default function SearchForm({ update }) {
                     <div className={styles.selects}>
                         <TranslatableText identifier="items.searchForm.charmClass"></TranslatableText>
                         <SelectInput key={classKey} name="classSelect" sortableStats={charmClasses} />
+                    </div>
+                    <div className={styles.selects}>
+                        <TranslatableText identifier="items.searchForm.charmStat"></TranslatableText>
+                        <SelectInput key={charmStatKey} name="charmStatSelect" sortableStats={charmStats} />
                     </div>
                     <div className={styles.selects}>
                         <TranslatableText identifier="items.searchForm.baseItem"></TranslatableText>
