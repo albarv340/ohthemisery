@@ -43,6 +43,7 @@ function getResetKey(name) {
 }
 
 function generateSortableStats() {
+    charmStats = ["Any Stat"];
     let charmNames = Object.keys(items).filter(item => items[item].type == "Charm");
     let uniqueCharmAttributes = {};
     for (let charmName of charmNames) {
