@@ -38,6 +38,7 @@
     "items.searchForm.tip": "TIP: Fai Click Destro su una casella per deselezionare tutte le altre!",
     "items.searchForm.search": "Ricerca:",
     "items.searchForm.displayItems": "Mostra oggetti di tipo:",
+    "items.searchForm.itemsFound": "Oggetti Trovati:",
 
     "items.enchant.meleeProt": "Riduce il danno corpo a corpo ricevuto, di 1 - 0.96 ^ (2 * livello).",
     "items.enchant.projectileProt": "Riduce il danno da proiettili ricevuto, di 1 - 0.96 ^ (2 * livello).",

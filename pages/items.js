@@ -10,6 +10,7 @@ import React from 'react';
 import InfiniteScroll from "react-infinite-scroll-component";
 import Footer from '../components/footer';
 import LanguageSelector from '../components/languageSelector';
+import TranslatableText from '../components/translatableText';
 
 function getRelevantItems(data) {
     let items = Object.keys(itemData);
@@ -101,6 +102,13 @@ export default function Items() {
             <main className={styles.main}>
                 <h1>Monumenta Items</h1>
                 <SearchForm update={handleChange} />
+                {
+                    (relevantItems.length > 0) ?
+                    <h4 className="mt-1">
+                        <TranslatableText identifier="items.searchForm.itemsFound"></TranslatableText> {relevantItems.length}
+                    </h4> : ""
+                }
+                
                 <InfiniteScroll
                     className={styles.itemsContainer}
                     dataLength={itemsToShow}

@@ -33,11 +33,12 @@
 "items.searchForm.tier": "稀有等级：",
 "items.searchForm.location": "出产地：",
 "items.searchForm.charmClass": "护符所属职业：",
-"items.searchForm.charmStat": "Charm Stat: ",
+"items.searchForm.charmStat": "护符属性：",
 "items.searchForm.baseItem": "基础道具类型：",
 "items.searchForm.tip": "注：右键点击任意方框能消除其他所有被勾选的方框选项！",
 "items.searchForm.search": "搜寻：",
 "items.searchForm.displayItems": "显示以下种类的道具：",
+"items.searchForm.itemsFound": "符合的道具数量：",
 
 "items.enchant.meleeProt": "使玩家受到的近战伤害减少 [1 - 0.96 ^ (2 * 附魔等级数)]。",
 "items.enchant.projectileProt": "使玩家受到的投掷物伤害减少 [1 - 0.96 ^ (2 * 附魔等级数)]。",

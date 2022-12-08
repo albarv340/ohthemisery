@@ -10,7 +10,7 @@ function formatTitle(str) {
     }).replace(/[\s+ ]/g, '');
 }
 
-export default function TranslatableText({title, className, children}) {
+export default function TranslatableEnchant({title, className, children}) {
     const { lang } = useLanguageContext();
     return (
         <span className={className} title={SupportedLanguages[lang][(`items.enchant.${formatTitle(title)}`)]} key={`${lang}-${formatTitle(title)}`}>{children}</span>

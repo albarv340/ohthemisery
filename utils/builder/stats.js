@@ -165,11 +165,11 @@ class Stats {
 
     calculateDamageTaken(noArmor, prot, fragility, protmodifier, earmor, eagility) {
         let damageTaken = {};
-        damageTaken.base = ((noArmor) ? 100 * Math.pow(0.96, (prot * protmodifier - fragility * protmodifier)) :
-            100 * Math.pow(0.96, ((prot * protmodifier - fragility * protmodifier) + earmor + eagility) - (0.5 * earmor * eagility / (earmor + eagility))));
+        damageTaken.base = ((noArmor) ? 100 * (1 - this.worldlyProtection * 0.1) * Math.pow(0.96, (prot * protmodifier - fragility * protmodifier)) :
+            100 * (1 - this.worldlyProtection * 0.1) * Math.pow(0.96, ((prot * protmodifier - fragility * protmodifier) + earmor + eagility) - (0.5 * earmor * eagility / (earmor + eagility))));
 
-        damageTaken.secondwind = ((noArmor) ? 100 * Math.pow(0.96, (prot * protmodifier - fragility * protmodifier)) :
-            100 * Math.pow(0.96, ((prot * protmodifier - fragility * protmodifier) + earmor + eagility) - (0.5 * earmor * eagility / (earmor + eagility))));
+        damageTaken.secondwind = ((noArmor) ? 100 * (1 - this.worldlyProtection * 0.1) * Math.pow(0.96, (prot * protmodifier - fragility * protmodifier)) :
+            100 * (1 - this.worldlyProtection * 0.1) * Math.pow(0.96, ((prot * protmodifier - fragility * protmodifier) + earmor + eagility) - (0.5 * earmor * eagility / (earmor + eagility))));
         damageTaken.secondwind *= Math.pow(0.9, this.situationals.secondwind.level);
 
         damageTaken.base = damageTaken.base
@@ -354,6 +354,8 @@ class Stats {
                 this.aptitude += this.sumEnchantmentStat(itemStats, "aptitude", 1);
                 this.ineptitude += this.sumEnchantmentStat(itemStats, "ineptitude", -1);
 
+                this.worldlyProtection += this.sumNumberStat(itemStats, "worldly_protection");
+
                 this.situationals.shielding.level += this.sumNumberStat(itemStats, "shielding");
                 this.situationals.poise.level += this.sumNumberStat(itemStats, "poise");
                 this.situationals.inure.level += this.sumNumberStat(itemStats, "inure");
@@ -435,6 +437,7 @@ class Stats {
         this.hasMoreArmor = false,
         this.hasMoreAgility = false,
         this.hasEqualDefenses = false,
+        this.worldlyProtection = 0;
 
         this.attackDamagePercent = new Percentage(100),
         this.attackSpeedPercent = new Percentage(100),
