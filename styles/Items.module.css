@@ -428,6 +428,14 @@
     color: rgb(246, 197, 182);
 }
 
+.winterEvent {
+    color: #ADC0E0;
+}
+
+.halloweenEvent {
+    color: #FCA800;
+}
+
 .labs {
     color: #B2AAC1;
 }
