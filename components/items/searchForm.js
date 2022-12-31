@@ -5,28 +5,14 @@ import React from 'react'
 import TranslatableText from '../translatableText'
 import items from '../../public/items/itemData.json'
 
-const sortableStats = ["-", "Abyssal", "Adaptability", "Adrenaline", "Agility", "Anemia", "Aptitude", "Aqua Affinity", "Arcane Thrust", "Armor",
-    "Ashes of Eternity", "Attack Damage Percent", "Attack Speed Flat", "Attack Speed Percent", "Attack Damage Base", "Attack Speed Base",
-    "Projectile Damage Base", "Projectile Speed Base", "Spell Power Base", "Throw Rate Base", "Throw Rate Percent", "Blast Prot", "Bleeding",
-    "Chaotic", "Corruption", "Crippling", "Darksight", "Decay", "Depth Strider", "Duelist", "Efficiency", "Eruption", "Ethereal", "Evasion",
-    "Feather Falling", "Fire Aspect M", "Fire Aspect P", "Fire Prot", "Fortune", "Gills", "Hex Eater", "Ice Aspect M", "Ice Aspect P", "Ineptitude",
-    "Inferno", "Infinity Bow", "Infinity Tool", "Intuition", "Inure", "Irreparability", "Knockback", "Knockback Resistance Flat", "Life Drain",
-    "Looting", "Lure", "Magic Damage Percent", "Magic Prot", "Max Health Flat", "Max Health Percent", "Melee Prot", "Mending", "Multishot",
-    "Multitool", "Piercing", "Point Blank", "Poise", "Projectile Damage Percent", "Projectile Speed Percent", "Projectile Prot",
-    "Worldly Protection", "Punch", "Quake", "Quick Charge", "Radiant", "Rage of the Keter", "Recoil", "Reflexes", "Regen", "Regicide",
-    "Respiration", "Resurrection", "Retrieval", "Riptide", "Sapper", "Second Wind", "Shielding", "Shrapnel", "Silk Touch", "Slayer", "Smite",
-    "Sniper", "Soul Speed", "Speed Flat", "Speed Percent", "Steadfast", "Sustenance", "Sweeping Edge", "Tempo", "Thorns Flat", "Thorns Percent",
-    "Thunder Aspect M", "Thunder Aspect P", "Triage", "Two Handed", "Unbreakable", "Unbreaking", "Vanishing", "Weightless", "Excavator",
-    "Explosive", "Multiload", "Stamina", "Trivium", "First Strike", "Wind Aspect M", "Wind Aspect P", "Earth Aspect M", "Earth Aspect P",
-    "Melee Fragility", "Projectile Fragility", "Fire Fragility", "Magic Fragility", "Blast Fragility", "Cloaked", "Guard"]
-const regions = ["Any Region", "Isles", "Valley", "Ring"]
-const tiers = ['Any Tier', 'Epic', 'Artifact', 'Uncommon', 'Rare', 'Unique', 'Patron', 'Event', 'Tier 5', 'Tier 4', 'Tier 3',
-    'Tier 2', 'Tier 1', 'Tier 0']
 const charmClasses = ["Any Class", "Alchemist", "Mage", "Warlock", "Rogue", "Warrior", "Cleric", "Scout", "Generalist"]
-const baseItems = ["Any Item", "Blaze Rod", "Shield", "Chainmail Boots", "Cyan Shulker Box", "Iron Axe", "Chorus Fruit", "Golden Leggings", "Golden Hoe", "Diamond Sword", "Crossbow", "Chainmail Helmet", "Bow", "Leather Chestplate", "Iron Leggings", "Iron Chestplate", "Player Head", "Leather Leggings", "Iron Hoe", "Iron Sword", "Bone", "Stone Sword", "Iron Pickaxe", "Leather Helmet", "Iron Boots", "Book", "Snowball", "Music Disc", "Jukebox", "Soul Lantern", "Chainmail Leggings", "Wooden Sword", "Trident", "Chainmail Chestplate", "Nether Brick", "Bell", "Iron Helmet", "Dragon Breath", "Flower Banner Pattern", "Diamond Boots", "Leather Boots", "Nether Star", "Golden Helmet", "Golden Pickaxe", "Golden Boots", "Heart of the Sea", "Gold Nugget", "Potion", "Flint and Steel", "Red Shulker Box", "Stone Hoe", "Golden Axe", "Dead Bush", "Totem of Undying", "Golden Sword", "Stick", "Turtle Helmet", "Ghast Tear", "Wooden Axe", "Flint", "Stone Axe", "Spruce Sapling", "Golden Chestplate", "Clock", "Stone Pickaxe", "Lantern", "White Tulip", "Scute", "Wooden Pickaxe", "Emerald", "Iron Axe/Iron Shovel", "Tropical Fish", "Shears", "Torch", "Compass", "Orange Tulip", "Red Dye", "Iron Nugget", "Light Blue Dye", "Blue Dye", "Pink Stained Glass", "Lime Stained Glass", "Light Gray Stained Glass", "Light Blue Stained Glass", "Magneta Stained Glass", "Orange Stained Glass", "Cyan Stained Glass", "White Stained Glass", "Sugar", "Cornflower", "Bamboo", "Crimson Fungus", "Gold Ingot", "Dried Kelp", "Wooden Hoe", "Bowl", "Paper", "Cooked Mutton", "Bread", "Firework Rocket", "Diamond Axe", "Fishing Rod", "Sea Pickle", "Kelp", "Gray Stained Glass", "Purple Stained Glass", "Magenta Stained Glass", "Yellow Stained Glass", "Ender Eye", "Iron Shovel", "Golden Shovel", "Blue Orchid", "Quartz", "Wooden Shovel", "Yellow Shulker Box", "Blaze Powder", "Cooked Beef", "Iron Pickaxe / Iron Axe / Iron Shovel", "Apple", "Fermented Spider Eye", "Black Shulker Box", "Rabbit Hide", "Clay Ball", "Spruce Leaves", "Rabbit Foot", "Jungle Sapling", "Green Dye", "Yellow Dye", "Light Gray Shulker Box", "Pink Tulip", "Leather", "Pumpkin Pie", "Green Shulker Box", "Allium", "Carrot", "Pufferfish", "Cookie", "End Rod", "Zombie Head", "Prismarine Shard", "Rotten Flesh", "Feather", "Stone Shovel", "Music Disc Cat", "Banner Pattern", "Brewing Stand", "Wet Sponge", "Creeper Head", "Conduit", "Charcoal", "Baked Potato", "Carved Pumpkin", "Magma Cream"]
-    
-let locations = ["Any Location"]
+
+let sortableStats = ["-"];
+let regions = ["Any Region"];
+let tiers = ["Any Tier"];
+let locations = ["Any Location"];
 let charmStats = ["Any Stat"];
+let baseItems = ["Any Item"];
 
 const checkboxLongTouch = {
     timer: 0,
@@ -35,6 +21,43 @@ const checkboxLongTouch = {
 
 function getResetKey(name) {
     return name + new Date()
+}
+
+function generateSortableItemStats() {
+    sortableStats = ["-"];
+    let itemNames = Object.keys(items).filter(item => items[item].type != "Charm");
+    let uniqueItemStats = {};
+    for (let itemName of itemNames) {
+        if (items[itemName].stats) {
+            Object.keys(items[itemName].stats).forEach(stat => {
+                uniqueItemStats[stat] = 1;
+            });
+        }
+    }
+    Object.keys(uniqueItemStats).forEach(stat => {
+        sortableStats.push(stat.split("_").map(part => part[0].toUpperCase() + part.substring(1)).join(" ").replace(" Flat", "").replace(" Percent", " %"));
+    });
+}
+
+
+function generateRegions() {
+    regions = ["Any Region"]
+    let uniqueRegions = {};
+    Object.keys(items).map(item => items[item].region).filter(regionName => regionName != undefined).forEach(regionName => {
+        uniqueRegions[regionName] = 1;
+    });
+    Object.keys(uniqueRegions).forEach(regionName => regions.push(regionName));
+}
+
+function generateTiers() {
+    tiers = ["Any Tier"]
+    let uniqueTiers = {};
+    Object.keys(items).map(item => items[item].tier).filter(tierName => tierName != undefined).forEach(tierName => {
+        uniqueTiers[tierName] = 1;
+    });
+    // Remove the Charm tier since there is a checkbox for it.
+    delete uniqueTiers.Charm;
+    Object.keys(uniqueTiers).forEach(tierName => tiers.push(tierName));
 }
 
 function generateSortableCharmStats() {
@@ -60,6 +83,15 @@ function generateLocations() {
     Object.keys(uniqueLocations).forEach(locationName => locations.push(locationName));
 }
 
+function generateBaseItems() {
+    baseItems = ["Any Item"]
+    let uniqueBaseItems = {};
+    Object.keys(items).map(item => items[item].base_item).filter(baseItemName => baseItemName != undefined).forEach(baseItemName => {
+        uniqueBaseItems[baseItemName] = 1;
+    });
+    Object.keys(uniqueBaseItems).forEach(baseItemName => baseItems.push(baseItemName));
+}
+
 export default function SearchForm({ update }) {
     const [searchKey, setSearchKey] = React.useState(getResetKey("search"))
     const [regionKey, setRegionKey] = React.useState(getResetKey("region"))
@@ -70,8 +102,12 @@ export default function SearchForm({ update }) {
     const [baseItemKey, setBaseItemKey] = React.useState(getResetKey("baseItem"))
     const form = React.useRef()
 
+    generateSortableItemStats();
+    generateRegions();
+    generateTiers();
     generateSortableCharmStats();
     generateLocations();
+    generateBaseItems();
 
     function sendUpdate(event = {}) {
         if (event.type === "submit") {
