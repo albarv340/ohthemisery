@@ -32,7 +32,6 @@ function getRelevantItems(data, itemData) {
     if (data.charmStatSelect != "Any Stat") {
         let attributeName = data.charmStatSelect.split(" ").map(part => part.toLowerCase()).join("_");
         attributeName = (attributeName.includes("_%")) ? attributeName.replace("_%", "_percent") : attributeName += "_flat";
-        console.log("Attribute", attributeName);
         items = items.filter(name => (itemData[name].type == "Charm" && itemData[name].stats[attributeName] != undefined));
         items = items.sort((item1, item2) => ((itemData[item2].stats[attributeName] || 0)  - (itemData[item1].stats[attributeName] || 0)))
     }
@@ -40,8 +39,8 @@ function getRelevantItems(data, itemData) {
         items = items.filter(name => itemData[name]["base_item"] == data.baseItemSelect)
     }
     if (data.sortSelect != "-") {
-        items = items.filter(name => typeof (itemData[name]["stats"][data.sortSelect.toLowerCase().replaceAll(" ", "_")]) != "undefined")
-        items = items.sort((item1, item2) => (itemData[item2]["stats"][data.sortSelect.toLowerCase().replaceAll(" ", "_")] || 0) - (itemData[item1]["stats"][data.sortSelect.toLowerCase().replaceAll(" ", "_")] || 0))
+        items = items.filter(name => (itemData[name]["stats"] != undefined && typeof (itemData[name]["stats"][data.sortSelect.toLowerCase().replaceAll(" ", "_")]) != "undefined"))
+        items = items.sort((item1, item2) => (itemData[item2]["stats"][data.sortSelect.toLowerCase().replaceAll(" ", "_")]) - (itemData[item1]["stats"][data.sortSelect.toLowerCase().replaceAll(" ", "_")]))
     }
     let includedTypes = []
     for (const key in data) {
@@ -54,6 +53,7 @@ function getRelevantItems(data, itemData) {
 
     // Group up masterwork tiers by their name using an object, removing them from items.
     let masterworkItems = {};
+    let otherPositionsToRemove = [];
     // Go through the array in reverse order to have the splice work properly
     // (items will go down in position if not removed from the end)
     for (let i = items.length - 1; i >= 0; i--) {
@@ -61,17 +61,34 @@ function getRelevantItems(data, itemData) {
         if (itemData[name].masterwork != undefined) {
             let itemName = itemData[name].name;
             if (!masterworkItems[itemName]) {
-                masterworkItems[itemName] = [];
+                masterworkItems[itemName] = {items:[],lowestPosition:9999999,lowestPositionName:null};
             }
-            masterworkItems[itemName].push(itemData[name]);
-            items.splice(i, 1);
+            masterworkItems[itemName].items.push(itemData[name]);
+            if (i < masterworkItems[itemName].lowestPosition) {
+                // Remove the old lowest position item
+                if (masterworkItems[itemName].lowestPosition < 9999999) {
+                    otherPositionsToRemove.push(masterworkItems[itemName].lowestPosition);
+                }
+                // Set the new lowest position
+                masterworkItems[itemName].lowestPosition = i;
+                masterworkItems[itemName].lowestPositionName = name;
+            } else {
+                otherPositionsToRemove.push(i);
+            }
         }
     }
 
-    // Re-insert the groups as arrays into the items array.
-    Object.keys(masterworkItems).forEach(item => {
-        items.unshift(masterworkItems[item]);
-    });
+    // Remove all the excess items that need to be grouped up
+    otherPositionsToRemove = otherPositionsToRemove.sort((pos1, pos2) => pos2 - pos1);
+    for (const pos of otherPositionsToRemove) {
+        items.splice(pos, 1);
+    }
+
+    // Re-insert the groups as arrays into the items array, IN THE CORRECT POSITION.
+    let masterworkGroups = Object.keys(masterworkItems).sort((item1, item2) => masterworkItems[item2].lowestPosition - masterworkItems[item1].lowestPosition);
+    for (const masterworkGroup of masterworkGroups) {
+        items.splice(items.indexOf(masterworkItems[masterworkGroup].lowestPositionName), 1, masterworkItems[masterworkGroup].items);
+    }
 
     return items;
 }

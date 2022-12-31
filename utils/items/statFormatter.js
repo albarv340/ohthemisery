@@ -32,7 +32,7 @@ const categories = {
             .map(entry => ({ name: entry, format: Formats.SINGLE_ENCHANT }))
     ],
     "prot": [
-        ...["projectile_prot", "blast_prot", "fire_prot", "melee_prot", "magic_prot",
+        ...["projectile_protection", "blast_protection", "fire_protection", "melee_protection", "magic_protection",
             "feather_falling"]
             .map(entry => ({ name: entry, format: Formats.ENCHANT }))
     ],
