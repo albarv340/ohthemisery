@@ -1,4 +1,4 @@
-import { username, password, useAPI } from "../auth.json";
+import { username, password, useAPI, apiPath } from "../auth.json";
 
 class AuthProvider {
     static getAuthorizationData() {
@@ -8,6 +8,10 @@ class AuthProvider {
 
     static isUsingApi() {
         return useAPI;
+    }
+
+    static getApiPath() {
+        return `https://api.playmonumenta.com/${apiPath}`;
     }
 }
 

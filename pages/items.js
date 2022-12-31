@@ -139,7 +139,7 @@ export default function Items({itemData}) {
 export async function getServerSideProps(context) {
     let itemData = null;
     if (AuthProvider.isUsingApi()) {
-        const response = await Axios.get('https://api.playmonumenta.com/items', {headers: {'Authorization': AuthProvider.getAuthorizationData()}});
+        const response = await Axios.get(AuthProvider.getApiPath(), {headers: {'Authorization': AuthProvider.getAuthorizationData()}});
         itemData = response.data;
     } else {
         itemData = JSON.parse(await Fs.readFile('public/items/itemData.json'));
