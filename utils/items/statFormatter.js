@@ -173,8 +173,11 @@ class StatFormatter {
     }
 
     static formatStats(stats) {
+        if (stats == undefined) {
+            return "";
+        }
         let formattedStats = [];
-
+        
         for (const category in categories) {
             for (const stat of categories[category]) {
                 if (stats[stat.name]) {

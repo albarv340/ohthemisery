@@ -10,6 +10,13 @@ function camelCase(str) {
     }).replace(/\s+/g, '');
 }
 
+function getItemType(item) {
+    if (item.type != undefined) {
+        return camelCase(item.type);
+    }
+    return "misc";
+}
+
 export default function ItemTile(data) {
     const item = data.item
     return (
@@ -26,15 +33,16 @@ export default function ItemTile(data) {
             <span className={`${styles[camelCase(item.location)]} ${(item.tier == "Tier 3" && item.region == "Ring") ? styles["tier5"] : styles[camelCase(item.tier)]} ${styles.name}`}>
                 <a href={`https://monumentammo.fandom.com/wiki/${item.name.replace(/\(.*\)/g, '').trim().replaceAll(" ", "_",)}`} target="_blank" rel="noreferrer">{item.name}</a>
             </span>
-            <span className={styles.infoText}><TranslatableText identifier={`items.type.${camelCase(item.type.replace("<M>", ""))}`}></TranslatableText>{` - ${item['base_item']} `}</span>
+            <span className={styles.infoText}><TranslatableText identifier={`items.type.${getItemType(item)}`}></TranslatableText>{` - ${item['base_item']} `}</span>
             {item['original_item'] ? <span className={styles.infoText}>{`Skin for ${item['original_item']} `}</span> : ""}
             <Enchants item={item}></Enchants>
             <span>
-                <span className={styles.infoText}>{`${item.region} `}</span>
+                <span className={styles.infoText}>{`${(item.region) ? item.region : ""} `}</span>
                 <span className={styles[camelCase(item.tier)]}>{item.tier}</span>
             </span>
             <span className={styles[camelCase(item.location)]}>{item.location}</span>
-            {item.notes ? <span className={styles.infoText}>{`${item.notes} `}</span> : ""}
+            {item.notes ? <span className={styles.infoText}>{item.notes}</span> : ""}
+            {item.lore ? <span className={styles.infoText}>{item.lore}</span> : ""}
         </div>
     )
 }

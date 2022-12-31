@@ -128,7 +128,8 @@ export default function MasterworkableItemTile(data) {
             {
                 (!activeItem.undiscovered) ?
                 <div>
-                    {activeItem.notes ? <span className={styles.infoText}>{`${activeItem.notes} `}</span> : ""}
+                    {activeItem.notes ? <span className={styles.infoText}>{activeItem.notes}</span> : ""}
+                    {activeItem.lore ? <span className={styles.infoText}>{activeItem.lore}</span> : ""}
                 </div> : ""
             }
         </div>

@@ -22,15 +22,10 @@ const sortableStats = ["-", "Abyssal", "Adaptability", "Adrenaline", "Agility", 
 const regions = ["Any Region", "Isles", "Valley", "Ring"]
 const tiers = ['Any Tier', 'Epic', 'Artifact', 'Uncommon', 'Rare', 'Unique', 'Patron', 'Event', 'Tier 5', 'Tier 4', 'Tier 3',
     'Tier 2', 'Tier 1', 'Tier 0']
-const locations = ["Any Location", "Isles Delves", "Hekawt", "Eldrask", "Depths", "Remorse", "Mist", "Horseman", "Rush", "Delves",
-    "Carnival", "Docks", "TOV", "Forum", "Shifting", "Teal", "Purple", "Cyan", "Light Gray", "Gray", "Pink", "Lime", "Isles Casino",
-    "Isles Overworld", "Celsian Isles", "Valley Delves", "Armory", "Kaul", "Azacor", "Verdant", "Sanctum", "Corridors", "Reverie",
-    "Lowtide Smuggler", "Willows", "Yellow", "Light Blue", "Magenta", "Orange", "White", "Labs", "Valley Casino", "Valley Overworld",
-    "King's Valley", "Architect's Ring", "The Wolfswood", "Pelias' Keep", "Blue", "SKT", "Sanguine Halls", "PORTAL", "Ruin",
-    "Quest Reward", "Transmogrifier", "Brown", "Godspore"]
 const charmClasses = ["Any Class", "Alchemist", "Mage", "Warlock", "Rogue", "Warrior", "Cleric", "Scout", "Generalist"]
 const baseItems = ["Any Item", "Blaze Rod", "Shield", "Chainmail Boots", "Cyan Shulker Box", "Iron Axe", "Chorus Fruit", "Golden Leggings", "Golden Hoe", "Diamond Sword", "Crossbow", "Chainmail Helmet", "Bow", "Leather Chestplate", "Iron Leggings", "Iron Chestplate", "Player Head", "Leather Leggings", "Iron Hoe", "Iron Sword", "Bone", "Stone Sword", "Iron Pickaxe", "Leather Helmet", "Iron Boots", "Book", "Snowball", "Music Disc", "Jukebox", "Soul Lantern", "Chainmail Leggings", "Wooden Sword", "Trident", "Chainmail Chestplate", "Nether Brick", "Bell", "Iron Helmet", "Dragon Breath", "Flower Banner Pattern", "Diamond Boots", "Leather Boots", "Nether Star", "Golden Helmet", "Golden Pickaxe", "Golden Boots", "Heart of the Sea", "Gold Nugget", "Potion", "Flint and Steel", "Red Shulker Box", "Stone Hoe", "Golden Axe", "Dead Bush", "Totem of Undying", "Golden Sword", "Stick", "Turtle Helmet", "Ghast Tear", "Wooden Axe", "Flint", "Stone Axe", "Spruce Sapling", "Golden Chestplate", "Clock", "Stone Pickaxe", "Lantern", "White Tulip", "Scute", "Wooden Pickaxe", "Emerald", "Iron Axe/Iron Shovel", "Tropical Fish", "Shears", "Torch", "Compass", "Orange Tulip", "Red Dye", "Iron Nugget", "Light Blue Dye", "Blue Dye", "Pink Stained Glass", "Lime Stained Glass", "Light Gray Stained Glass", "Light Blue Stained Glass", "Magneta Stained Glass", "Orange Stained Glass", "Cyan Stained Glass", "White Stained Glass", "Sugar", "Cornflower", "Bamboo", "Crimson Fungus", "Gold Ingot", "Dried Kelp", "Wooden Hoe", "Bowl", "Paper", "Cooked Mutton", "Bread", "Firework Rocket", "Diamond Axe", "Fishing Rod", "Sea Pickle", "Kelp", "Gray Stained Glass", "Purple Stained Glass", "Magenta Stained Glass", "Yellow Stained Glass", "Ender Eye", "Iron Shovel", "Golden Shovel", "Blue Orchid", "Quartz", "Wooden Shovel", "Yellow Shulker Box", "Blaze Powder", "Cooked Beef", "Iron Pickaxe / Iron Axe / Iron Shovel", "Apple", "Fermented Spider Eye", "Black Shulker Box", "Rabbit Hide", "Clay Ball", "Spruce Leaves", "Rabbit Foot", "Jungle Sapling", "Green Dye", "Yellow Dye", "Light Gray Shulker Box", "Pink Tulip", "Leather", "Pumpkin Pie", "Green Shulker Box", "Allium", "Carrot", "Pufferfish", "Cookie", "End Rod", "Zombie Head", "Prismarine Shard", "Rotten Flesh", "Feather", "Stone Shovel", "Music Disc Cat", "Banner Pattern", "Brewing Stand", "Wet Sponge", "Creeper Head", "Conduit", "Charcoal", "Baked Potato", "Carved Pumpkin", "Magma Cream"]
-
+    
+let locations = ["Any Location"]
 let charmStats = ["Any Stat"];
 
 const checkboxLongTouch = {
@@ -42,7 +37,7 @@ function getResetKey(name) {
     return name + new Date()
 }
 
-function generateSortableStats() {
+function generateSortableCharmStats() {
     charmStats = ["Any Stat"];
     let charmNames = Object.keys(items).filter(item => items[item].type == "Charm");
     let uniqueCharmAttributes = {};
@@ -56,6 +51,15 @@ function generateSortableStats() {
     });
 }
 
+function generateLocations() {
+    locations = ["Any Location"]
+    let uniqueLocations = {};
+    Object.keys(items).map(item => items[item].location).filter(locationName => locationName != undefined).forEach(locationName => {
+        uniqueLocations[locationName] = 1;
+    });
+    Object.keys(uniqueLocations).forEach(locationName => locations.push(locationName));
+}
+
 export default function SearchForm({ update }) {
     const [searchKey, setSearchKey] = React.useState(getResetKey("search"))
     const [regionKey, setRegionKey] = React.useState(getResetKey("region"))
@@ -66,7 +70,8 @@ export default function SearchForm({ update }) {
     const [baseItemKey, setBaseItemKey] = React.useState(getResetKey("baseItem"))
     const form = React.useRef()
 
-    generateSortableStats();
+    generateSortableCharmStats();
+    generateLocations();
 
     function sendUpdate(event = {}) {
         if (event.type === "submit") {
@@ -157,7 +162,6 @@ export default function SearchForm({ update }) {
                     <div className={styles.checkboxSubgroup}>
                         <CheckboxWithLabel name="Axe" translatableName="items.type.axe" checked={true} />
                         <CheckboxWithLabel name="Wand" translatableName="items.type.wand" checked={true} />
-                        <CheckboxWithLabel name="Sword" translatableName="items.type.sword" checked={true} />
                         <CheckboxWithLabel name="Scythe" translatableName="items.type.scythe" checked={true} />
                         <CheckboxWithLabel name="Pickaxe" translatableName="items.type.pickaxe" checked={true} />
                         <CheckboxWithLabel name="Shovel" translatableName="items.type.shovel" checked={true} />
@@ -165,16 +169,18 @@ export default function SearchForm({ update }) {
                     <div className={styles.checkboxSubgroup}>
                         <CheckboxWithLabel name="Bow" translatableName="items.type.bow" checked={true} />
                         <CheckboxWithLabel name="Crossbow" translatableName="items.type.crossbow" checked={true} />
-                        <CheckboxWithLabel name="Throwable" translatableName="items.type.throwable" checked={true} />
+                        <CheckboxWithLabel name="Snowball" translatableName="items.type.snowball" checked={true} />
                         <CheckboxWithLabel name="Trident" translatableName="items.type.trident" checked={true} />
                     </div>
                     <div className={styles.checkboxSubgroup}>
                         <CheckboxWithLabel name="Offhand Shield" translatableName="items.type.offhandShield" checked={true} />
-                        <CheckboxWithLabel name="Offhand" translatableName="items.type.offhand" checked={true} />
+                        <CheckboxWithLabel name="Mainhand Shield" translatableName="items.type.mainhandShield" checked={true} />
+                        <CheckboxWithLabel name="Mainhand Sword" translatableName="items.type.mainhandSword" checked={true} />
                         <CheckboxWithLabel name="Offhand Sword" translatableName="items.type.offhandSword" checked={true} />
                     </div>
                     <div className={styles.checkboxSubgroup}>
                         <CheckboxWithLabel name="Mainhand" translatableName="items.type.mainhand" checked={true} />
+                        <CheckboxWithLabel name="Offhand" translatableName="items.type.offhand" checked={true} />
                         <CheckboxWithLabel name="Consumable" translatableName="items.type.consumable" checked={true} />
                         <CheckboxWithLabel name="Misc" translatableName="items.type.misc" checked={true} />
                         <CheckboxWithLabel name="Charm" translatableName="items.type.charm" checked={true} />

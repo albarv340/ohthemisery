@@ -1,12 +1,12 @@
 import Head from 'next/head'
 import React from 'react';
 import UpdateForm from '../components/builder/updateForm'
-import HomeButton from '../components/homeButton';
-import Footer from '../components/footer'
-import itemData from '../public/items/itemData.json'
 import TranslatableText from '../components/translatableText';
+import Axios from 'axios';
+import AuthProvider from '../utils/authProvider';
+import Fs from 'fs/promises';
 
-function getLinkPreviewDescription(build) {
+function getLinkPreviewDescription(build, itemData) {
     if (!build) return ""
     let res = "";
     const buildParts = decodeURI(build).split("&");
@@ -29,7 +29,7 @@ function getLinkPreviewDescription(build) {
     return res;
 }
 
-function Builder({ build }) {
+export default function Builder({ build, itemData }) {
     const [itemsToDisplay, setItemsToDisplay] = React.useState({});
     function change(itemData) {
         setItemsToDisplay(itemData);
@@ -116,7 +116,7 @@ function Builder({ build }) {
                 <title>Monumenta Builder</title>
                 <meta property="og:site_name" content="OHTHEMISERY.TK" />
                 <meta property="og:image" content="/favicon.ico" />
-                <meta name="description" content={`${getLinkPreviewDescription(build)}`} />
+                <meta name="description" content={`${getLinkPreviewDescription(build, itemData)}`} />
                 <meta name="keywords" content="Monumenta, Minecraft, MMORPG, Items, Builder" />
             </Head>
             <main>
@@ -229,8 +229,20 @@ function Builder({ build }) {
     )
 }
 
-Builder.getInitialProps = async ({ query }) => {
-    return { build: query?.build ? query?.build[0] : undefined }
-}
+export async function getServerSideProps(context) {
+    let itemData = null;
+    if (AuthProvider.isUsingApi()) {
+        const response = await Axios.get('https://api.playmonumenta.com/items', {headers: {'Authorization': AuthProvider.getAuthorizationData()}});
+        itemData = response.data;
+    } else {
+        itemData = JSON.parse(await Fs.readFile('public/items/itemData.json'));
+    }
+    let build = context.query?.build ? context.query.build : null;
 
-export default Builder
+    return {
+        props: {
+            build,
+            itemData
+        }
+    };
+}

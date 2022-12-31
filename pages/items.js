@@ -1,18 +1,17 @@
 import Head from 'next/head';
 import styles from '../styles/Items.module.css';
-import itemData from '../public/items/itemData.json';
 import ItemTile from '../components/items/itemTile';
 import MasterworkableItemTile from '../components/items/masterworkableItemTile';
 import CharmTile from '../components/items/charmTile';
 import SearchForm from '../components/items/searchForm';
-import HomeButton from '../components/homeButton';
 import React from 'react';
 import InfiniteScroll from "react-infinite-scroll-component";
-import Footer from '../components/footer';
-import LanguageSelector from '../components/languageSelector';
 import TranslatableText from '../components/translatableText';
+import Axios from 'axios';
+import AuthProvider from '../utils/authProvider';
+import Fs from 'fs/promises';
 
-function getRelevantItems(data) {
+function getRelevantItems(data, itemData) {
     let items = Object.keys(itemData);
 
     if (data.search) {
@@ -77,13 +76,13 @@ function getRelevantItems(data) {
     return items;
 }
 
-export default function Items() {
+export default function Items({itemData}) {
     const [relevantItems, setRelevantItems] = React.useState(Object.keys(itemData));
     const [itemsToShow, setItemsToShow] = React.useState(20)
     const itemsToLoad = 20;
 
     function handleChange(data) {
-        setRelevantItems(getRelevantItems(data))
+        setRelevantItems(getRelevantItems(data, itemData))
         setItemsToShow(itemsToLoad)
     }
 
@@ -135,4 +134,20 @@ export default function Items() {
             </main>
         </div>
     )
+}
+
+export async function getServerSideProps(context) {
+    let itemData = null;
+    if (AuthProvider.isUsingApi()) {
+        const response = await Axios.get('https://api.playmonumenta.com/items', {headers: {'Authorization': AuthProvider.getAuthorizationData()}});
+        itemData = response.data;
+    } else {
+        itemData = JSON.parse(await Fs.readFile('public/items/itemData.json'));
+    }
+
+    return {
+        props: {
+            itemData
+        }
+    };
 }
