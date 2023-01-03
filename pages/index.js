@@ -9,15 +9,15 @@ export default function Home() {
   return (
     <div className={styles.container}>
       <Head>
-        <title>Oh the Misery</title>
+        <title>Monumenta Team-only internal items index, based on ohthemisery.tk</title>
         <meta property="og:image" content="/favicon.ico" />
-        <meta name="description" content="Website of the Monumenta guild [ENEMY] Oh the Misery" />
+        <meta name="description" content="Monumenta fork of [ENEMY] Guild's Oh the Misery Item Website" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Oh the Misery
+          Monumenta Team-only internal items index, based on ohthemisery.tk
         </h1>
         <div className={styles.grid}>
           <Link href="/items">
