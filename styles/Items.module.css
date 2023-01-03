@@ -280,7 +280,7 @@
     color: #664B5A;
 }
 
-.remorse {
+.remorse, .remorsefulSkin {
     color: #EBE3D3;
 }
 
@@ -288,11 +288,11 @@
     color: #5C2C85;
 }
 
-.eldrask {
+.eldrask, .titanicSkin {
     color: #85CCF7;
 }
 
-.hekawt {
+.hekawt, .eternitySkin {
     color: #FCB23D;
 }
 
@@ -389,11 +389,11 @@
 }
 
 .islesCasino {
-    color: rgb(224, 226, 255);
+    color: #1772AF;
 }
 
 .islesOverworld {
-    color: rgb(224, 235, 255);
+    color: #31D4D9;
 }
 
 .celsianIsles {
@@ -404,16 +404,16 @@
     color: rgb(255, 237, 184);
 }
 
-.armory {
-    color: rgb(255, 237, 184);
+.royalArmory {
+    color: #C8FCFA;
 }
 
 .valleyCasino {
-    color: rgb(255, 250, 236);
+    color: #EAC662;
 }
 
 .valleyOverworld {
-    color: rgb(255, 255, 232);
+    color: #D9AC31;
 }
 
 .kingsValley {
@@ -421,18 +421,18 @@
 }
 
 .lowtideSmuggler {
-    color: rgb(202, 202, 231);
+    color: #196281;
 }
 
 .azacor {
-    color: rgb(246, 197, 182);
+    color: #FC6E54;
 }
 
-.winterEvent {
+.winterEvent, .holidaySkin {
     color: #ADC0E0;
 }
 
-.halloweenEvent {
+.halloweenEvent, .halloweenSkin {
     color: #FCA800;
 }
 
@@ -440,7 +440,7 @@
     color: #B2AAC1;
 }
 
-.willows {
+.willows, .storiedSkin {
     color: #006300;
 }
 
@@ -452,7 +452,7 @@
     color: #780E46;
 }
 
-.corridors {
+.corridors, .ephemeralEnhancements {
     color: #890000;
 }
 
@@ -461,5 +461,65 @@
 }
 
 .kaul {
-    color: rgb(158, 210, 146);
+    color: #00A800;
+}
+
+.mythicReliquary {
+    color: #C2951A;
+}
+
+.seasonalPass {
+    color: #FCF33B;
+}
+
+.blitz {
+    color: #D7AB3D;
+}
+
+.ringCasino {
+    color: #C4C0B4;
+}
+
+.uganda {
+    color: #CD2D28;
+}
+
+.arenaOfTerth {
+    color: #FCFCA8;
+}
+
+.soulwoven {
+    color: #7DFCD1;
+}
+
+.valentinesDay {
+    color: #FF7C7F;
+}
+
+.galleryOfFear {
+    color: #38AF4D;
+}
+
+.threadwarpedSkin {
+    color: #6F4B88;
+}
+
+.intellectCrystallizer {
+    color: #80D817;
+}
+
+.theHoard, .greedSkin {
+    color: #D7AB3D;
+}
+
+.divineSkin {
+    color: #C4ECEE;
+}
+
+.aprilsFools {
+    color: #D826C8;
+}
+
+.theEternalVigil {
+    color: #71979A;
 }

@@ -1,17 +1,39 @@
-import { username, password, useAPI, apiPath } from "../auth.json";
+import Fs from 'fs';
 
 class AuthProvider {
+    static loadAuthData() {
+        let authData;
+        try {
+            authData = JSON.parse(Fs.readFileSync(".../autha.json"));
+        } catch (error) {
+            return null;
+        }
+        return authData;
+    }
+
     static getAuthorizationData() {
+        let authData = this.loadAuthData();
+        if (authData == null) {
+            return null;
+        }
         let dataString = `${username}:${password}`;
         return `Basic ${Buffer.from(dataString).toString('base64')}`;
     }
 
     static isUsingApi() {
-        return useAPI;
+        let authData = this.loadAuthData();
+        if (authData == null) {
+            return true;
+        }
+        return authData.useAPI;
     }
 
     static getApiPath() {
-        return `https://api.playmonumenta.com/${apiPath}`;
+        let authData = this.loadAuthData();
+        if (authData == null) {
+            return "https://api.playmonumenta.com/items";
+        }
+        return `https://api.playmonumenta.com/${authData.apiPath}`;
     }
 }
 
