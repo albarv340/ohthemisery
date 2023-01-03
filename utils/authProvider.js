@@ -4,7 +4,7 @@ class AuthProvider {
     static loadAuthData() {
         let authData;
         try {
-            authData = JSON.parse(Fs.readFileSync(".../autha.json"));
+            authData = JSON.parse(Fs.readFileSync(".../auth.json"));
         } catch (error) {
             return null;
         }
