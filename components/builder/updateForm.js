@@ -150,7 +150,7 @@ export default function UpdateForm({ update, build, parentLoaded }) {
         for (let ref in itemRefs) {
             newBuild[ref] = itemRefs[ref].current.getValue()[0].value;
         }
-        let mainhands = ["mainhand", "sword", "axe", "wand", "scythe", "bow", "crossbow", "throwable", "trident"];
+        let mainhands = ["mainhand", "mainhand sword", "mainhand shield", "axe", "wand", "scythe", "bow", "crossbow", "snowball", "trident"];
         let offhands = ["offhand", "offhand shield", "offhand sword"];
         let actualItemType = (mainhands.includes(itemType.toLowerCase())) ? "mainhand" : (offhands.includes(itemType.toLowerCase())) ? "offhand" : itemType.toLowerCase();
         
@@ -217,7 +217,7 @@ export default function UpdateForm({ update, build, parentLoaded }) {
             <div className="row justify-content-center mb-3">
                 <div className="col-12 col-md-5 col-lg-2 text-center">
                     <TranslatableText identifier="items.type.mainhand"></TranslatableText>
-                    <SelectInput reference={itemRefs.mainhand} name="mainhand" default={getEquipName("mainhand")} noneOption={true} sortableStats={getRelevantItems(["mainhand", "sword", "axe", "wand", "scythe", "bow", "crossbow", "throwable", "trident"])}></SelectInput>
+                    <SelectInput reference={itemRefs.mainhand} name="mainhand" default={getEquipName("mainhand")} noneOption={true} sortableStats={getRelevantItems(["mainhand", "mainhand sword", "mainhand shield", "axe", "wand", "scythe", "bow", "crossbow", "snowball", "trident"])}></SelectInput>
                 </div>
                 <div className="col-12 col-md-5 col-lg-2 text-center">
                     <TranslatableText identifier="items.type.offhand"></TranslatableText>
