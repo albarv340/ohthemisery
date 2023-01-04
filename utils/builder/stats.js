@@ -329,11 +329,11 @@ class Stats {
                 this.regenPerSec += this.sumEnchantmentStat(itemStats, "regen", 1);
                 this.lifeDrainOnCrit += this.sumEnchantmentStat(itemStats, "life_drain", 1);
 
-                this.meleeProt += this.sumNumberStat(itemStats, "melee_prot");
-                this.projectileProt += this.sumNumberStat(itemStats, "projectile_prot");
-                this.magicProt += this.sumNumberStat(itemStats, "magic_prot");
-                this.blastProt += this.sumNumberStat(itemStats, "blast_prot");
-                this.fireProt += this.sumNumberStat(itemStats, "fire_prot");
+                this.meleeProt += this.sumNumberStat(itemStats, "melee_protection");
+                this.projectileProt += this.sumNumberStat(itemStats, "projectile_protection");
+                this.magicProt += this.sumNumberStat(itemStats, "magic_protection");
+                this.blastProt += this.sumNumberStat(itemStats, "blast_protection");
+                this.fireProt += this.sumNumberStat(itemStats, "fire_protection");
                 this.fallProt += this.sumNumberStat(itemStats, "feather_falling");
 
                 this.meleeFragility += this.sumNumberStat(itemStats, "melee_fragility");
