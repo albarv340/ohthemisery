@@ -324,9 +324,9 @@ class Stats {
                 this.fireTickDamage += this.sumNumberStat(itemStats, "inferno");
 
                 this.healingRate
-                    .add(this.sumEnchantmentStat(itemStats, "anemia", -10))
+                    .add(this.sumEnchantmentStat(itemStats, "curse_of_anemia", -10))
                     .add(this.sumEnchantmentStat(itemStats, "sustenance", 10));
-                this.regenPerSec += this.sumEnchantmentStat(itemStats, "regen", 1);
+                this.regenPerSec += this.sumEnchantmentStat(itemStats, "regeneration", 1);
                 this.lifeDrainOnCrit += this.sumEnchantmentStat(itemStats, "life_drain", 1);
 
                 this.meleeProt += this.sumNumberStat(itemStats, "melee_protection");
@@ -369,8 +369,8 @@ class Stats {
                 this.situationals.adaptability.level += this.sumNumberStat(itemStats, "adaptability");
                 this.situationals.secondwind.level += this.sumNumberStat(itemStats, "second_wind");
 
-                this.crippling += this.sumNumberStat(itemStats, "crippling");
-                this.corruption += this.sumNumberStat(itemStats, "corruption");
+                this.crippling += this.sumNumberStat(itemStats, "curse_of_crippling");
+                this.corruption += this.sumNumberStat(itemStats, "curse_of_corruption");
             }
         });
     }
