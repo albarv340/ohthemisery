@@ -35,7 +35,7 @@ function generateSortableItemStats() {
         }
     }
     Object.keys(uniqueItemStats).forEach(stat => {
-        sortableStats.push(stat.split("_").map(part => part[0].toUpperCase() + part.substring(1)).join(" ").replace(" Flat", "").replace(" Percent", " %"));
+        sortableStats.push(stat.split("_").map(part => part[0].toUpperCase() + part.substring(1)).join(" "));
     });
 }
 
