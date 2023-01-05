@@ -41,8 +41,8 @@ export default function ItemTile(data) {
                 <span className={styles[camelCase(item.tier)]}>{item.tier}</span>
             </span>
             <span className={styles[camelCase(item.location)]}>{item.location}</span>
-            {item.notes ? <span className={styles.infoText}>{item.notes}</span> : ""}
             {item.lore ? <span className={styles.infoText}>{item.lore}</span> : ""}
+            {item.extras?.notes ? <p className={`${styles.infoText} m-0`}>{item.extras.notes}</p> : ""}
         </div>
     )
 }

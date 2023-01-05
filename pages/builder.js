@@ -239,6 +239,12 @@ export async function getServerSideProps(context) {
     }
     let build = context.query?.build ? context.query.build : null;
 
+    // Add extra properties to the items (for example, notes!)
+    let extras = JSON.parse(await Fs.readFile('public/items/extras.json'));
+    for (const itemExtra in extras) {
+        itemData[itemExtra].extras = extras[itemExtra];
+    }
+
     return {
         props: {
             build,
