@@ -316,7 +316,7 @@ export default function UpdateForm({ update, build, parentLoaded, itemData }) {
                     itemTypes.map(type =>
                         (checkExists(type, stats, itemData)) ?
                             (stats.fullItemData[type].masterwork != undefined) ?
-                                <MasterworkableItemTile update={receiveMasterworkUpdate} key={stats.itemNames[type]} name={removeMasterworkFromName(stats.itemNames[type])} item={createMasterworkData(removeMasterworkFromName(stats.itemNames[type]))} default={Number(stats.itemNames[type].split("-")[1])}></MasterworkableItemTile> :
+                                <MasterworkableItemTile update={receiveMasterworkUpdate} key={stats.itemNames[type]} name={removeMasterworkFromName(stats.itemNames[type])} item={createMasterworkData(removeMasterworkFromName(stats.itemNames[type]), itemData)} default={Number(stats.itemNames[type].split("-")[1])}></MasterworkableItemTile> :
                                 <ItemTile key={type} name={stats.itemNames[type]} item={stats.fullItemData[type]}></ItemTile> : ""
                     )
                 }
