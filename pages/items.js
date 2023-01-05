@@ -10,6 +10,7 @@ import TranslatableText from '../components/translatableText';
 import Axios from 'axios';
 import AuthProvider from '../utils/authProvider';
 import Fs from 'fs/promises';
+import extras from '../public/items/extras.json';
 
 function getRelevantItems(data, itemData) {
     let items = Object.keys(itemData);
@@ -163,10 +164,9 @@ export async function getServerSideProps(context) {
     }
 
     // Add extra properties to the items (for example, notes!)
-    // let extras = JSON.parse(await Fs.readFile('public/items/extras.json'));
-    // for (const itemExtra in extras) {
-    //     itemData[itemExtra].extras = extras[itemExtra];
-    // }
+    for (const itemExtra in extras) {
+        itemData[itemExtra].extras = extras[itemExtra];
+    }
 
     return {
         props: {
