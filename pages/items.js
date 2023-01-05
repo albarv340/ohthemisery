@@ -163,10 +163,10 @@ export async function getServerSideProps(context) {
     }
 
     // Add extra properties to the items (for example, notes!)
-    let extras = JSON.parse(await Fs.readFile('public/items/extras.json'));
-    for (const itemExtra in extras) {
-        itemData[itemExtra].extras = extras[itemExtra];
-    }
+    // let extras = JSON.parse(await Fs.readFile('public/items/extras.json'));
+    // for (const itemExtra in extras) {
+    //     itemData[itemExtra].extras = extras[itemExtra];
+    // }
 
     return {
         props: {
