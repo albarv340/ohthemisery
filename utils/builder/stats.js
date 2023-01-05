@@ -214,7 +214,7 @@ class Stats {
         let guardSit = (this.situationals.guard.enabled) ? situationalArmor * this.situationals.guard.level : 0;
         let cloakedSit = (this.situationals.cloaked.enabled) ? situationalAgility * this.situationals.cloaked.level : 0;
 
-        let steadfastArmor = (1 - Math.max(0.2, this.currentHealthPercent.val)) * 0.33 *
+        let steadfastArmor = (1 - Math.max(0.2, Math.min(1, this.currentHealthPercent.val))) * 0.33 *
             Math.min(((this.situationals.adaptability.level > 0 && moreAgility) ? agility : (moreArmor) ? armor : (this.situationals.adaptability.level == 0) ? armor : 0), 30);
 
         let steadfastSit = (this.situationals.steadfast.enabled) ? steadfastArmor * this.situationals.steadfast.level : 0;
