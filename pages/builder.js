@@ -125,7 +125,7 @@ export default function Builder({ build, itemData }) {
                         <h1 className="text-center">Monumenta Builder</h1>
                     </div>
                 </div>
-                <UpdateForm update={change} build={build} parentLoaded={parentLoaded}></UpdateForm>
+                <UpdateForm update={change} build={build} parentLoaded={parentLoaded} itemData={itemData}></UpdateForm>
                 <div className="row justify-content-center mb-2">
                     <div className="col-auto text-center border border-dark mx-2 py-2">
                         <h5 className="text-center fw-bold mb-0"><TranslatableText identifier="builder.statCategories.misc"></TranslatableText></h5>

@@ -2,7 +2,6 @@ import SelectInput from '../items/selectInput';
 import CheckboxWithLabel from '../items/checkboxWithLabel';
 import ItemTile from '../../components/items/itemTile';
 import MasterworkableItemTile from '../../components/items/masterworkableItemTile';
-import itemData from '../../public/items/itemData.json';
 import React from 'react';
 import { useRouter } from 'next/router';
 
@@ -34,7 +33,7 @@ const enabledBoxes = {
     clericblessing: false
 };
 
-function groupMasterwork(items) {
+function groupMasterwork(items, itemData) {
     // Group up masterwork tiers by their name using an object, removing them from items.
     let masterworkItems = {};
     // Go through the array in reverse order to have the splice work properly
@@ -59,17 +58,17 @@ function groupMasterwork(items) {
     return items;
 }
 
-function getRelevantItems(types) {
+function getRelevantItems(types, itemData) {
     let items = Object.keys(itemData);
-    return groupMasterwork(items.filter(name => types.includes(itemData[name].type.toLowerCase().replace(/<.*>/, "").trim())));
+    return groupMasterwork(items.filter(name => types.includes(itemData[name].type.toLowerCase().replace(/<.*>/, "").trim())), itemData);
 }
 
-function recalcBuild(data) {
+function recalcBuild(data, itemData) {
     let tempStats = new Stats(itemData, data, enabledBoxes);
     return tempStats
 }
 
-function createMasterworkData(name) {
+function createMasterworkData(name, itemData) {
     return Object.keys(itemData).filter(itemName => itemData[itemName].name == name).map(itemName => itemData[itemName]);
 }
 
@@ -77,24 +76,24 @@ function removeMasterworkFromName(name) {
     return name.replace(/-\d$/g, "");
 }
 
-function checkExists(type, itemsToDisplay) {
+function checkExists(type, itemsToDisplay, itemData) {
     let retVal = false;
     if (itemsToDisplay.itemStats) {
         retVal = itemsToDisplay.itemStats[type] !== undefined;
     }
-    if (itemsToDisplay.itemNames && itemsToDisplay.itemNames[type] && createMasterworkData(removeMasterworkFromName(itemsToDisplay.itemNames[type]))[0]?.masterwork != undefined) {
+    if (itemsToDisplay.itemNames && itemsToDisplay.itemNames[type] && createMasterworkData(removeMasterworkFromName(itemsToDisplay.itemNames[type]), itemData)[0]?.masterwork != undefined) {
         retVal = true;
     }
     return retVal;
 }
 
-export default function UpdateForm({ update, build, parentLoaded }) {
+export default function UpdateForm({ update, build, parentLoaded, itemData }) {
     const [stats, setStats] = React.useState({});
 
     function sendUpdate(event) {
         event.preventDefault();
         const itemNames = Object.fromEntries(new FormData(event.target).entries());
-        const tempStats = recalcBuild(itemNames);
+        const tempStats = recalcBuild(itemNames, itemData);
         setStats(tempStats);
         update(tempStats);
         router.push(`/builder?${makeBuildString()}`, `/builder/${makeBuildString()}`, { shallow: true });
@@ -116,7 +115,7 @@ export default function UpdateForm({ update, build, parentLoaded }) {
                     itemNames[type] = "None";
                 }
             });
-            const tempStats = recalcBuild(itemNames);
+            const tempStats = recalcBuild(itemNames, itemData);
             setStats(tempStats);
             update(tempStats);
         }
@@ -139,7 +138,7 @@ export default function UpdateForm({ update, build, parentLoaded }) {
         for (let ref in itemRefs) {
             itemRefs[ref].current.setValue({ value: "None", label: "None" });
         }
-        const tempStats = recalcBuild(emptyBuild)
+        const tempStats = recalcBuild(emptyBuild, itemData)
         setStats(tempStats);
         update(tempStats);
         router.push('/builder', `/builder/`, { shallow: true });
@@ -159,7 +158,7 @@ export default function UpdateForm({ update, build, parentLoaded }) {
         itemRefs[actualItemType.toLowerCase()].current.setValue({ "value": `${newActiveItem.name}-${newActiveItem.masterwork}`, "label": newActiveItem.name });
         router.push(`/builder?${manualBuildString}`, `/builder/${manualBuildString}`, { shallow: true });
 
-        const tempStats = recalcBuild(newBuild)
+        const tempStats = recalcBuild(newBuild, itemData)
         setStats(tempStats);
         update(tempStats);
     }
@@ -207,7 +206,7 @@ export default function UpdateForm({ update, build, parentLoaded }) {
         const name = event.target.name;
         enabledBoxes[name] = event.target.checked;
         const itemNames = Object.fromEntries(new FormData(formRef.current).entries());
-        const tempStats = recalcBuild(itemNames);
+        const tempStats = recalcBuild(itemNames, itemData);
         setStats(tempStats);
         update(tempStats);
     }
@@ -217,29 +216,29 @@ export default function UpdateForm({ update, build, parentLoaded }) {
             <div className="row justify-content-center mb-3">
                 <div className="col-12 col-md-5 col-lg-2 text-center">
                     <TranslatableText identifier="items.type.mainhand"></TranslatableText>
-                    <SelectInput reference={itemRefs.mainhand} name="mainhand" default={getEquipName("mainhand")} noneOption={true} sortableStats={getRelevantItems(["mainhand", "mainhand sword", "mainhand shield", "axe", "wand", "scythe", "bow", "crossbow", "snowball", "trident"])}></SelectInput>
+                    <SelectInput reference={itemRefs.mainhand} name="mainhand" default={getEquipName("mainhand")} noneOption={true} sortableStats={getRelevantItems(["mainhand", "mainhand sword", "mainhand shield", "axe", "wand", "scythe", "bow", "crossbow", "snowball", "trident"], itemData)}></SelectInput>
                 </div>
                 <div className="col-12 col-md-5 col-lg-2 text-center">
                     <TranslatableText identifier="items.type.offhand"></TranslatableText>
-                    <SelectInput reference={itemRefs.offhand} name="offhand" default={getEquipName("offhand")} noneOption={true} sortableStats={getRelevantItems(["offhand", "offhand shield", "offhand sword"])}></SelectInput>
+                    <SelectInput reference={itemRefs.offhand} name="offhand" default={getEquipName("offhand")} noneOption={true} sortableStats={getRelevantItems(["offhand", "offhand shield", "offhand sword"], itemData)}></SelectInput>
                 </div>
             </div>
             <div className="row justify-content-center mb-4 pt-2">
                 <div className="col-12 col-md-3 col-lg-2 text-center">
                     <TranslatableText identifier="items.type.helmet"></TranslatableText>
-                    <SelectInput reference={itemRefs.helmet} noneOption={true} name="helmet" default={getEquipName("helmet")} sortableStats={getRelevantItems(["helmet"])}></SelectInput>
+                    <SelectInput reference={itemRefs.helmet} noneOption={true} name="helmet" default={getEquipName("helmet")} sortableStats={getRelevantItems(["helmet"], itemData)}></SelectInput>
                 </div>
                 <div className="col-12 col-md-3 col-lg-2 text-center">
                     <TranslatableText identifier="items.type.chestplate"></TranslatableText>
-                    <SelectInput reference={itemRefs.chestplate} noneOption={true} name="chestplate" default={getEquipName("chestplate")} sortableStats={getRelevantItems(["chestplate"])}></SelectInput>
+                    <SelectInput reference={itemRefs.chestplate} noneOption={true} name="chestplate" default={getEquipName("chestplate")} sortableStats={getRelevantItems(["chestplate"], itemData)}></SelectInput>
                 </div>
                 <div className="col-12 col-md-3 col-lg-2 text-center">
                     <TranslatableText identifier="items.type.leggings"></TranslatableText>
-                    <SelectInput reference={itemRefs.leggings} noneOption={true} name="leggings" default={getEquipName("leggings")} sortableStats={getRelevantItems(["leggings"])}></SelectInput>
+                    <SelectInput reference={itemRefs.leggings} noneOption={true} name="leggings" default={getEquipName("leggings")} sortableStats={getRelevantItems(["leggings"], itemData)}></SelectInput>
                 </div>
                 <div className="col-12 col-md-3 col-lg-2 text-center">
                     <TranslatableText identifier="items.type.boots"></TranslatableText>
-                    <SelectInput reference={itemRefs.boots} noneOption={true} name="boots" default={getEquipName("boots")} sortableStats={getRelevantItems(["boots"])}></SelectInput>
+                    <SelectInput reference={itemRefs.boots} noneOption={true} name="boots" default={getEquipName("boots")} sortableStats={getRelevantItems(["boots"], itemData)}></SelectInput>
                 </div>
             </div>
             <div className="row justify-content-center mb-3">
@@ -315,7 +314,7 @@ export default function UpdateForm({ update, build, parentLoaded }) {
             <div className="row justify-content-center mb-2">
                 {
                     itemTypes.map(type =>
-                        (checkExists(type, stats)) ?
+                        (checkExists(type, stats, itemData)) ?
                             (stats.fullItemData[type].masterwork != undefined) ?
                                 <MasterworkableItemTile update={receiveMasterworkUpdate} key={stats.itemNames[type]} name={removeMasterworkFromName(stats.itemNames[type])} item={createMasterworkData(removeMasterworkFromName(stats.itemNames[type]))} default={Number(stats.itemNames[type].split("-")[1])}></MasterworkableItemTile> :
                                 <ItemTile key={type} name={stats.itemNames[type]} item={stats.fullItemData[type]}></ItemTile> : ""
