@@ -33,6 +33,7 @@
     "items.searchForm.region": "Region:",
     "items.searchForm.tier": "Tier:",
     "items.searchForm.location": "Location:",
+    "items.searchForm.poi": "POI:",
     "items.searchForm.charmClass": "Charm Class:",
     "items.searchForm.charmStat": "Charm Stat:",
     "items.searchForm.baseItem": "Base Item:",
