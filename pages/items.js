@@ -27,6 +27,9 @@ function getRelevantItems(data, itemData) {
     if (data.locationSelect != "Any Location") {
         items = items.filter(name => itemData[name].location == data.locationSelect)
     }
+    if (data.poiSelect != "Any POI") {
+        items = items.filter(name => itemData[name].extras?.poi && itemData[name].extras.poi == data.poiSelect)
+    }
     if (data.classSelect != "Any Class") {
         items = items.filter(name => itemData[name].class_name == data.classSelect)
     }

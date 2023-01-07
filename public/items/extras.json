@@ -1,66 +1,66 @@
 {
     "Fungal Will-0": {
-      "notes": "Found in Amanita Colony"
+      "poi": "Amanita Colony"
     },
     "Mycelian Mantra-0": {
-      "notes": "Found in Chanterelle Village"
+      "poi": "Chanterelle Village"
     },
     "Laboratory Apron-0": {
-      "notes": "Found in Amanita Colony"
+      "poi": "Amanita Colony"
     },
     "Samsara Vessel-0": {
-      "notes": "Found in Amanita Colony"
+      "poi": "Amanita Colony"
     },
     "Spikeladen Crust-0": {
-      "notes": "Found in Chanterelle Village"
+      "poi": "Chanterelle Village"
     },
     "Mycelian Cap-0": {
-      "notes": "Found in Chanterelle Village"
+      "poi": "Chanterelle Village"
     },
     "Hycenea's Will-0": {
-      "notes": "Found in Coven Fortress"
+      "poi": "Coven Fortress"
     },
     "Golemworn Treads-0": {
-      "notes": "Found in Coven Fortress"
+      "poi": "Coven Fortress"
     },
     "Hexborn Shard-0": {
-      "notes": "Found in Coven Fortress"
+      "poi": "Coven Fortress"
     },
     "Harrakfar's Claw-0": {
-      "notes": "Found in Locum Vernantia"
+      "poi": "Locum Vernantia"
     },
     "Iridium Bulwark-0": {
-      "notes": "Found in Locum Vernantia"
+      "poi": "Locum Vernantia"
     },
     "Flight from the Capital-0": {
-      "notes": "Found in Vibrant Hollow"
+      "poi": "Vibrant Hollow"
     },
     "Sporesoaked Robe-0": {
-      "notes": "Found in Vibrant Hollow"
+      "poi": "Vibrant Hollow"
     },
     "Dignified Greaves-0": {
-      "notes": "Found in Bewitched Dominion"
+      "poi": "Bewitched Dominion"
     },
     "Journey's End-0": {
-      "notes": "Found in Shadowcast Bastille"
+      "poi": "Shadowcast Bastille"
     },
     "Shrouded Sabatons-0": {
-      "notes": "Found in Shadowcast Bastille"
+      "poi": "Shadowcast Bastille"
     },
     "Overgrown Bodkin-0": {
-      "notes": "Found in Bewitched Dominion"
+      "poi": "Bewitched Dominion"
     },
     "Defiled Carving-0": {
-      "notes": "Found in Vibrant Hollow"
+      "poi": "Vibrant Hollow"
     },
     "Arcane Rifle-0": {
-      "notes": "Found in Bewitched Dominion"
+      "poi": "Bewitched Dominion"
     },
     "Epoch Hammer-0": {
-      "notes": "Found in Locum Vernantia"
+      "poi": "Locum Vernantia"
     },
     "Twisted Pike-0": {
-      "notes": "Found in Shadowcast Bastille"
+      "poi": "Shadowcast Bastille"
     },
     "Falling Blades-2": {
       "notes": "Special Item"
@@ -126,175 +126,175 @@
       "notes": "SKT Savage Mode"
     },
     "Stonewrought Helmet-0": {
-      "notes": "Found in Arx Spirensis"
+      "poi": "Arx Spirensis"
     },
     "Adanartis-0": {
-      "notes": "Found in Arx Spirensis"
+      "poi": "Arx Spirensis"
     },
     "Hollow Gladius-0": {
-      "notes": "Found in Doomed Encampment"
+      "poi": "Doomed Encampment"
     },
     "Hammer of Legacy-0": {
-      "notes": "Found in Forsaken Manor"
+      "poi": "Forsaken Manor"
     },
     "Resonant Scythe-0": {
-      "notes": "Found in Silvic Quarry"
+      "poi": "Silvic Quarry"
     },
     "Wind's Gaze-0": {
-      "notes": "Found in Quelled Convent"
+      "poi": "Quelled Convent"
     },
     "Kisarith-0": {
-      "notes": "Found in Arx Spirensis"
+      "poi": "Arx Spirensis"
     },
     "Thundering Legacy-0": {
-      "notes": "Found in Submerged Citadel"
+      "poi": "Submerged Citadel"
     },
     "Pelias' Greaves-0": {
-      "notes": "Found in Doomed Encampment"
+      "poi": "Doomed Encampment"
     },
     "Iridium Crown-0": {
-      "notes": "Found in Forsaken Manor"
+      "poi": "Forsaken Manor"
     },
     "Pureshard Adze-0": {
-      "notes": "Found in Silvic Quarry"
+      "poi": "Silvic Quarry"
     },
     "Holy Vitriol-0": {
-      "notes": "Found in Quelled Convent"
+      "poi": "Quelled Convent"
     },
     "The Cascade's Ignorance-0": {
-      "notes": "Found in Submerged Citadel"
+      "poi": "Submerged Citadel"
     },
     "Stalwart Protector-0": {
-      "notes": "Found in Doomed Encampment"
+      "poi": "Doomed Encampment"
     },
     "Pelias' Sabatons-0": {
-      "notes": "Found in Forsaken Manor"
+      "poi": "Forsaken Manor"
     },
     "Miner's Lament-0": {
-      "notes": "Found in Silvic Quarry"
+      "poi": "Silvic Quarry"
     },
     "Silver Vestment-0": {
-      "notes": "Found in Quelled Convent"
+      "poi": "Quelled Convent"
     },
     "Stormblessed Greatspear-0": {
-      "notes": "Found in Submerged Citadel"
+      "poi": "Submerged Citadel"
     },
     "Regenerative Spores": {
-      "notes": "Found in Chanterelle Village"
+      "poi": "Chanterelle Village"
     },
     "Eroded Sconce": {
-      "notes": "Found in Shadowcast Bastille"
+      "poi": "Shadowcast Bastille"
     },
     "Petrified Sap": {
-      "notes": "Found in Coven Fortress"
+      "poi": "Coven Fortress"
     },
     "Bewitched Eye": {
-      "notes": "Found in Bewitched Dominion"
+      "poi": "Bewitched Dominion"
     },
     "Trembling Root": {
-      "notes": "Found in Vibrant Hollow"
+      "poi": "Vibrant Hollow"
     },
     "Delicious Fruit": {
-      "notes": "Found in Amanita Colony"
+      "poi": "Amanita Colony"
     },
     "Fecund Berry": {
-      "notes": "Found in Locum Vernantia"
+      "poi": "Locum Vernantia"
     },
     "True Ice Pendant": {
-      "notes": "Found in Coven Fortress"
+      "poi": "Coven Fortress"
     },
     "Morel's Bracers": {
-      "notes": "Found in Amanita Colony"
+      "poi": "Amanita Colony"
     },
     "Tome of Broken Vows": {
-      "notes": "Found in Shadowcast Bastille"
+      "poi": "Shadowcast Bastille"
     },
     "Oversized Flask": {
-      "notes": "Found in Amanita Colony"
+      "poi": "Amanita Colony"
     },
     "Mycelian Catalyst": {
-      "notes": "Found in Vibrant Hollow"
+      "poi": "Vibrant Hollow"
     },
     "Tradesman's Cape": {
-      "notes": "Found in Vibrant Hollow"
+      "poi": "Vibrant Hollow"
     },
     "Spearpoint Shoot": {
-      "notes": "Found in Chanterelle Village"
+      "poi": "Chanterelle Village"
     },
     "Ancient Shadowstone": {
-      "notes": "Found in Locum Vernantia"
+      "poi": "Locum Vernantia"
     },
     "Cracked Pocketwatch": {
-      "notes": "Found in Bewitched Dominion"
+      "poi": "Bewitched Dominion"
     },
     "Hexblade": {
-      "notes": "Found in Coven Fortress"
+      "poi": "Coven Fortress"
     },
     "Barbed Spore Pouch": {
-      "notes": "Found in Chanterelle Village"
+      "poi": "Chanterelle Village"
     },
     "Ashkii Galero": {
-      "notes": "Found in Bewitched Dominion"
+      "poi": "Bewitched Dominion"
     },
     "Zoetic Geas": {
-      "notes": "Found in Shadowcast Bastille"
+      "poi": "Shadowcast Bastille"
     },
     "Seal of the Way": {
-      "notes": "Found in Locum Vernantia"
+      "poi": "Locum Vernantia"
     },
     "Specialist Bauble": {
-      "notes": "Found in Doomed Encampment"
+      "poi": "Doomed Encampment"
     },
     "Royal Jewel": {
-      "notes": "Found in Forsaken Manor"
+      "poi": "Forsaken Manor"
     },
     "Spark Panel": {
-      "notes": "Found in Arx Spirensis"
+      "poi": "Arx Spirensis"
     },
     "Urn of Perpetuity": {
-      "notes": "Found in Submerged Citadel"
+      "poi": "Submerged Citadel"
     },
     "Spellbound Spearhead": {
-      "notes": "Found in Doomed Encampment"
+      "poi": "Doomed Encampment"
     },
     "Deepwrought Ruby": {
-      "notes": "Found in Silvic Quarry"
+      "poi": "Silvic Quarry"
     },
     "Deepslate Chunk": {
-      "notes": "Found in Arx Spirensis"
+      "poi": "Arx Spirensis"
     },
     "Architect's Aegis": {
-      "notes": "Found in Quelled Convent"
+      "poi": "Quelled Convent"
     },
     "Elgart's Iridium Buckle": {
-      "notes": "Found in Silvic Quarry"
+      "poi": "Silvic Quarry"
     },
     "Heretical Ore": {
-      "notes": "Found in Silvic Quarry"
+      "poi": "Silvic Quarry"
     },
     "Peakborn Windchime": {
-      "notes": "Found in Quelled Convent"
+      "poi": "Quelled Convent"
     },
     "Blade of the Sealed": {
-      "notes": "Found in Submerged Citadel"
+      "poi": "Submerged Citadel"
     },
     "Suzu of Stasis": {
-      "notes": "Found in Quelled Convent"
+      "poi": "Quelled Convent"
     },
     "Everflow Pendant": {
-      "notes": "Found in Submerged Citadel"
+      "poi": "Submerged Citadel"
     },
     "Silver Codex": {
-      "notes": "Found in Doomed Encampment"
+      "poi": "Doomed Encampment"
     },
     "Blessing of the Convert": {
-      "notes": "Found in Forsaken Manor"
+      "poi": "Forsaken Manor"
     },
     "Darkest Pact": {
-      "notes": "Found in Arx Spirensis"
+      "poi": "Arx Spirensis"
     },
     "Pious Prism": {
-      "notes": "Found in Forsaken Manor"
+      "poi": "Forsaken Manor"
     },
     "Cry Havoc": {
       "notes": "The trader is Ageratina, found at [-541, 96, -381]."
@@ -312,52 +312,52 @@
       "notes": "The trader is Sen Sennit, found at [-548, 68, -297]. They are reachable via the underground tubes. You can enter one of them at [-496 90 -398]."
     },
     "Defiled Carving-1": {
-      "notes": "Found in Vibrant Hollow"
+      "poi": "Vibrant Hollow"
     },
     "Defiled Carving-2": {
-      "notes": "Found in Vibrant Hollow"
+      "poi": "Vibrant Hollow"
     },
     "Laboratory Apron-3": {
-      "notes": "Found in Amanita Colony"
+      "poi": "Amanita Colony"
     },
     "Stormblessed Greatspear-1": {
-      "notes": "Found in Submerged Citadel"
+      "poi": "Submerged Citadel"
     },
     "Twisted Pike-3": {
-      "notes": "Found in Shadowcast Bastille"
+      "poi": "Shadowcast Bastille"
     },
     "Arcane Rifle-3": {
-      "notes": "Found in Bewitched Dominion"
+      "poi": "Bewitched Dominion"
     },
     "Wind's Gaze-2": {
-      "notes": "Found in Quelled Convent"
+      "poi": "Quelled Convent"
     },
     "Wind's Gaze-3": {
-      "notes": "Found in Quelled Convent"
+      "poi": "Quelled Convent"
     },
     "Kisarith-3": {
-      "notes": "Found in Arx Spirensis"
+      "poi": "Arx Spirensis"
     },
     "Stonewrought Helmet-1": {
-      "notes": "Found in Arx Spirensis"
+      "poi": "Arx Spirensis"
     },
     "Pureshard Adze-1": {
-      "notes": "Found in Silvic Quarry"
+      "poi": "Silvic Quarry"
     },
     "Silver Vestment-1": {
-      "notes": "Found in Quelled Convent"
+      "poi": "Quelled Convent"
     },
     "Arcane Rifle-1": {
-      "notes": "Found in Bewitched Dominion"
+      "poi": "Bewitched Dominion"
     },
     "Journey's End-1": {
-      "notes": "Found in Shadowcast Bastille"
+      "poi": "Shadowcast Bastille"
     },
     "Harrakfar's Claw-1": {
-      "notes": "Found in Locum Vernantia"
+      "poi": "Locum Vernantia"
     },
     "Pelias' Sabatons-1": {
-      "notes": "Found in Forsaken Manor"
+      "poi": "Forsaken Manor"
     },
     "Falling Blades-3": {
       "notes": "Special Item"
@@ -378,118 +378,118 @@
       "notes": "SKT Savage Mode"
     },
     "Epoch Hammer-1": {
-      "notes": "Found in Locum Vernantia"
+      "poi": "Locum Vernantia"
     },
     "Silver Vestment-2": {
-      "notes": "Found in Quelled Convent"
+      "poi": "Quelled Convent"
     },
     "Silver Vestment-3": {
-      "notes": "Found in Quelled Convent"
+      "poi": "Quelled Convent"
     },
     "Laboratory Apron-1": {
-      "notes": "Found in Amanita Colony"
+      "poi": "Amanita Colony"
     },
     "Laboratory Apron-2": {
-      "notes": "Found in Amanita Colony"
+      "poi": "Amanita Colony"
     },
     "Harrakfar's Claw-2": {
-      "notes": "Found in Locum Vernantia"
+      "poi": "Locum Vernantia"
     },
     "Harrakfar's Claw-3": {
-      "notes": "Found in Locum Vernantia"
+      "poi": "Locum Vernantia"
     },
     "Cowl of the Coven-2": {
       "notes": "Bounty Reward"
     },
     "Stonewrought Helmet-2": {
-      "notes": "Found in Arx Spirensis"
+      "poi": "Arx Spirensis"
     },
     "Miner's Lament-3": {
-      "notes": "Found in Silvic Quarry"
+      "poi": "Silvic Quarry"
     },
     "Pelias' Sabatons-2": {
-      "notes": "Found in Forsaken Manor"
+      "poi": "Forsaken Manor"
     },
     "Overgrown Bodkin-1": {
-      "notes": "Found in Bewitched Dominion"
+      "poi": "Bewitched Dominion"
     },
     "Overgrown Bodkin-3": {
-      "notes": "Found in Bewitched Dominion"
+      "poi": "Bewitched Dominion"
     },
     "Journey's End-2": {
-      "notes": "Found in Shadowcast Bastille"
+      "poi": "Shadowcast Bastille"
     },
     "Golemworn Treads-1": {
-      "notes": "Found in Coven Fortress"
+      "poi": "Coven Fortress"
     },
     "Iridium Bulwark-1": {
-      "notes": "Found in Locum Vernantia"
+      "poi": "Locum Vernantia"
     },
     "Iridium Bulwark-2": {
-      "notes": "Found in Locum Vernantia"
+      "poi": "Locum Vernantia"
     },
     "Iridium Bulwark-3": {
-      "notes": "Found in Locum Vernantia"
+      "poi": "Locum Vernantia"
     },
     "Stormblessed Greatspear-2": {
-      "notes": "Found in Submerged Citadel"
+      "poi": "Submerged Citadel"
     },
     "Stormblessed Greatspear-3": {
-      "notes": "Found in Submerged Citadel"
+      "poi": "Submerged Citadel"
     },
     "Stonewrought Helmet-3": {
-      "notes": "Found in Arx Spirensis"
+      "poi": "Arx Spirensis"
     },
     "Dignified Greaves-1": {
-      "notes": "Found in Bewitched Dominion"
+      "poi": "Bewitched Dominion"
     },
     "Roots of the Fen-3": {
       "notes": "Special Item"
     },
     "Holy Vitriol-1": {
-      "notes": "Found in Quelled Convent"
+      "poi": "Quelled Convent"
     },
     "Flight from the Capital-3": {
-      "notes": "Found in Vibrant Hollow"
+      "poi": "Vibrant Hollow"
     },
     "The Cascade's Ignorance-1": {
-      "notes": "Found in Submerged Citadel"
+      "poi": "Submerged Citadel"
     },
     "Shrouded Sabatons-1": {
-      "notes": "Found in Shadowcast Bastille"
+      "poi": "Shadowcast Bastille"
     },
     "Defiled Carving-3": {
-      "notes": "Found in Vibrant Hollow"
+      "poi": "Vibrant Hollow"
     },
     "Adanartis-1": {
-      "notes": "Found in Arx Spirensis"
+      "poi": "Arx Spirensis"
     },
     "Pelias' Greaves-1": {
-      "notes": "Found in Doomed Encampment"
+      "poi": "Doomed Encampment"
     },
     "Pelias' Greaves-2": {
-      "notes": "Found in Doomed Encampment"
+      "poi": "Doomed Encampment"
     },
     "Iridium Crown-2": {
-      "notes": "Found in Forsaken Manor"
+      "poi": "Forsaken Manor"
     },
     "Iridium Crown-3": {
-      "notes": "Found in Forsaken Manor"
+      "poi": "Forsaken Manor"
     },
     "Hollow Gladius-1": {
-      "notes": "Found in Doomed Encampment"
+      "poi": "Doomed Encampment"
     },
     "Hollow Gladius-2": {
-      "notes": "Found in Doomed Encampment"
+      "poi": "Doomed Encampment"
     },
     "Hollow Gladius-3": {
-      "notes": "Found in Doomed Encampment"
+      "poi": "Doomed Encampment"
     },
     "Samsara Vessel-2": {
-      "notes": "Found in Amanita Colony"
+      "poi": "Amanita Colony"
     },
     "Samsara Vessel-3": {
-      "notes": "Found in Amanita Colony"
+      "poi": "Amanita Colony"
     },
     "Chains of Legacy-2": {
       "notes": "Bounty Reward"
@@ -507,10 +507,10 @@
       "notes": "Bounty Reward"
     },
     "Holy Vitriol-2": {
-      "notes": "Found in Quelled Convent"
+      "poi": "Quelled Convent"
     },
     "Holy Vitriol-3": {
-      "notes": "Found in Quelled Convent"
+      "poi": "Quelled Convent"
     },
     "Cowl of the Coven-3": {
       "notes": "Bounty Reward"
@@ -522,28 +522,28 @@
       "notes": "Bounty Reward"
     },
     "Shrouded Sabatons-3": {
-      "notes": "Found in Shadowcast Bastille"
+      "poi": "Shadowcast Bastille"
     },
     "Hexborn Shard-3": {
-      "notes": "Found in Coven Fortress"
+      "poi": "Coven Fortress"
     },
     "Journey's End-3": {
-      "notes": "Found in Shadowcast Bastille"
+      "poi": "Shadowcast Bastille"
     },
     "Fungal Will-3": {
-      "notes": "Found in Amanita Colony"
+      "poi": "Amanita Colony"
     },
     "Mycelian Cap-3": {
-      "notes": "Found in Chanterelle Village"
+      "poi": "Chanterelle Village"
     },
     "Vacant Dagger-3": {
       "notes": "Bounty Reward"
     },
     "Sporesoaked Robe-2": {
-      "notes": "Found in Vibrant Hollow"
+      "poi": "Vibrant Hollow"
     },
     "Sporesoaked Robe-3": {
-      "notes": "Found in Vibrant Hollow"
+      "poi": "Vibrant Hollow"
     },
     "Veiled Might-3": {
       "notes": "Special Item"
@@ -558,10 +558,10 @@
       "notes": "Bounty Reward"
     },
     "Pelias' Greaves-3": {
-      "notes": "Found in Doomed Encampment"
+      "poi": "Doomed Encampment"
     },
     "Thundering Legacy-1": {
-      "notes": "Found in Submerged Citadel"
+      "poi": "Submerged Citadel"
     },
     "Memoria Ancestrale-3": {
       "notes": "SKT Savage Mode"
@@ -573,16 +573,16 @@
       "notes": "Bounty Reward"
     },
     "The Cascade's Ignorance-3": {
-      "notes": "Found in Submerged Citadel"
+      "poi": "Submerged Citadel"
     },
     "Overgrown Bodkin-2": {
-      "notes": "Found in Bewitched Dominion"
+      "poi": "Bewitched Dominion"
     },
     "Kisarith-1": {
-      "notes": "Found in Arx Spirensis"
+      "poi": "Arx Spirensis"
     },
     "The Cascade's Ignorance-2": {
-      "notes": "Found in Submerged Citadel"
+      "poi": "Submerged Citadel"
     },
     "Fox Frenzy": {
       "notes": "The trader can be accessed via the underground tubes and is located at [-325, 67, -352]."
@@ -594,28 +594,28 @@
       "notes": "Bounty Reward"
     },
     "Fungal Will-2": {
-      "notes": "Found in Amanita Colony"
+      "poi": "Amanita Colony"
     },
     "Flight from the Capital-1": {
-      "notes": "Found in Vibrant Hollow"
+      "poi": "Vibrant Hollow"
     },
     "Fungal Will-1": {
-      "notes": "Found in Amanita Colony"
+      "poi": "Amanita Colony"
     },
     "Sporesoaked Robe-1": {
-      "notes": "Found in Vibrant Hollow"
+      "poi": "Vibrant Hollow"
     },
     "Mycelian Cap-1": {
-      "notes": "Found in Chanterelle Village"
+      "poi": "Chanterelle Village"
     },
     "Iridium Crown-1": {
-      "notes": "Found in Forsaken Manor"
+      "poi": "Forsaken Manor"
     },
     "Resonant Scythe-1": {
-      "notes": "Found in Silvic Quarry"
+      "poi": "Silvic Quarry"
     },
     "Miner's Lament-1": {
-      "notes": "Found in Silvic Quarry"
+      "poi": "Silvic Quarry"
     },
     "Silvari Coin-2": {
       "notes": "Bounty Reward"
@@ -624,7 +624,7 @@
       "notes": "Bounty Reward"
     },
     "Spikeladen Crust-1": {
-      "notes": "Found in Chanterelle Village"
+      "poi": "Chanterelle Village"
     },
     "The Hollow Rings-2": {
       "notes": "Bounty Reward"
@@ -633,19 +633,19 @@
       "notes": "Bounty Reward"
     },
     "Samsara Vessel-1": {
-      "notes": "Found in Amanita Colony"
+      "poi": "Amanita Colony"
     },
     "Stalwart Protector-1": {
-      "notes": "Found in Doomed Encampment"
+      "poi": "Doomed Encampment"
     },
     "Hycenea's Will-1": {
-      "notes": "Found in Coven Fortress"
+      "poi": "Coven Fortress"
     },
     "Hycenea's Will-2": {
-      "notes": "Found in Coven Fortress"
+      "poi": "Coven Fortress"
     },
     "Miner's Lament-2": {
-      "notes": "Found in Silvic Quarry"
+      "poi": "Silvic Quarry"
     },
     "Wolfswood's Reach-2": {
       "notes": "Bounty Reward"
@@ -657,19 +657,19 @@
       "notes": "Bounty Reward"
     },
     "Thundering Legacy-3": {
-      "notes": "Found in Submerged Citadel"
+      "poi": "Submerged Citadel"
     },
     "Golemworn Treads-2": {
-      "notes": "Found in Coven Fortress"
+      "poi": "Coven Fortress"
     },
     "Golemworn Treads-3": {
-      "notes": "Found in Coven Fortress"
+      "poi": "Coven Fortress"
     },
     "Twisted Pike-1": {
-      "notes": "Found in Shadowcast Bastille"
+      "poi": "Shadowcast Bastille"
     },
     "Wind's Gaze-1": {
-      "notes": "Found in Quelled Convent"
+      "poi": "Quelled Convent"
     },
     "Timerift Stave-3": {
       "notes": "SKT Savage Mode"
@@ -699,31 +699,31 @@
       "notes": "This sword is obtained by combining 4 flowers at the Tlaxan Crafter, each with a 1/1000 chance of dropping from specific mobs."
     },
     "Spikeladen Crust-2": {
-      "notes": "Found in Chanterelle Village"
+      "poi": "Chanterelle Village"
     },
     "Spikeladen Crust-3": {
-      "notes": "Found in Chanterelle Village"
+      "poi": "Chanterelle Village"
     },
     "Adanartis-2": {
-      "notes": "Found in Arx Spirensis"
+      "poi": "Arx Spirensis"
     },
     "Adanartis-3": {
-      "notes": "Found in Arx Spirensis"
+      "poi": "Arx Spirensis"
     },
     "Mycelian Mantra-1": {
-      "notes": "Found in Chanterelle Village"
+      "poi": "Chanterelle Village"
     },
     "Mycelian Mantra-2": {
-      "notes": "Found in Chanterelle Village"
+      "poi": "Chanterelle Village"
     },
     "Mycelian Mantra-3": {
-      "notes": "Found in Chanterelle Village"
+      "poi": "Chanterelle Village"
     },
     "Dignified Greaves-2": {
-      "notes": "Found in Bewitched Dominion"
+      "poi": "Bewitched Dominion"
     },
     "Dignified Greaves-3": {
-      "notes": "Found in Bewitched Dominion"
+      "poi": "Bewitched Dominion"
     },
     "Anti-Acid Apron-3": {
       "notes": "Special Item"
@@ -744,16 +744,16 @@
       "notes": "The trader is found at [-517, 49, -70]. Go to Arx Spirensis, enter the giant tunnel blocked by gravel, and go left of the staircase. You will find another small tunnel, also blocked by gravel."
     },
     "Mycelian Cap-2": {
-      "notes": "Found in Chanterelle Village"
+      "poi": "Chanterelle Village"
     },
     "Pureshard Adze-2": {
-      "notes": "Found in Silvic Quarry"
+      "poi": "Silvic Quarry"
     },
     "Pureshard Adze-3": {
-      "notes": "Found in Silvic Quarry"
+      "poi": "Silvic Quarry"
     },
     "Hycenea's Will-3": {
-      "notes": "Found in Coven Fortress"
+      "poi": "Coven Fortress"
     },
     "Aradian Secrecy-2": {
       "notes": "Bounty Reward"
@@ -762,22 +762,22 @@
       "notes": "Bounty Reward"
     },
     "Pelias' Sabatons-3": {
-      "notes": "Found in Forsaken Manor"
+      "poi": "Forsaken Manor"
     },
     "Stalwart Protector-2": {
-      "notes": "Found in Doomed Encampment"
+      "poi": "Doomed Encampment"
     },
     "Stalwart Protector-3": {
-      "notes": "Found in Doomed Encampment"
+      "poi": "Doomed Encampment"
     },
     "Twisted Pike-2": {
-      "notes": "Found in Shadowcast Bastille"
+      "poi": "Shadowcast Bastille"
     },
     "Epoch Hammer-2": {
-      "notes": "Found in Locum Vernantia"
+      "poi": "Locum Vernantia"
     },
     "Epoch Hammer-3": {
-      "notes": "Found in Locum Vernantia"
+      "poi": "Locum Vernantia"
     },
     "Malhuer Reach": {
       "notes": "The trader is Elder Yuti Abello, in the Abello Village [-261 58 -440]."
@@ -789,10 +789,10 @@
       "notes": "The trader is Elder Yuti Abello, in the Abello Village [-261 58 -440]."
     },
     "Arcane Rifle-2": {
-      "notes": "Found in Bewitched Dominion"
+      "poi": "Bewitched Dominion"
     },
     "Kisarith-2": {
-      "notes": "Found in Arx Spirensis"
+      "poi": "Arx Spirensis"
     },
     "Shroud of the Disappeared-2": {
       "notes": "Bounty Reward"
@@ -801,16 +801,16 @@
       "notes": "Bounty Reward"
     },
     "Resonant Scythe-2": {
-      "notes": "Found in Silvic Quarry"
+      "poi": "Silvic Quarry"
     },
     "Resonant Scythe-3": {
-      "notes": "Found in Silvic Quarry"
+      "poi": "Silvic Quarry"
     },
     "Tradewind Cap-3": {
       "notes": "Bounty Reward"
     },
     "Flight from the Capital-2": {
-      "notes": "Found in Vibrant Hollow"
+      "poi": "Vibrant Hollow"
     },
     "Symbiosis-2": {
       "notes": "Bounty Reward"
@@ -822,12 +822,12 @@
       "notes": "Special Item"
     },
     "Hammer of Legacy-1": {
-      "notes": "Found in Forsaken Manor"
+      "poi": "Forsaken Manor"
     },
     "Hammer of Legacy-2": {
-      "notes": "Found in Forsaken Manor"
+      "poi": "Forsaken Manor"
     },
     "Hammer of Legacy-3": {
-      "notes": "Found in Forsaken Manor"
+      "poi": "Forsaken Manor"
     }
   }

@@ -4,6 +4,7 @@ import styles from '../../styles/Items.module.css'
 import React from 'react'
 import TranslatableText from '../translatableText'
 import items from '../../public/items/itemData.json'
+import extras from '../../public/items/extras.json';
 
 const charmClasses = ["Any Class", "Alchemist", "Mage", "Warlock", "Rogue", "Warrior", "Cleric", "Scout", "Generalist"]
 
@@ -11,6 +12,7 @@ let sortableStats = ["-"];
 let regions = ["Any Region"];
 let tiers = ["Any Tier"];
 let locations = ["Any Location"];
+let pois = ["Any POI"];
 let charmStats = ["Any Stat"];
 let baseItems = ["Any Item"];
 
@@ -41,7 +43,7 @@ function generateSortableItemStats() {
 
 
 function generateRegions() {
-    regions = ["Any Region"]
+    regions = ["Any Region"];
     let uniqueRegions = {};
     Object.keys(items).map(item => items[item].region).filter(regionName => regionName != undefined).forEach(regionName => {
         uniqueRegions[regionName] = 1;
@@ -50,7 +52,7 @@ function generateRegions() {
 }
 
 function generateTiers() {
-    tiers = ["Any Tier"]
+    tiers = ["Any Tier"];
     let uniqueTiers = {};
     Object.keys(items).map(item => items[item].tier).filter(tierName => tierName != undefined).forEach(tierName => {
         uniqueTiers[tierName] = 1;
@@ -75,7 +77,7 @@ function generateSortableCharmStats() {
 }
 
 function generateLocations() {
-    locations = ["Any Location"]
+    locations = ["Any Location"];
     let uniqueLocations = {};
     Object.keys(items).map(item => items[item].location).filter(locationName => locationName != undefined).forEach(locationName => {
         uniqueLocations[locationName] = 1;
@@ -83,8 +85,18 @@ function generateLocations() {
     Object.keys(uniqueLocations).forEach(locationName => locations.push(locationName));
 }
 
+function generatePOIs() {
+    pois = ["Any POI"];
+    let uniquePois = {};
+    Object.keys(extras).filter(extra => extras[extra].poi != undefined).map(extra => extras[extra].poi).forEach(poiName => {
+        uniquePois[poiName] = 1;
+    });
+    Object.keys(uniquePois).forEach(poiName => pois.push(poiName));
+    console.log(pois);
+}
+
 function generateBaseItems() {
-    baseItems = ["Any Item"]
+    baseItems = ["Any Item"];
     let uniqueBaseItems = {};
     Object.keys(items).map(item => items[item].base_item).filter(baseItemName => baseItemName != undefined).forEach(baseItemName => {
         uniqueBaseItems[baseItemName] = 1;
@@ -97,6 +109,7 @@ export default function SearchForm({ update }) {
     const [regionKey, setRegionKey] = React.useState(getResetKey("region"))
     const [tierKey, setTierKey] = React.useState(getResetKey("tier"))
     const [locationKey, setLocationKey] = React.useState(getResetKey("location"))
+    const [poiKey, setPoiKey] = React.useState(getResetKey("poi"))
     const [classKey, setClassKey] = React.useState(getResetKey("class"))
     const [charmStatKey, setCharmStatKey] = React.useState(getResetKey("charmStat"))
     const [baseItemKey, setBaseItemKey] = React.useState(getResetKey("baseItem"))
@@ -107,6 +120,7 @@ export default function SearchForm({ update }) {
     generateTiers();
     generateSortableCharmStats();
     generateLocations();
+    generatePOIs();
     generateBaseItems();
 
     function sendUpdate(event = {}) {
@@ -126,6 +140,7 @@ export default function SearchForm({ update }) {
         setRegionKey(getResetKey("region"))
         setTierKey(getResetKey("tier"))
         setLocationKey(getResetKey("location"))
+        setPoiKey(getResetKey("poi"))
         setClassKey(getResetKey("class"))
         setCharmStatKey(getResetKey("charmStat"))
         setBaseItemKey(getResetKey("baseItem"))
@@ -239,6 +254,10 @@ export default function SearchForm({ update }) {
                     <div className={styles.selects}>
                         <TranslatableText identifier="items.searchForm.location"></TranslatableText>
                         <SelectInput key={locationKey} name="locationSelect" sortableStats={locations} />
+                    </div>
+                    <div className={styles.selects}>
+                        <TranslatableText identifier="items.searchForm.poi"></TranslatableText>
+                        <SelectInput key={poiKey} name="poiSelect" sortableStats={pois} />
                     </div>
                     <div className={styles.selects}>
                         <TranslatableText identifier="items.searchForm.charmClass"></TranslatableText>
