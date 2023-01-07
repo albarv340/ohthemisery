@@ -3,7 +3,6 @@ import CheckboxWithLabel from './checkboxWithLabel'
 import styles from '../../styles/Items.module.css'
 import React from 'react'
 import TranslatableText from '../translatableText'
-import items from '../../public/items/itemData.json'
 import extras from '../../public/items/extras.json';
 
 const charmClasses = ["Any Class", "Alchemist", "Mage", "Warlock", "Rogue", "Warrior", "Cleric", "Scout", "Generalist"]
@@ -25,13 +24,13 @@ function getResetKey(name) {
     return name + new Date()
 }
 
-function generateSortableItemStats() {
+function generateSortableItemStats(itemData) {
     sortableStats = ["-"];
-    let itemNames = Object.keys(items).filter(item => items[item].type != "Charm");
+    let itemNames = Object.keys(itemData).filter(item => itemData[item].type != "Charm");
     let uniqueItemStats = {};
     for (let itemName of itemNames) {
-        if (items[itemName].stats) {
-            Object.keys(items[itemName].stats).forEach(stat => {
+        if (itemData[itemName].stats) {
+            Object.keys(itemData[itemName].stats).forEach(stat => {
                 uniqueItemStats[stat] = 1;
             });
         }
@@ -42,19 +41,19 @@ function generateSortableItemStats() {
 }
 
 
-function generateRegions() {
+function generateRegions(itemData) {
     regions = ["Any Region"];
     let uniqueRegions = {};
-    Object.keys(items).map(item => items[item].region).filter(regionName => regionName != undefined).forEach(regionName => {
+    Object.keys(itemData).map(item => itemData[item].region).filter(regionName => regionName != undefined).forEach(regionName => {
         uniqueRegions[regionName] = 1;
     });
     Object.keys(uniqueRegions).forEach(regionName => regions.push(regionName));
 }
 
-function generateTiers() {
+function generateTiers(itemData) {
     tiers = ["Any Tier"];
     let uniqueTiers = {};
-    Object.keys(items).map(item => items[item].tier).filter(tierName => tierName != undefined).forEach(tierName => {
+    Object.keys(itemData).map(item => itemData[item].tier).filter(tierName => tierName != undefined).forEach(tierName => {
         uniqueTiers[tierName] = 1;
     });
     // Remove the Charm tier since there is a checkbox for it.
@@ -62,12 +61,12 @@ function generateTiers() {
     Object.keys(uniqueTiers).forEach(tierName => tiers.push(tierName));
 }
 
-function generateSortableCharmStats() {
+function generateSortableCharmStats(itemData) {
     charmStats = ["Any Stat"];
-    let charmNames = Object.keys(items).filter(item => items[item].type == "Charm");
+    let charmNames = Object.keys(itemData).filter(item => itemData[item].type == "Charm");
     let uniqueCharmAttributes = {};
     for (let charmName of charmNames) {
-        Object.keys(items[charmName].stats).forEach(attribute => {
+        Object.keys(itemData[charmName].stats).forEach(attribute => {
             uniqueCharmAttributes[attribute] = 1;
         });
     }
@@ -76,10 +75,10 @@ function generateSortableCharmStats() {
     });
 }
 
-function generateLocations() {
+function generateLocations(itemData) {
     locations = ["Any Location"];
     let uniqueLocations = {};
-    Object.keys(items).map(item => items[item].location).filter(locationName => locationName != undefined).forEach(locationName => {
+    Object.keys(itemData).map(item => itemData[item].location).filter(locationName => locationName != undefined).forEach(locationName => {
         uniqueLocations[locationName] = 1;
     });
     Object.keys(uniqueLocations).forEach(locationName => locations.push(locationName));
@@ -95,16 +94,16 @@ function generatePOIs() {
     console.log(pois);
 }
 
-function generateBaseItems() {
+function generateBaseItems(itemData) {
     baseItems = ["Any Item"];
     let uniqueBaseItems = {};
-    Object.keys(items).map(item => items[item].base_item).filter(baseItemName => baseItemName != undefined).forEach(baseItemName => {
+    Object.keys(itemData).map(item => itemData[item].base_item).filter(baseItemName => baseItemName != undefined).forEach(baseItemName => {
         uniqueBaseItems[baseItemName] = 1;
     });
     Object.keys(uniqueBaseItems).forEach(baseItemName => baseItems.push(baseItemName));
 }
 
-export default function SearchForm({ update }) {
+export default function SearchForm({ update, itemData }) {
     const [searchKey, setSearchKey] = React.useState(getResetKey("search"))
     const [regionKey, setRegionKey] = React.useState(getResetKey("region"))
     const [tierKey, setTierKey] = React.useState(getResetKey("tier"))
@@ -115,13 +114,13 @@ export default function SearchForm({ update }) {
     const [baseItemKey, setBaseItemKey] = React.useState(getResetKey("baseItem"))
     const form = React.useRef()
 
-    generateSortableItemStats();
-    generateRegions();
-    generateTiers();
-    generateSortableCharmStats();
-    generateLocations();
+    generateSortableItemStats(itemData);
+    generateRegions(itemData);
+    generateTiers(itemData);
+    generateSortableCharmStats(itemData);
+    generateLocations(itemData);
     generatePOIs();
-    generateBaseItems();
+    generateBaseItems(itemData);
 
     function sendUpdate(event = {}) {
         if (event.type === "submit") {

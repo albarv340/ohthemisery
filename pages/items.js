@@ -97,7 +97,7 @@ function getRelevantItems(data, itemData) {
     return items;
 }
 
-export default function Items({itemData}) {
+export default function Items({ itemData }) {
     const [relevantItems, setRelevantItems] = React.useState(Object.keys(itemData));
     const [itemsToShow, setItemsToShow] = React.useState(20)
     const itemsToLoad = 20;
@@ -121,7 +121,7 @@ export default function Items({itemData}) {
             </Head>
             <main className={styles.main}>
                 <h1>Monumenta Items</h1>
-                <SearchForm update={handleChange} />
+                <SearchForm update={handleChange} itemData={itemData} />
                 {
                     (relevantItems.length > 0) ?
                     <h4 className="mt-1">
