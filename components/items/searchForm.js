@@ -274,7 +274,8 @@ export default function SearchForm({ update, itemData }) {
 
             </div>
             <TranslatableText identifier="items.searchForm.search"></TranslatableText>
-            <input type="text" name="search" placeholder="Search" />
+            <input type="text" name="searchName" placeholder="Search Name" />
+            <input type="text" name="searchLore" placeholder="Search Lore" />
             <div>
                 <input className={styles.submitButton} type="submit" />
                 <input className={styles.warningButton} type="reset" />

@@ -15,8 +15,11 @@ import extras from '../public/items/extras.json';
 function getRelevantItems(data, itemData) {
     let items = Object.keys(itemData);
 
-    if (data.search) {
-        items = items.filter(name => name.toLowerCase().includes(data.search.toLowerCase()))
+    if (data.searchName) {
+        items = items.filter(name => name.toLowerCase().includes(data.searchName.toLowerCase()))
+    }
+    if (data.searchLore) {
+        items = items.filter(name => itemData[name].lore?.toLowerCase().includes(data.searchLore.toLowerCase()))
     }
     if (data.regionSelect != "Any Region") {
         items = items.filter(name => itemData[name].region == data.regionSelect)
