@@ -91,7 +91,6 @@ function generatePOIs() {
         uniquePois[poiName] = 1;
     });
     Object.keys(uniquePois).forEach(poiName => pois.push(poiName));
-    console.log(pois);
 }
 
 function generateBaseItems(itemData) {
