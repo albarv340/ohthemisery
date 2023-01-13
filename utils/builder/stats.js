@@ -226,15 +226,25 @@ class Stats {
         let sumArmorSits = shieldingSit + poiseSit + inureSit + guardSit;
         let sumAgiSits = etherealSit + tempoSit + evasionSit + reflexesSit + cloakedSit;
 
-        let armorPlusSits = armor + ((this.situationals.adaptability.level > 0 && moreArmor) ?
-            sumSits : (this.situationals.adaptability.level > 0 && moreAgility) ?
-                armor : (this.situationals.adaptability.level == 0) ? sumArmorSits : 0);
-
+        let armorPlusSits = armor;
+        if (this.situationals.adaptability.level > 0) {
+            if (moreArmor) {
+                armorPlusSits += sumSits;
+            }
+        } else {
+            armorPlusSits += sumArmorSits;
+        }
         let armorPlusSitsSteadfast = armorPlusSits + steadfastSit;
 
-        let agilityPlusSits = agility + ((this.situationals.adaptability.level > 0 && moreAgility) ?
-            sumSits : (this.situationals.adaptability.level > 0 && moreArmor) ?
-                agility : (this.situationals.adaptability.level == 0) ? sumAgiSits : 0);
+        let agilityPlusSits = agility;
+        if (this.situationals.adaptability.level > 0) {
+            if (moreAgility) {
+                agilityPlusSits += sumSits;
+            }
+        } else {
+            agilityPlusSits += sumAgiSits;
+        }
+
         let halfArmor = armorPlusSitsSteadfast / 2;
         let halfAgility = agilityPlusSits / 2;
 
