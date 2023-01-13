@@ -14,7 +14,7 @@ export default function Header() {
                     <LanguageSelector />
                 </div>
                 <div className="col d-inline-flex justify-content-end align-items-center">
-                    <span className="py-1">Message <b>FlamingoBike#6228</b> if you wish to translate!</span>
+                    <span className="py-1"><b>Want to help translate?</b> Visit the <u><a href="https://crowdin.com/project/ohthemisery" target="_blank">Crowdin Project</a></u>!</span>
                 </div>
             </div>
         </header>
