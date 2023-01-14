@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 
 import Stats from '../../utils/builder/stats';
 import TranslatableText from '../translatableText';
+import ListSelector from './listSelector';
 
 const emptyBuild = { mainhand: "None", offhand: "None", helmet: "None", chestplate: "None", leggings: "None", boots: "None" };
 
@@ -23,15 +24,16 @@ const enabledBoxes = {
     tempo: false,
     cloaked: false,
     secondwind: false,
-    // Patron Buffs
-    speed: false,
-    resistance: false,
-    strength: false,
     // Other Buffs
-    scout: false,
-    fol: false, // Fruit of Life
-    clericblessing: false
+    scout: false
 };
+
+const extraStats = {
+    damageMultipliers: [],
+    resistanceMultipliers: [],
+    healthMultipliers: [],
+    speedMultipliers: []
+}
 
 function groupMasterwork(items, itemData) {
     // Group up masterwork tiers by their name using an object, removing them from items.
@@ -64,8 +66,8 @@ function getRelevantItems(types, itemData) {
 }
 
 function recalcBuild(data, itemData) {
-    let tempStats = new Stats(itemData, data, enabledBoxes);
-    return tempStats
+    let tempStats = new Stats(itemData, data, enabledBoxes, extraStats);
+    return tempStats;
 }
 
 function createMasterworkData(name, itemData) {
@@ -211,6 +213,31 @@ export default function UpdateForm({ update, build, parentLoaded, itemData }) {
         update(tempStats);
     }
 
+    function multipliersChanged(newMultipliers, name) {
+        extraStats[name] = newMultipliers;
+        console.log(extraStats);
+        const itemNames = Object.fromEntries(new FormData(formRef.current).entries());
+        const tempStats = recalcBuild(itemNames, itemData);
+        setStats(tempStats);
+        update(tempStats);
+    }
+
+    function damageMultipliersChanged(newMultipliers) {
+        multipliersChanged(newMultipliers, "damageMultipliers");
+    }
+
+    function resistanceMultipliersChanged(newMultipliers) {
+        multipliersChanged(newMultipliers, "resistanceMultipliers");
+    }
+
+    function healthMultipliersChanged(newMultipliers) {
+        multipliersChanged(newMultipliers, "healthMultipliers");
+    }
+
+    function speedMultipliersChanged(newMultipliers) {
+        multipliersChanged(newMultipliers, "speedMultipliers");
+    }
+
     return (
         <form ref={formRef} onSubmit={sendUpdate} onReset={resetForm}>
             <div className="row justify-content-center mb-3">
@@ -270,14 +297,6 @@ export default function UpdateForm({ update, build, parentLoaded, itemData }) {
                 <CheckboxWithLabel name="Tempo" checked={false} onChange={checkboxChanged} />
                 <CheckboxWithLabel name="Cloaked" checked={false} onChange={checkboxChanged} />
                 <CheckboxWithLabel name="Scout" checked={false} onChange={checkboxChanged} />
-                <CheckboxWithLabel name="ClericBlessing" checked={false} onChange={checkboxChanged} />
-                <CheckboxWithLabel name="FOL" checked={false} onChange={checkboxChanged} />
-            </div>
-            <div className="row justify-content-center pt-2">
-                <TranslatableText identifier="builder.misc.patronBuffs" className="text-center mb-1"></TranslatableText>
-                <CheckboxWithLabel name="Speed" checked={false} onChange={checkboxChanged} />
-                <CheckboxWithLabel name="Resistance" checked={false} onChange={checkboxChanged} />
-                <CheckboxWithLabel name="Strength" checked={false} onChange={checkboxChanged} />
             </div>
             <div className="row justify-content-center mb-3 pt-2">
                 <div className="col text-center">
@@ -310,6 +329,20 @@ export default function UpdateForm({ update, build, parentLoaded, itemData }) {
             </div>
             <div className="row mb-2 pt-2">
                 <span className="text-center text-danger fs-2 fw-bold">{(stats.twoHanded && !stats.weightless && stats.itemNames.offhand != "None") ? <TranslatableText identifier="builder.errors.twoHanded"></TranslatableText> : ""}</span>
+            </div>
+            <div className="row justify-content-center">
+                <div className="col-12 col-md-6 col-lg-2">
+                    <ListSelector update={damageMultipliersChanged} translatableName="builder.multipliers.damage"></ListSelector>
+                </div>
+                <div className="col-12 col-md-6 col-lg-2">
+                    <ListSelector update={resistanceMultipliersChanged} translatableName="builder.multipliers.resistance"></ListSelector>
+                </div>
+                <div className="col-12 col-md-6 col-lg-2">
+                    <ListSelector update={healthMultipliersChanged} translatableName="builder.multipliers.health"></ListSelector>
+                </div>
+                <div className="col-12 col-md-6 col-lg-2">
+                    <ListSelector update={speedMultipliersChanged} translatableName="builder.multipliers.speed"></ListSelector>
+                </div>
             </div>
             <div className="row justify-content-center mb-2">
                 {

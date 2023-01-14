@@ -1,0 +1,46 @@
+.listSelectorContainer {
+    border-radius: 5px;
+    border: 1px solid white;
+    display: block;
+}
+  
+.listSelectorInputs {
+    display: inline-flex;
+    width: 100%;
+}
+
+.listSelectorList {
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.entryInput {
+    width: 85%;
+}
+
+.entry {
+    padding-left: 2px;
+    padding-right: 2px;
+    font-weight: bold;
+    font-size: 18px;
+    display: flex;
+    flex-direction: column;
+}
+
+.entry:hover {
+    text-decoration: line-through;
+    cursor: pointer;
+    color: lightgray;
+}
+
+.name {
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.button {
+    width: 15%;
+    height: 32px;
+    font-weight: bold;
+}
