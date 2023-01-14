@@ -45,4 +45,5 @@ export default function ListSelector({ update, translatableName }) {
             </div>
         </div>
     )
+    
 }
