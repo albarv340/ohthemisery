@@ -155,6 +155,7 @@
     "builder.misc.maxHealthPercent": "生命值比例",
     "builder.buttons.recalculate": "计算属性",
     "builder.buttons.share": "分享",
+    "builder.charms.select": "Select Charms",
     "builder.errors.corruption": "你选取了超过一件拥有腐化诅咒的物品",
     "builder.errors.twoHanded": "你在使用双手诅咒物品的同时选择了其他不含有轻盈附魔的副手物品",
     "builder.statCategories.misc": "其他属性",

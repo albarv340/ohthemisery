@@ -12,23 +12,22 @@
 .listSelectorList {
     display: flex;
     flex-flow: row wrap;
+    align-items: stretch;
+    justify-content: space-evenly;
 }
 
 .entryInput {
-    width: 85%;
+    width: 25em;
 }
 
 .entry {
     padding-left: 2px;
     padding-right: 2px;
-    font-weight: bold;
-    font-size: 18px;
     display: flex;
-    flex-direction: column;
 }
 
 .entry:hover {
-    text-decoration: line-through;
+    transform: scale(1.05);
     cursor: pointer;
     color: lightgray;
 }
@@ -40,7 +39,22 @@
 }
 
 .button {
-    width: 32px;
-    height: 32px;
+    width: 38px;
+    height: 38px;
     font-weight: bold;
+    border: 1px solid white;
+    background: none;
+}
+
+.button:hover {
+    background: #222222;
+}
+
+.powerStars {
+    text-align: center;
+    font-size: 18px;
+}
+
+.activeStars {
+    color: #fcb23d;
 }

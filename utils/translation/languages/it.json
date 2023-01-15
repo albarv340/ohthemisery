@@ -155,6 +155,7 @@
     "builder.misc.maxHealthPercent": "Percentuale Vita Massima",
     "builder.buttons.recalculate": "Ricalcola",
     "builder.buttons.share": "Condividi",
+    "builder.charms.select": "Seleziona Amuleti",
     "builder.errors.corruption": "STAI USANDO PIÙ DI UN OGGETTO CON CURSE OF CORRUPTION",
     "builder.errors.twoHanded": "STAI USANDO UN OGGETTO A DUE MANI CON UN SECONDARIO SENZA WEIGHTLESS",
     "builder.statCategories.misc": "Miscellaneo",

@@ -8,6 +8,8 @@ import { useRouter } from 'next/router';
 import Stats from '../../utils/builder/stats';
 import TranslatableText from '../translatableText';
 import ListSelector from './listSelector';
+import CharmSelector from './charmSelector';
+import CharmShortener from '../../utils/builder/charmShortener';
 
 const emptyBuild = { mainhand: "None", offhand: "None", helmet: "None", chestplate: "None", leggings: "None", boots: "None" };
 
@@ -91,6 +93,10 @@ function checkExists(type, itemsToDisplay, itemData) {
 
 export default function UpdateForm({ update, build, parentLoaded, itemData }) {
     const [stats, setStats] = React.useState({});
+    const [charms, setCharms] = React.useState([]);
+    const [urlCharms, setUrlCharms] = React.useState([]);
+
+    const [updateLoaded, setUpdateLoaded] = React.useState(false);
 
     function sendUpdate(event) {
         event.preventDefault();
@@ -117,9 +123,16 @@ export default function UpdateForm({ update, build, parentLoaded, itemData }) {
                     itemNames[type] = "None";
                 }
             });
+            let charmString = buildParts.find(str => str.includes("charm="));
+            if (charmString) {
+                let charmList = CharmShortener.parseCharmData(charmString.split("charm=")[1], itemData);
+                setUrlCharms(charmList);
+                setCharms(charmList);
+            }
             const tempStats = recalcBuild(itemNames, itemData);
             setStats(tempStats);
             update(tempStats);
+            setUpdateLoaded(true);
         }
     }, [parentLoaded]);
 
@@ -193,15 +206,21 @@ export default function UpdateForm({ update, build, parentLoaded, itemData }) {
         return { "value": name, "label": removeMasterworkFromName(name) };
     }
 
-    function makeBuildString() {
+    function makeBuildString(charmsOverride) {
         let data = new FormData(formRef.current).entries();
         let buildString = "";
         let keysToShare = ["mainhand", "offhand", "helmet", "chestplate", "leggings", "boots"];
         for (const [key, value] of data) {
             buildString += (keysToShare.includes(key)) ? `${key[0]}=${value.replaceAll(" ", "%20")}&` : "";
         }
-        buildString = buildString.substring(0, buildString.length - 1);
-        return buildString;
+
+        let charmsToLookAt = (charmsOverride) ? charmsOverride : charms;
+
+        if (charmsToLookAt.length == 0) {
+            return (buildString + "charm=None");
+        }
+
+        return (buildString += `charm=${CharmShortener.shortenCharmList(charmsToLookAt)}`);
     }
 
     function checkboxChanged(event) {
@@ -215,7 +234,6 @@ export default function UpdateForm({ update, build, parentLoaded, itemData }) {
 
     function multipliersChanged(newMultipliers, name) {
         extraStats[name] = newMultipliers;
-        console.log(extraStats);
         const itemNames = Object.fromEntries(new FormData(formRef.current).entries());
         const tempStats = recalcBuild(itemNames, itemData);
         setStats(tempStats);
@@ -238,6 +256,12 @@ export default function UpdateForm({ update, build, parentLoaded, itemData }) {
         multipliersChanged(newMultipliers, "speedMultipliers");
     }
 
+    function updateCharms(charmNames) {
+        let charmData = charmNames.map(name => itemData[name]);
+        setCharms(charmData);
+        router.push(`/builder?${makeBuildString(charmData)}`, `/builder/${makeBuildString(charmData)}`, { shallow: true });
+    }
+
     return (
         <form ref={formRef} onSubmit={sendUpdate} onReset={resetForm}>
             <div className="row justify-content-center mb-3">
@@ -250,7 +274,7 @@ export default function UpdateForm({ update, build, parentLoaded, itemData }) {
                     <SelectInput reference={itemRefs.offhand} name="offhand" default={getEquipName("offhand")} noneOption={true} sortableStats={getRelevantItems(["offhand", "offhand shield", "offhand sword"], itemData)}></SelectInput>
                 </div>
             </div>
-            <div className="row justify-content-center mb-4 pt-2">
+            <div className="row justify-content-center mb-2 pt-2">
                 <div className="col-12 col-md-3 col-lg-2 text-center">
                     <TranslatableText identifier="items.type.helmet"></TranslatableText>
                     <SelectInput reference={itemRefs.helmet} noneOption={true} name="helmet" default={getEquipName("helmet")} sortableStats={getRelevantItems(["helmet"], itemData)}></SelectInput>
@@ -268,21 +292,6 @@ export default function UpdateForm({ update, build, parentLoaded, itemData }) {
                     <SelectInput reference={itemRefs.boots} noneOption={true} name="boots" default={getEquipName("boots")} sortableStats={getRelevantItems(["boots"], itemData)}></SelectInput>
                 </div>
             </div>
-            <div className="row justify-content-center mb-3">
-                <div className="col-4 col-md-3 col-lg-1 text-center">
-                    <button type="submit" className="btn btn-dark" value="Recalculate">
-                        <TranslatableText identifier="builder.buttons.recalculate"></TranslatableText>
-                    </button>
-                </div>
-                <div className="col-4 col-md-3 col-lg-1 text-center">
-                    <button type="button" className="btn btn-dark" id="share" onClick={copyBuild}>
-                        <TranslatableText identifier="builder.buttons.share"></TranslatableText>
-                    </button>
-                </div>
-                <div className="col-4 col-md-3 col-lg-1 text-center">
-                    <input type="reset" className="btn btn-danger" />
-                </div>
-            </div>
             <div className="row justify-content-center pt-2">
                 <TranslatableText identifier="builder.misc.situationals" className="text-center mb-1"></TranslatableText>
                 <CheckboxWithLabel name="Shielding" checked={false} onChange={checkboxChanged} />
@@ -298,7 +307,7 @@ export default function UpdateForm({ update, build, parentLoaded, itemData }) {
                 <CheckboxWithLabel name="Cloaked" checked={false} onChange={checkboxChanged} />
                 <CheckboxWithLabel name="Scout" checked={false} onChange={checkboxChanged} />
             </div>
-            <div className="row justify-content-center mb-3 pt-2">
+            <div className="row justify-content-center my-2">
                 <div className="col text-center">
                     <p className="mb-1"><TranslatableText identifier="builder.misc.maxHealthPercent"></TranslatableText></p>
                     <input type="number" name="health" min="1" defaultValue="100" className="" />
@@ -324,13 +333,13 @@ export default function UpdateForm({ update, build, parentLoaded, itemData }) {
                     <input type="number" name="perspicacity" min="0" max="24" defaultValue="0" className="" />
                 </div>
             </div>
-            <div className="row mb-2 pt-2">
+            <div className="row pt-2">
                 <span className="text-center text-danger fs-2 fw-bold">{(stats.corruption > 1) ? <TranslatableText identifier="builder.errors.corruption"></TranslatableText> : ""}</span>
             </div>
-            <div className="row mb-2 pt-2">
+            <div className="row py-2">
                 <span className="text-center text-danger fs-2 fw-bold">{(stats.twoHanded && !stats.weightless && stats.itemNames.offhand != "None") ? <TranslatableText identifier="builder.errors.twoHanded"></TranslatableText> : ""}</span>
             </div>
-            <div className="row justify-content-center">
+            <div className="row mb-2 justify-content-center">
                 <div className="col-12 col-md-6 col-lg-2">
                     <ListSelector update={damageMultipliersChanged} translatableName="builder.multipliers.damage"></ListSelector>
                 </div>
@@ -342,6 +351,26 @@ export default function UpdateForm({ update, build, parentLoaded, itemData }) {
                 </div>
                 <div className="col-12 col-md-6 col-lg-2">
                     <ListSelector update={speedMultipliersChanged} translatableName="builder.multipliers.speed"></ListSelector>
+                </div>
+            </div>
+            <div className="row my-3">
+                <div className="col-12">
+                    <CharmSelector update={updateCharms} translatableName={"builder.charms.select"} urlCharms={urlCharms} updateLoaded={updateLoaded} itemData={itemData}></CharmSelector>
+                </div>
+            </div>
+            <div className="row justify-content-center">
+                <div className="col-4 col-md-3 col-lg-1 text-center">
+                    <button type="submit" className="btn btn-dark" value="Recalculate">
+                        <TranslatableText identifier="builder.buttons.recalculate"></TranslatableText>
+                    </button>
+                </div>
+                <div className="col-4 col-md-3 col-lg-1 text-center">
+                    <button type="button" className="btn btn-dark" id="share" onClick={copyBuild}>
+                        <TranslatableText identifier="builder.buttons.share"></TranslatableText>
+                    </button>
+                </div>
+                <div className="col-4 col-md-3 col-lg-1 text-center">
+                    <input type="reset" className="btn btn-danger" />
                 </div>
             </div>
             <div className="row justify-content-center mb-2">

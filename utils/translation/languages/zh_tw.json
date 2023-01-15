@@ -155,6 +155,7 @@
     "builder.misc.maxHealthPercent": "生命值比例",
     "builder.buttons.recalculate": "重新計算",
     "builder.buttons.share": "分享",
+    "builder.charms.select": "Select Charms",
     "builder.errors.corruption": "你選取了超過一件擁有腐化詛咒 (CURSE OF CORRUPTION) 的道具",
     "builder.errors.twoHanded": "你在使用雙手詛咒道具的同時選擇了其他不含有無重量 (WEIGHTLESS) 附魔的副手道具",
     "builder.statCategories.misc": "雜項",

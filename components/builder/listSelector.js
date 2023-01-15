@@ -32,7 +32,7 @@ export default function ListSelector({ update, translatableName }) {
     return (
         <div className={`${styles.listSelectorContainer} p-2`}>
             <p className={`${styles.name} m-0 mb-2`}><TranslatableText identifier={translatableName}></TranslatableText></p>
-            <div className={styles.listSelectorInputs}>
+            <div className={`${styles.listSelectorInputs} justify-content-center`}>
                 <input className={styles.entryInput} type="text" ref={inputRef}></input>
                 <button className={styles.button} onClick={() => addEntry(false)}>+</button>
             </div>

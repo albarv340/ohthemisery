@@ -72,8 +72,6 @@ class Stats {
             }
         }
 
-        console.log("resistance:", this.extraResistanceMultiplier);
-
         this.setDefaultValues();
         this.sumAllStats();
         this.adjustStats();
