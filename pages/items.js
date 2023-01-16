@@ -16,7 +16,18 @@ function getRelevantItems(data, itemData) {
     let items = Object.keys(itemData);
 
     if (data.searchName) {
-        items = items.filter(name => name.toLowerCase().includes(data.searchName.toLowerCase()))
+        // Check if the user inputted any "|" to search for multiple item names at once.
+        let names = data.searchName.split("|").map(name => name.toLowerCase().trim());
+        items = items.filter(name => {
+            let result = false;
+            names.forEach(term => {
+                if (name.toLowerCase().includes(term)) {
+                    result = true;
+                    return;
+                }
+            })
+            return result;
+        });
     }
     if (data.searchLore) {
         items = items.filter(name => itemData[name].lore?.toLowerCase().includes(data.searchLore.toLowerCase()))
