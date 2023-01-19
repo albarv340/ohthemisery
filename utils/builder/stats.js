@@ -127,7 +127,7 @@ class Stats {
             this.spellPowerPercent.duplicate()
                 .mulP(this.magicDamagePercent)
                 .mul(1 + 0.0075 * Number(this.perspicacity), false)
-                .mul(this.extraDamageMultiplier)
+                .mul(this.extraDamageMultiplier, false)
         ).toFixedPerc(2);
         this.spellPowerPercent = this.spellPowerPercent.toFixedPerc(2);
         this.magicDamagePercent = this.magicDamagePercent.toFixedPerc(2);
@@ -310,7 +310,7 @@ class Stats {
         this.speedPercent = this.speedPercent
             .mul((this.speedFlat) / 0.1, false)
             .mul(((this.currentHealthPercent.perc <= 50) ? 1 - 0.1 * this.crippling : 1), false)
-            .mul(this.extraSpeedMultiplier)
+            .mul(this.extraSpeedMultiplier, false)
             .toFixedPerc(2);
 
         // Fix knockback resistance to be percentage and cap at 100
