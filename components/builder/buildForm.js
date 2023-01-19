@@ -1,7 +1,7 @@
 import SelectInput from '../items/selectInput';
 import CheckboxWithLabel from '../items/checkboxWithLabel';
-import ItemTile from '../../components/items/itemTile';
-import MasterworkableItemTile from '../../components/items/masterworkableItemTile';
+import ItemTile from '../items/itemTile';
+import MasterworkableItemTile from '../items/masterworkableItemTile';
 import React from 'react';
 import { useRouter } from 'next/router';
 
@@ -91,7 +91,7 @@ function checkExists(type, itemsToDisplay, itemData) {
     return retVal;
 }
 
-export default function UpdateForm({ update, build, parentLoaded, itemData }) {
+export default function BuildForm({ update, build, parentLoaded, itemData }) {
     const [stats, setStats] = React.useState({});
     const [charms, setCharms] = React.useState([]);
     const [urlCharms, setUrlCharms] = React.useState([]);
@@ -164,7 +164,7 @@ export default function UpdateForm({ update, build, parentLoaded, itemData }) {
         for (let ref in itemRefs) {
             newBuild[ref] = itemRefs[ref].current.getValue()[0].value;
         }
-        let mainhands = ["mainhand", "mainhand sword", "mainhand shield", "axe", "wand", "scythe", "bow", "crossbow", "snowball", "trident"];
+        let mainhands = ["mainhand", "mainhand sword", "mainhand shield", "axe", "pickaxe", "wand", "scythe", "bow", "crossbow", "snowball", "trident"];
         let offhands = ["offhand", "offhand shield", "offhand sword"];
         let actualItemType = (mainhands.includes(itemType.toLowerCase())) ? "mainhand" : (offhands.includes(itemType.toLowerCase())) ? "offhand" : itemType.toLowerCase();
         
@@ -267,7 +267,7 @@ export default function UpdateForm({ update, build, parentLoaded, itemData }) {
             <div className="row justify-content-center mb-3">
                 <div className="col-12 col-md-5 col-lg-2 text-center">
                     <TranslatableText identifier="items.type.mainhand"></TranslatableText>
-                    <SelectInput reference={itemRefs.mainhand} name="mainhand" default={getEquipName("mainhand")} noneOption={true} sortableStats={getRelevantItems(["mainhand", "mainhand sword", "mainhand shield", "axe", "wand", "scythe", "bow", "crossbow", "snowball", "trident"], itemData)}></SelectInput>
+                    <SelectInput reference={itemRefs.mainhand} name="mainhand" default={getEquipName("mainhand")} noneOption={true} sortableStats={getRelevantItems(["mainhand", "mainhand sword", "mainhand shield", "axe", "pickaxe", "wand", "scythe", "bow", "crossbow", "snowball", "trident"], itemData)}></SelectInput>
                 </div>
                 <div className="col-12 col-md-5 col-lg-2 text-center">
                     <TranslatableText identifier="items.type.offhand"></TranslatableText>

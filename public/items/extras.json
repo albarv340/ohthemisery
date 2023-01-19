@@ -1,833 +1,365 @@
 {
-    "Fungal Will-0": {
-      "poi": "Amanita Colony"
-    },
-    "Mycelian Mantra-0": {
-      "poi": "Chanterelle Village"
-    },
-    "Laboratory Apron-0": {
-      "poi": "Amanita Colony"
-    },
-    "Samsara Vessel-0": {
-      "poi": "Amanita Colony"
-    },
-    "Spikeladen Crust-0": {
-      "poi": "Chanterelle Village"
-    },
-    "Mycelian Cap-0": {
-      "poi": "Chanterelle Village"
-    },
-    "Hycenea's Will-0": {
-      "poi": "Coven Fortress"
-    },
-    "Golemworn Treads-0": {
-      "poi": "Coven Fortress"
-    },
-    "Hexborn Shard-0": {
-      "poi": "Coven Fortress"
-    },
-    "Harrakfar's Claw-0": {
-      "poi": "Locum Vernantia"
-    },
-    "Iridium Bulwark-0": {
-      "poi": "Locum Vernantia"
-    },
-    "Flight from the Capital-0": {
-      "poi": "Vibrant Hollow"
-    },
-    "Sporesoaked Robe-0": {
-      "poi": "Vibrant Hollow"
-    },
-    "Dignified Greaves-0": {
-      "poi": "Bewitched Dominion"
-    },
-    "Journey's End-0": {
-      "poi": "Shadowcast Bastille"
-    },
-    "Shrouded Sabatons-0": {
-      "poi": "Shadowcast Bastille"
-    },
-    "Overgrown Bodkin-0": {
-      "poi": "Bewitched Dominion"
-    },
-    "Defiled Carving-0": {
-      "poi": "Vibrant Hollow"
-    },
-    "Arcane Rifle-0": {
-      "poi": "Bewitched Dominion"
-    },
-    "Epoch Hammer-0": {
-      "poi": "Locum Vernantia"
-    },
-    "Twisted Pike-0": {
-      "poi": "Shadowcast Bastille"
-    },
-    "Falling Blades-2": {
-      "notes": "Special Item"
-    },
-    "Verdant Dawn-2": {
-      "notes": "Special Item"
-    },
-    "Roots of the Fen-2": {
-      "notes": "Special Item"
-    },
-    "Veiled Might-2": {
-      "notes": "Special Item"
-    },
-    "Tradewind Cap-1": {
-      "notes": "Bounty Reward"
-    },
-    "Final Harvest-1": {
-      "notes": "Bounty Reward"
-    },
-    "Dichen Resolve-1": {
-      "notes": "Bounty Reward"
-    },
-    "Wolfswood's Reach-1": {
-      "notes": "Bounty Reward"
-    },
-    "Cowl of the Coven-1": {
-      "notes": "Bounty Reward"
-    },
-    "Aradian Secrecy-1": {
-      "notes": "Bounty Reward"
-    },
-    "The Hollow Rings-1": {
-      "notes": "Bounty Reward"
-    },
-    "Symbiosis-1": {
-      "notes": "Bounty Reward"
-    },
-    "Pelias' Warden-1": {
-      "notes": "Bounty Reward"
-    },
-    "Shroud of the Disappeared-1": {
-      "notes": "Bounty Reward"
-    },
-    "Silvari Coin-1": {
-      "notes": "Bounty Reward"
-    },
-    "Sentinel's Cap-1": {
-      "notes": "Bounty Reward"
-    },
-    "Scout's Halfhelm-1": {
-      "notes": "Bounty Reward"
-    },
-    "Chains of Inertia-1": {
-      "notes": "Bounty Reward"
-    },
-    "Chains of Legacy-1": {
-      "notes": "Bounty Reward"
-    },
-    "Vacant Dagger-1": {
-      "notes": "Bounty Reward"
-    },
-    "Worldshaper's Loom": {
-      "notes": "SKT Savage Mode"
-    },
-    "Stonewrought Helmet-0": {
-      "poi": "Arx Spirensis"
-    },
-    "Adanartis-0": {
-      "poi": "Arx Spirensis"
-    },
-    "Hollow Gladius-0": {
-      "poi": "Doomed Encampment"
-    },
-    "Hammer of Legacy-0": {
-      "poi": "Forsaken Manor"
-    },
-    "Resonant Scythe-0": {
-      "poi": "Silvic Quarry"
-    },
-    "Wind's Gaze-0": {
-      "poi": "Quelled Convent"
-    },
-    "Kisarith-0": {
-      "poi": "Arx Spirensis"
-    },
-    "Thundering Legacy-0": {
-      "poi": "Submerged Citadel"
-    },
-    "Pelias' Greaves-0": {
-      "poi": "Doomed Encampment"
-    },
-    "Iridium Crown-0": {
-      "poi": "Forsaken Manor"
-    },
-    "Pureshard Adze-0": {
-      "poi": "Silvic Quarry"
-    },
-    "Holy Vitriol-0": {
-      "poi": "Quelled Convent"
-    },
-    "The Cascade's Ignorance-0": {
-      "poi": "Submerged Citadel"
-    },
-    "Stalwart Protector-0": {
-      "poi": "Doomed Encampment"
-    },
-    "Pelias' Sabatons-0": {
-      "poi": "Forsaken Manor"
-    },
-    "Miner's Lament-0": {
-      "poi": "Silvic Quarry"
-    },
-    "Silver Vestment-0": {
-      "poi": "Quelled Convent"
-    },
-    "Stormblessed Greatspear-0": {
-      "poi": "Submerged Citadel"
-    },
-    "Regenerative Spores": {
-      "poi": "Chanterelle Village"
-    },
-    "Eroded Sconce": {
-      "poi": "Shadowcast Bastille"
-    },
-    "Petrified Sap": {
-      "poi": "Coven Fortress"
-    },
-    "Bewitched Eye": {
-      "poi": "Bewitched Dominion"
-    },
-    "Trembling Root": {
-      "poi": "Vibrant Hollow"
-    },
-    "Delicious Fruit": {
-      "poi": "Amanita Colony"
-    },
-    "Fecund Berry": {
-      "poi": "Locum Vernantia"
-    },
-    "True Ice Pendant": {
-      "poi": "Coven Fortress"
-    },
-    "Morel's Bracers": {
-      "poi": "Amanita Colony"
-    },
-    "Tome of Broken Vows": {
-      "poi": "Shadowcast Bastille"
-    },
-    "Oversized Flask": {
-      "poi": "Amanita Colony"
-    },
-    "Mycelian Catalyst": {
-      "poi": "Vibrant Hollow"
-    },
-    "Tradesman's Cape": {
-      "poi": "Vibrant Hollow"
-    },
-    "Spearpoint Shoot": {
-      "poi": "Chanterelle Village"
-    },
-    "Ancient Shadowstone": {
-      "poi": "Locum Vernantia"
-    },
-    "Cracked Pocketwatch": {
-      "poi": "Bewitched Dominion"
-    },
-    "Hexblade": {
-      "poi": "Coven Fortress"
-    },
-    "Barbed Spore Pouch": {
-      "poi": "Chanterelle Village"
-    },
-    "Ashkii Galero": {
-      "poi": "Bewitched Dominion"
-    },
-    "Zoetic Geas": {
-      "poi": "Shadowcast Bastille"
-    },
-    "Seal of the Way": {
-      "poi": "Locum Vernantia"
-    },
-    "Specialist Bauble": {
-      "poi": "Doomed Encampment"
-    },
-    "Royal Jewel": {
-      "poi": "Forsaken Manor"
-    },
-    "Spark Panel": {
-      "poi": "Arx Spirensis"
-    },
-    "Urn of Perpetuity": {
-      "poi": "Submerged Citadel"
-    },
-    "Spellbound Spearhead": {
-      "poi": "Doomed Encampment"
-    },
-    "Deepwrought Ruby": {
-      "poi": "Silvic Quarry"
-    },
-    "Deepslate Chunk": {
-      "poi": "Arx Spirensis"
-    },
-    "Architect's Aegis": {
-      "poi": "Quelled Convent"
-    },
-    "Elgart's Iridium Buckle": {
-      "poi": "Silvic Quarry"
-    },
-    "Heretical Ore": {
-      "poi": "Silvic Quarry"
-    },
-    "Peakborn Windchime": {
-      "poi": "Quelled Convent"
-    },
-    "Blade of the Sealed": {
-      "poi": "Submerged Citadel"
-    },
-    "Suzu of Stasis": {
-      "poi": "Quelled Convent"
-    },
-    "Everflow Pendant": {
-      "poi": "Submerged Citadel"
-    },
-    "Silver Codex": {
-      "poi": "Doomed Encampment"
-    },
-    "Blessing of the Convert": {
-      "poi": "Forsaken Manor"
-    },
-    "Darkest Pact": {
-      "poi": "Arx Spirensis"
-    },
-    "Pious Prism": {
-      "poi": "Forsaken Manor"
-    },
-    "Cry Havoc": {
-      "notes": "The trader is Ageratina, found at [-541, 96, -381]."
-    },
-    "Coven Vial": {
-      "notes": "The trader is Ageratina, found at [-541, 96, -381]."
-    },
-    "Molldyer's Inferno": {
-      "notes": "The trader is Ageratina, found at [-541, 96, -381]."
-    },
-    "Harrakfar's Roar": {
-      "notes": "The trader is Sen Sennit, found at [-548, 68, -297]. They are reachable via the underground tubes. You can enter one of them at [-496 90 -398]."
-    },
-    "Fecund Berry Basket": {
-      "notes": "The trader is Sen Sennit, found at [-548, 68, -297]. They are reachable via the underground tubes. You can enter one of them at [-496 90 -398]."
-    },
-    "Defiled Carving-1": {
-      "poi": "Vibrant Hollow"
-    },
-    "Defiled Carving-2": {
-      "poi": "Vibrant Hollow"
-    },
-    "Laboratory Apron-3": {
-      "poi": "Amanita Colony"
-    },
-    "Stormblessed Greatspear-1": {
-      "poi": "Submerged Citadel"
-    },
-    "Twisted Pike-3": {
-      "poi": "Shadowcast Bastille"
-    },
-    "Arcane Rifle-3": {
-      "poi": "Bewitched Dominion"
-    },
-    "Wind's Gaze-2": {
-      "poi": "Quelled Convent"
-    },
-    "Wind's Gaze-3": {
-      "poi": "Quelled Convent"
-    },
-    "Kisarith-3": {
-      "poi": "Arx Spirensis"
-    },
-    "Stonewrought Helmet-1": {
-      "poi": "Arx Spirensis"
-    },
-    "Pureshard Adze-1": {
-      "poi": "Silvic Quarry"
-    },
-    "Silver Vestment-1": {
-      "poi": "Quelled Convent"
-    },
-    "Arcane Rifle-1": {
-      "poi": "Bewitched Dominion"
-    },
-    "Journey's End-1": {
-      "poi": "Shadowcast Bastille"
-    },
-    "Harrakfar's Claw-1": {
-      "poi": "Locum Vernantia"
-    },
-    "Pelias' Sabatons-1": {
-      "poi": "Forsaken Manor"
-    },
-    "Falling Blades-3": {
-      "notes": "Special Item"
-    },
-    "Abisso Ancestrale-2": {
-      "notes": "SKT Savage Mode"
-    },
-    "Abisso Ancestrale-3": {
-      "notes": "SKT Savage Mode"
-    },
-    "Memoria Ancestrale-2": {
-      "notes": "SKT Savage Mode"
-    },
-    "Timerift Stave-2": {
-      "notes": "SKT Savage Mode"
-    },
-    "Remnants of Isharist-2": {
-      "notes": "SKT Savage Mode"
-    },
-    "Epoch Hammer-1": {
-      "poi": "Locum Vernantia"
-    },
-    "Silver Vestment-2": {
-      "poi": "Quelled Convent"
-    },
-    "Silver Vestment-3": {
-      "poi": "Quelled Convent"
-    },
-    "Laboratory Apron-1": {
-      "poi": "Amanita Colony"
-    },
-    "Laboratory Apron-2": {
-      "poi": "Amanita Colony"
-    },
-    "Harrakfar's Claw-2": {
-      "poi": "Locum Vernantia"
-    },
-    "Harrakfar's Claw-3": {
-      "poi": "Locum Vernantia"
-    },
-    "Cowl of the Coven-2": {
-      "notes": "Bounty Reward"
-    },
-    "Stonewrought Helmet-2": {
-      "poi": "Arx Spirensis"
-    },
-    "Miner's Lament-3": {
-      "poi": "Silvic Quarry"
-    },
-    "Pelias' Sabatons-2": {
-      "poi": "Forsaken Manor"
-    },
-    "Overgrown Bodkin-1": {
-      "poi": "Bewitched Dominion"
-    },
-    "Overgrown Bodkin-3": {
-      "poi": "Bewitched Dominion"
-    },
-    "Journey's End-2": {
-      "poi": "Shadowcast Bastille"
-    },
-    "Golemworn Treads-1": {
-      "poi": "Coven Fortress"
-    },
-    "Iridium Bulwark-1": {
-      "poi": "Locum Vernantia"
-    },
-    "Iridium Bulwark-2": {
-      "poi": "Locum Vernantia"
-    },
-    "Iridium Bulwark-3": {
-      "poi": "Locum Vernantia"
-    },
-    "Stormblessed Greatspear-2": {
-      "poi": "Submerged Citadel"
-    },
-    "Stormblessed Greatspear-3": {
-      "poi": "Submerged Citadel"
-    },
-    "Stonewrought Helmet-3": {
-      "poi": "Arx Spirensis"
-    },
-    "Dignified Greaves-1": {
-      "poi": "Bewitched Dominion"
-    },
-    "Roots of the Fen-3": {
-      "notes": "Special Item"
-    },
-    "Holy Vitriol-1": {
-      "poi": "Quelled Convent"
-    },
-    "Flight from the Capital-3": {
-      "poi": "Vibrant Hollow"
-    },
-    "The Cascade's Ignorance-1": {
-      "poi": "Submerged Citadel"
-    },
-    "Shrouded Sabatons-1": {
-      "poi": "Shadowcast Bastille"
-    },
-    "Defiled Carving-3": {
-      "poi": "Vibrant Hollow"
-    },
-    "Adanartis-1": {
-      "poi": "Arx Spirensis"
-    },
-    "Pelias' Greaves-1": {
-      "poi": "Doomed Encampment"
-    },
-    "Pelias' Greaves-2": {
-      "poi": "Doomed Encampment"
-    },
-    "Iridium Crown-2": {
-      "poi": "Forsaken Manor"
-    },
-    "Iridium Crown-3": {
-      "poi": "Forsaken Manor"
-    },
-    "Hollow Gladius-1": {
-      "poi": "Doomed Encampment"
-    },
-    "Hollow Gladius-2": {
-      "poi": "Doomed Encampment"
-    },
-    "Hollow Gladius-3": {
-      "poi": "Doomed Encampment"
-    },
-    "Samsara Vessel-2": {
-      "poi": "Amanita Colony"
-    },
-    "Samsara Vessel-3": {
-      "poi": "Amanita Colony"
-    },
-    "Chains of Legacy-2": {
-      "notes": "Bounty Reward"
-    },
-    "Chains of Legacy-3": {
-      "notes": "Bounty Reward"
-    },
-    "Nihilo Core": {
-      "notes": "The trader is Sen Sennit, found at [-548, 68, -297]. They are reachable via the underground tubes. You can enter one of them at [-496 90 -398]."
-    },
-    "Final Harvest-2": {
-      "notes": "Bounty Reward"
-    },
-    "Final Harvest-3": {
-      "notes": "Bounty Reward"
-    },
-    "Holy Vitriol-2": {
-      "poi": "Quelled Convent"
-    },
-    "Holy Vitriol-3": {
-      "poi": "Quelled Convent"
-    },
-    "Cowl of the Coven-3": {
-      "notes": "Bounty Reward"
-    },
-    "Pelias' Warden-3": {
-      "notes": "Bounty Reward"
-    },
-    "Dichen Resolve-3": {
-      "notes": "Bounty Reward"
-    },
-    "Shrouded Sabatons-3": {
-      "poi": "Shadowcast Bastille"
-    },
-    "Hexborn Shard-3": {
-      "poi": "Coven Fortress"
-    },
-    "Journey's End-3": {
-      "poi": "Shadowcast Bastille"
-    },
-    "Fungal Will-3": {
-      "poi": "Amanita Colony"
-    },
-    "Mycelian Cap-3": {
-      "poi": "Chanterelle Village"
-    },
-    "Vacant Dagger-3": {
-      "notes": "Bounty Reward"
-    },
-    "Sporesoaked Robe-2": {
-      "poi": "Vibrant Hollow"
-    },
-    "Sporesoaked Robe-3": {
-      "poi": "Vibrant Hollow"
-    },
-    "Veiled Might-3": {
-      "notes": "Special Item"
-    },
-    "Chains of Inertia-2": {
-      "notes": "Bounty Reward"
-    },
-    "Chains of Inertia-3": {
-      "notes": "Bounty Reward"
-    },
-    "Pelias' Warden-2": {
-      "notes": "Bounty Reward"
-    },
-    "Pelias' Greaves-3": {
-      "poi": "Doomed Encampment"
-    },
-    "Thundering Legacy-1": {
-      "poi": "Submerged Citadel"
-    },
-    "Memoria Ancestrale-3": {
-      "notes": "SKT Savage Mode"
-    },
-    "Sentinel's Cap-2": {
-      "notes": "Bounty Reward"
-    },
-    "Sentinel's Cap-3": {
-      "notes": "Bounty Reward"
-    },
-    "The Cascade's Ignorance-3": {
-      "poi": "Submerged Citadel"
-    },
-    "Overgrown Bodkin-2": {
-      "poi": "Bewitched Dominion"
-    },
-    "Kisarith-1": {
-      "poi": "Arx Spirensis"
-    },
-    "The Cascade's Ignorance-2": {
-      "poi": "Submerged Citadel"
-    },
-    "Fox Frenzy": {
-      "notes": "The trader can be accessed via the underground tubes and is located at [-325, 67, -352]."
-    },
-    "Scout's Halfhelm-2": {
-      "notes": "Bounty Reward"
-    },
-    "Scout's Halfhelm-3": {
-      "notes": "Bounty Reward"
-    },
-    "Fungal Will-2": {
-      "poi": "Amanita Colony"
-    },
-    "Flight from the Capital-1": {
-      "poi": "Vibrant Hollow"
-    },
-    "Fungal Will-1": {
-      "poi": "Amanita Colony"
-    },
-    "Sporesoaked Robe-1": {
-      "poi": "Vibrant Hollow"
-    },
-    "Mycelian Cap-1": {
-      "poi": "Chanterelle Village"
-    },
-    "Iridium Crown-1": {
-      "poi": "Forsaken Manor"
-    },
-    "Resonant Scythe-1": {
-      "poi": "Silvic Quarry"
-    },
-    "Miner's Lament-1": {
-      "poi": "Silvic Quarry"
-    },
-    "Silvari Coin-2": {
-      "notes": "Bounty Reward"
-    },
-    "Silvari Coin-3": {
-      "notes": "Bounty Reward"
-    },
-    "Spikeladen Crust-1": {
-      "poi": "Chanterelle Village"
-    },
-    "The Hollow Rings-2": {
-      "notes": "Bounty Reward"
-    },
-    "The Hollow Rings-3": {
-      "notes": "Bounty Reward"
-    },
-    "Samsara Vessel-1": {
-      "poi": "Amanita Colony"
-    },
-    "Stalwart Protector-1": {
-      "poi": "Doomed Encampment"
-    },
-    "Hycenea's Will-1": {
-      "poi": "Coven Fortress"
-    },
-    "Hycenea's Will-2": {
-      "poi": "Coven Fortress"
-    },
-    "Miner's Lament-2": {
-      "poi": "Silvic Quarry"
-    },
-    "Wolfswood's Reach-2": {
-      "notes": "Bounty Reward"
-    },
-    "Wolfswood's Reach-3": {
-      "notes": "Bounty Reward"
-    },
-    "Dichen Resolve-2": {
-      "notes": "Bounty Reward"
-    },
-    "Thundering Legacy-3": {
-      "poi": "Submerged Citadel"
-    },
-    "Golemworn Treads-2": {
-      "poi": "Coven Fortress"
-    },
-    "Golemworn Treads-3": {
-      "poi": "Coven Fortress"
-    },
-    "Twisted Pike-1": {
-      "poi": "Shadowcast Bastille"
-    },
-    "Wind's Gaze-1": {
-      "poi": "Quelled Convent"
-    },
-    "Timerift Stave-3": {
-      "notes": "SKT Savage Mode"
-    },
-    "Remnants of Isharist-3": {
-      "notes": "SKT Savage Mode"
-    },
-    "Symbiosis-3": {
-      "notes": "Bounty Reward"
-    },
-    "Verdant Dawn-3": {
-      "notes": "Special Item"
-    },
-    "Motherboard Calibrator-2": {
-      "notes": "Special Item"
-    },
-    "Anti-Acid Apron-2": {
-      "notes": "Special Item"
-    },
-    "Sludge Stompers-2": {
-      "notes": "Special Item"
-    },
-    "Hypersonic Screwdriver-2": {
-      "notes": "Special Item"
-    },
-    "Bouquet of Gold": {
-      "notes": "This sword is obtained by combining 4 flowers at the Tlaxan Crafter, each with a 1/1000 chance of dropping from specific mobs."
-    },
-    "Spikeladen Crust-2": {
-      "poi": "Chanterelle Village"
-    },
-    "Spikeladen Crust-3": {
-      "poi": "Chanterelle Village"
-    },
-    "Adanartis-2": {
-      "poi": "Arx Spirensis"
-    },
-    "Adanartis-3": {
-      "poi": "Arx Spirensis"
-    },
-    "Mycelian Mantra-1": {
-      "poi": "Chanterelle Village"
-    },
-    "Mycelian Mantra-2": {
-      "poi": "Chanterelle Village"
-    },
-    "Mycelian Mantra-3": {
-      "poi": "Chanterelle Village"
-    },
-    "Dignified Greaves-2": {
-      "poi": "Bewitched Dominion"
-    },
-    "Dignified Greaves-3": {
-      "poi": "Bewitched Dominion"
-    },
-    "Anti-Acid Apron-3": {
-      "notes": "Special Item"
-    },
-    "Hypersonic Screwdriver-3": {
-      "notes": "Special Item"
-    },
-    "Sludge Stompers-3": {
-      "notes": "Special Item"
-    },
-    "Aether Turbine": {
-      "notes": "The trader is found at [-517, 49, -70]. Go to Arx Spirensis, enter the giant tunnel blocked by gravel, and go left of the staircase. You will find another small tunnel, also blocked by gravel."
-    },
-    "Rocket Boots": {
-      "notes": "The trader is found at [-517, 49, -70]. Go to Arx Spirensis, enter the giant tunnel blocked by gravel, and go left of the staircase. You will find another small tunnel, also blocked by gravel."
-    },
-    "Gears of the King": {
-      "notes": "The trader is found at [-517, 49, -70]. Go to Arx Spirensis, enter the giant tunnel blocked by gravel, and go left of the staircase. You will find another small tunnel, also blocked by gravel."
-    },
-    "Mycelian Cap-2": {
-      "poi": "Chanterelle Village"
-    },
-    "Pureshard Adze-2": {
-      "poi": "Silvic Quarry"
-    },
-    "Pureshard Adze-3": {
-      "poi": "Silvic Quarry"
-    },
-    "Hycenea's Will-3": {
-      "poi": "Coven Fortress"
-    },
-    "Aradian Secrecy-2": {
-      "notes": "Bounty Reward"
-    },
-    "Aradian Secrecy-3": {
-      "notes": "Bounty Reward"
-    },
-    "Pelias' Sabatons-3": {
-      "poi": "Forsaken Manor"
-    },
-    "Stalwart Protector-2": {
-      "poi": "Doomed Encampment"
-    },
-    "Stalwart Protector-3": {
-      "poi": "Doomed Encampment"
-    },
-    "Twisted Pike-2": {
-      "poi": "Shadowcast Bastille"
-    },
-    "Epoch Hammer-2": {
-      "poi": "Locum Vernantia"
-    },
-    "Epoch Hammer-3": {
-      "poi": "Locum Vernantia"
-    },
-    "Malhuer Reach": {
-      "notes": "The trader is Elder Yuti Abello, in the Abello Village [-261 58 -440]."
-    },
-    "Toxic Steroid": {
-      "notes": "The trader is Elder Yuti Abello, in the Abello Village [-261 58 -440]."
-    },
-    "Quickening Mycosis": {
-      "notes": "The trader is Elder Yuti Abello, in the Abello Village [-261 58 -440]."
-    },
-    "Arcane Rifle-2": {
-      "poi": "Bewitched Dominion"
-    },
-    "Kisarith-2": {
-      "poi": "Arx Spirensis"
-    },
-    "Shroud of the Disappeared-2": {
-      "notes": "Bounty Reward"
-    },
-    "Shroud of the Disappeared-3": {
-      "notes": "Bounty Reward"
-    },
-    "Resonant Scythe-2": {
-      "poi": "Silvic Quarry"
-    },
-    "Resonant Scythe-3": {
-      "poi": "Silvic Quarry"
-    },
-    "Tradewind Cap-3": {
-      "notes": "Bounty Reward"
-    },
-    "Flight from the Capital-2": {
-      "poi": "Vibrant Hollow"
-    },
-    "Symbiosis-2": {
-      "notes": "Bounty Reward"
-    },
-    "Tradewind Cap-2": {
-      "notes": "Bounty Reward"
-    },
-    "Motherboard Calibrator-3": {
-      "notes": "Special Item"
-    },
-    "Hammer of Legacy-1": {
-      "poi": "Forsaken Manor"
-    },
-    "Hammer of Legacy-2": {
-      "poi": "Forsaken Manor"
-    },
-    "Hammer of Legacy-3": {
-      "poi": "Forsaken Manor"
-    }
+  "Tradewind Cap": {
+    "notes": "Bounty Reward"
+  },
+  "Worldshaper's Loom": {
+    "notes": "SKT Savage Mode"
+  },
+  "Hammer of Legacy": {
+    "poi": "Forsaken Manor"
+  },
+  "Regenerative Spores": {
+    "poi": "Chanterelle Village"
+  },
+  "Eroded Sconce": {
+    "poi": "Shadowcast Bastille"
+  },
+  "Petrified Sap": {
+    "poi": "Coven Fortress"
+  },
+  "Bewitched Eye": {
+    "poi": "Bewitched Dominion"
+  },
+  "Trembling Root": {
+    "poi": "Vibrant Hollow"
+  },
+  "Delicious Fruit": {
+    "poi": "Amanita Colony"
+  },
+  "Fecund Berry": {
+    "poi": "Locum Vernantia"
+  },
+  "True Ice Pendant": {
+    "poi": "Coven Fortress"
+  },
+  "Morel's Bracers": {
+    "poi": "Amanita Colony"
+  },
+  "Tome of Broken Vows": {
+    "poi": "Shadowcast Bastille"
+  },
+  "Oversized Flask": {
+    "poi": "Amanita Colony"
+  },
+  "Mycelian Catalyst": {
+    "poi": "Vibrant Hollow"
+  },
+  "Tradesman's Cape": {
+    "poi": "Vibrant Hollow"
+  },
+  "Spearpoint Shoot": {
+    "poi": "Chanterelle Village"
+  },
+  "Ancient Shadowstone": {
+    "poi": "Locum Vernantia"
+  },
+  "Cracked Pocketwatch": {
+    "poi": "Bewitched Dominion"
+  },
+  "Hexblade": {
+    "poi": "Coven Fortress"
+  },
+  "Barbed Spore Pouch": {
+    "poi": "Chanterelle Village"
+  },
+  "Ashkii Galero": {
+    "poi": "Bewitched Dominion"
+  },
+  "Zoetic Geas": {
+    "poi": "Shadowcast Bastille"
+  },
+  "Seal of the Way": {
+    "poi": "Locum Vernantia"
+  },
+  "Specialist Bauble": {
+    "poi": "Doomed Encampment"
+  },
+  "Royal Jewel": {
+    "poi": "Forsaken Manor"
+  },
+  "Spark Panel": {
+    "poi": "Arx Spirensis"
+  },
+  "Urn of Perpetuity": {
+    "poi": "Submerged Citadel"
+  },
+  "Spellbound Spearhead": {
+    "poi": "Doomed Encampment"
+  },
+  "Deepwrought Ruby": {
+    "poi": "Silvic Quarry"
+  },
+  "Deepslate Chunk": {
+    "poi": "Arx Spirensis"
+  },
+  "Architect's Aegis": {
+    "poi": "Quelled Convent"
+  },
+  "Elgart's Iridium Buckle": {
+    "poi": "Silvic Quarry"
+  },
+  "Heretical Ore": {
+    "poi": "Silvic Quarry"
+  },
+  "Peakborn Windchime": {
+    "poi": "Quelled Convent"
+  },
+  "Blade of the Sealed": {
+    "poi": "Submerged Citadel"
+  },
+  "Suzu of Stasis": {
+    "poi": "Quelled Convent"
+  },
+  "Everflow Pendant": {
+    "poi": "Submerged Citadel"
+  },
+  "Silver Codex": {
+    "poi": "Doomed Encampment"
+  },
+  "Blessing of the Convert": {
+    "poi": "Forsaken Manor"
+  },
+  "Darkest Pact": {
+    "poi": "Arx Spirensis"
+  },
+  "Pious Prism": {
+    "poi": "Forsaken Manor"
+  },
+  "Cry Havoc": {
+    "notes": "The trader is Ageratina, found at [-541, 96, -381]."
+  },
+  "Coven Vial": {
+    "notes": "The trader is Ageratina, found at [-541, 96, -381]."
+  },
+  "Molldyer's Inferno": {
+    "notes": "The trader is Ageratina, found at [-541, 96, -381]."
+  },
+  "Harrakfar's Roar": {
+    "notes": "The trader is Sen Sennit, found at [-548, 68, -297]. They are reachable via the underground tubes. You can enter one of them at [-496 90 -398]."
+  },
+  "Fecund Berry Basket": {
+    "notes": "The trader is Sen Sennit, found at [-548, 68, -297]. They are reachable via the underground tubes. You can enter one of them at [-496 90 -398]."
+  },
+  "Falling Blades": {
+    "notes": "Special Item"
+  },
+  "Abisso Ancestrale": {
+    "notes": "SKT Savage Mode"
+  },
+  "Silver Vestment": {
+    "poi": "Quelled Convent"
+  },
+  "Laboratory Apron": {
+    "poi": "Amanita Colony"
+  },
+  "Harrakfar's Claw": {
+    "poi": "Locum Vernantia"
+  },
+  "Iridium Bulwark": {
+    "poi": "Locum Vernantia"
+  },
+  "Stormblessed Greatspear": {
+    "poi": "Submerged Citadel"
+  },
+  "Stonewrought Helmet": {
+    "poi": "Arx Spirensis"
+  },
+  "Roots of the Fen": {
+    "notes": "Special Item"
+  },
+  "Defiled Carving": {
+    "poi": "Vibrant Hollow"
+  },
+  "Hollow Gladius": {
+    "poi": "Doomed Encampment"
+  },
+  "Chains of Legacy": {
+    "notes": "Bounty Reward"
+  },
+  "Nihilo Core": {
+    "notes": "The trader is Sen Sennit, found at [-548, 68, -297]. They are reachable via the underground tubes. You can enter one of them at [-496 90 -398]."
+  },
+  "Final Harvest": {
+    "notes": "Bounty Reward"
+  },
+  "Holy Vitriol": {
+    "poi": "Quelled Convent"
+  },
+  "Cowl of the Coven": {
+    "notes": "Bounty Reward"
+  },
+  "Shrouded Sabatons": {
+    "poi": "Shadowcast Bastille"
+  },
+  "Hexborn Shard": {
+    "poi": "Coven Fortress"
+  },
+  "Journey's End": {
+    "poi": "Shadowcast Bastille"
+  },
+  "Vacant Dagger": {
+    "notes": "Bounty Reward"
+  },
+  "Veiled Might": {
+    "notes": "Special Item"
+  },
+  "Chains of Inertia": {
+    "notes": "Bounty Reward"
+  },
+  "Pelias' Warden": {
+    "notes": "Bounty Reward"
+  },
+  "Pelias' Greaves": {
+    "poi": "Doomed Encampment"
+  },
+  "Memoria Ancestrale": {
+    "notes": "SKT Savage Mode"
+  },
+  "Sentinel's Cap": {
+    "notes": "Bounty Reward"
+  },
+  "Overgrown Bodkin": {
+    "poi": "Bewitched Dominion"
+  },
+  "The Cascade's Ignorance": {
+    "poi": "Submerged Citadel"
+  },
+  "Fox Frenzy": {
+    "notes": "The trader can be accessed via the underground tubes and is located at [-325, 67, -352]."
+  },
+  "Scout's Halfhelm": {
+    "notes": "Bounty Reward"
+  },
+  "Flight from the Capital": {
+    "poi": "Vibrant Hollow"
+  },
+  "Fungal Will": {
+    "poi": "Amanita Colony"
+  },
+  "Sporesoaked Robe": {
+    "poi": "Vibrant Hollow"
+  },
+  "Iridium Crown": {
+    "poi": "Forsaken Manor"
+  },
+  "Silvari Coin": {
+    "notes": "Bounty Reward"
+  },
+  "The Hollow Rings": {
+    "notes": "Bounty Reward"
+  },
+  "Samsara Vessel": {
+    "poi": "Amanita Colony"
+  },
+  "Miner's Lament": {
+    "poi": "Silvic Quarry"
+  },
+  "Wolfswood's Reach": {
+    "notes": "Bounty Reward"
+  },
+  "Dichen Resolve": {
+    "notes": "Bounty Reward"
+  },
+  "Thundering Legacy": {
+    "poi": "Submerged Citadel"
+  },
+  "Golemworn Treads": {
+    "poi": "Coven Fortress"
+  },
+  "Wind's Gaze": {
+    "poi": "Quelled Convent"
+  },
+  "Timerift Stave": {
+    "notes": "SKT Savage Mode"
+  },
+  "Remnants of Isharist": {
+    "notes": "SKT Savage Mode"
+  },
+  "Verdant Dawn": {
+    "notes": "Special Item"
+  },
+  "Motherboard Calibrator": {
+    "notes": "Special Item"
+  },
+  "Bouquet of Gold": {
+    "notes": "This sword is obtained by combining 4 flowers at the Tlaxan Crafter, each with a 1/1000 chance of dropping from specific mobs."
+  },
+  "Spikeladen Crust": {
+    "poi": "Chanterelle Village"
+  },
+  "Adanartis": {
+    "poi": "Arx Spirensis"
+  },
+  "Mycelian Mantra": {
+    "poi": "Chanterelle Village"
+  },
+  "Dignified Greaves": {
+    "poi": "Bewitched Dominion"
+  },
+  "Anti-Acid Apron": {
+    "notes": "Special Item"
+  },
+  "Hypersonic Screwdriver": {
+    "notes": "Special Item"
+  },
+  "Sludge Stompers": {
+    "notes": "Special Item"
+  },
+  "Aether Turbine": {
+    "notes": "The trader is found at [-517, 49, -70]. Go to Arx Spirensis, enter the giant tunnel blocked by gravel, and go left of the staircase. You will find another small tunnel, also blocked by gravel."
+  },
+  "Rocket Boots": {
+    "notes": "The trader is found at [-517, 49, -70]. Go to Arx Spirensis, enter the giant tunnel blocked by gravel, and go left of the staircase. You will find another small tunnel, also blocked by gravel."
+  },
+  "Gears of the King": {
+    "notes": "The trader is found at [-517, 49, -70]. Go to Arx Spirensis, enter the giant tunnel blocked by gravel, and go left of the staircase. You will find another small tunnel, also blocked by gravel."
+  },
+  "Mycelian Cap": {
+    "poi": "Chanterelle Village"
+  },
+  "Pureshard Adze": {
+    "poi": "Silvic Quarry"
+  },
+  "Hycenea's Will": {
+    "poi": "Coven Fortress"
+  },
+  "Aradian Secrecy": {
+    "notes": "Bounty Reward"
+  },
+  "Pelias' Sabatons": {
+    "poi": "Forsaken Manor"
+  },
+  "Stalwart Protector": {
+    "poi": "Doomed Encampment"
+  },
+  "Twisted Pike": {
+    "poi": "Shadowcast Bastille"
+  },
+  "Epoch Hammer": {
+    "poi": "Locum Vernantia"
+  },
+  "Malhuer Reach": {
+    "notes": "The trader is Elder Yuti Abello, in the Abello Village [-261 58 -440]."
+  },
+  "Toxic Steroid": {
+    "notes": "The trader is Elder Yuti Abello, in the Abello Village [-261 58 -440]."
+  },
+  "Quickening Mycosis": {
+    "notes": "The trader is Elder Yuti Abello, in the Abello Village [-261 58 -440]."
+  },
+  "Arcane Rifle": {
+    "poi": "Bewitched Dominion"
+  },
+  "Kisarith": {
+    "poi": "Arx Spirensis"
+  },
+  "Shroud of the Disappeared": {
+    "notes": "Bounty Reward"
+  },
+  "Resonant Scythe": {
+    "poi": "Silvic Quarry"
+  },
+  "Symbiosis": {
+    "notes": "Bounty Reward"
   }
+}

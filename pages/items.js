@@ -180,9 +180,12 @@ export async function getServerSideProps(context) {
         itemData = JSON.parse(await Fs.readFile('public/items/itemData.json'));
     }
 
-    // Add extra properties to the items (for example, notes!)
-    for (const itemExtra in extras) {
-        itemData[itemExtra].extras = extras[itemExtra];
+    // Add OTM extra info based on item's name
+    // (so that it gets copied the same to each masterwork level)
+    for (const item in itemData) {
+        if (extras[itemData[item].name]) {
+            itemData[item].extras = extras[itemData[item].name];
+        }
     }
 
     return {
