@@ -13,6 +13,7 @@ class ConsumableFormatter {
 
         if (splitName == "Vanilla Fire Res") return `Fire Immunity`;
         if (splitName == "Regeneration") return `Regeneration ${effect.EffectStrength}`;
+        if (splitName == "Haste") return `Haste ${effect.EffectStrength}`;
 
         return `${(effect.EffectStrength < 0) ? "-" : "+"}${effect.EffectStrength * 100}% ${splitName}`;
     }
