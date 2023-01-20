@@ -3,6 +3,7 @@ import styles from '../styles/Items.module.css';
 import ItemTile from '../components/items/itemTile';
 import MasterworkableItemTile from '../components/items/masterworkableItemTile';
 import CharmTile from '../components/items/charmTile';
+import ConsumableTile from '../components/items/consumableTile';
 import SearchForm from '../components/items/searchForm';
 import React from 'react';
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -159,6 +160,11 @@ export default function Items({ itemData }) {
                         if (itemData[name].type == "Charm") {
                             return (
                                 <CharmTile key={name} name={itemData[name].name} item={itemData[name]}></CharmTile>
+                            )
+                        }
+                        if (itemData[name].type == "Consumable" && itemData[name].effects != undefined) {
+                            return (
+                                <ConsumableTile key={name} name={name} item={itemData[name]}></ConsumableTile>
                             )
                         }
                         return (
