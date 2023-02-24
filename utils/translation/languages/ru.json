@@ -21,6 +21,7 @@
     "items.type.crossbow": "Арбалет",
     "items.type.snowball": "Снежок",
     "items.type.trident": "Трезубец",
+    "items.type.projectile": "Projectile",
     "items.type.offhand": "Втор. Рука",
     "items.type.mainhand": "Осн. Рука",
     "items.type.consumable": "Расходуемое",

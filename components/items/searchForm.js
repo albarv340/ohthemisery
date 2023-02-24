@@ -220,6 +220,7 @@ export default function SearchForm({ update, itemData }) {
                         <CheckboxWithLabel name="Crossbow" translatableName="items.type.crossbow" checked={true} />
                         <CheckboxWithLabel name="Snowball" translatableName="items.type.snowball" checked={true} />
                         <CheckboxWithLabel name="Trident" translatableName="items.type.trident" checked={true} />
+                        <CheckboxWithLabel name="Projectile" translatableName="items.type.projectile" checked={true} />
                     </div>
                     <div className={styles.checkboxSubgroup}>
                         <CheckboxWithLabel name="Offhand Shield" translatableName="items.type.offhandShield" checked={true} />

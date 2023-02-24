@@ -21,6 +21,7 @@
     "items.type.crossbow": "弩",
     "items.type.snowball": "雪球",
     "items.type.trident": "三叉戟",
+    "items.type.projectile": "Projectile",
     "items.type.offhand": "副手物品",
     "items.type.mainhand": "主手物品",
     "items.type.consumable": "消耗品",

@@ -21,6 +21,7 @@
     "items.type.crossbow": "Balestra",
     "items.type.snowball": "Palla di Neve",
     "items.type.trident": "Tridente",
+    "items.type.projectile": "Proiettile",
     "items.type.offhand": "Secondario",
     "items.type.mainhand": "Primario",
     "items.type.consumable": "Consumabile",

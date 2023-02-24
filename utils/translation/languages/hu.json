@@ -21,6 +21,7 @@
     "items.type.crossbow": "Számszeríj",
     "items.type.snowball": "Hógolyó",
     "items.type.trident": "Szigony",
+    "items.type.projectile": "Projectile",
     "items.type.offhand": "Másodkéz",
     "items.type.mainhand": "Főkéz",
     "items.type.consumable": "Fogyasztható",

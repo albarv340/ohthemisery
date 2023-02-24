@@ -100,7 +100,8 @@ const categories = {
     "base_stats": [
         ...["spell_power_base"]
             .map(entry => ({ name: entry, format: Formats.ATTRIBUTE })),
-        ...["attack_damage_base", "attack_speed_base", "projectile_damage_base", "projectile_speed_base", "throw_rate_base"]
+        ...["attack_damage_base", "attack_speed_base", "projectile_damage_base", "projectile_speed_base", "throw_rate_base",
+            "potion_damage_flat", "potion_radius_flat"]
             .map(entry => ({ name: entry, format: Formats.BASE_STAT }))
     ]
 }
@@ -140,7 +141,7 @@ class StatFormatter {
                 break;
             }
             case Formats.BASE_STAT: {
-                humanStr = `${value} ${humanStr.replace(" Base", "")}`;
+                humanStr = `${value} ${humanStr.replace(" Base", "").replace(" Flat", "")}`;
                 break;
             }
         }

@@ -21,6 +21,7 @@
     "items.type.crossbow": "Arbalète",
     "items.type.snowball": "Boule de neige",
     "items.type.trident": "Trident",
+    "items.type.projectile": "Projectile",
     "items.type.offhand": "Main secondaire",
     "items.type.mainhand": "Main principale",
     "items.type.consumable": "Consommable",

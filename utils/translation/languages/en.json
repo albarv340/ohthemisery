@@ -23,6 +23,7 @@
     "items.type.crossbow": "Crossbow",
     "items.type.snowball": "Snowball",
     "items.type.trident": "Trident",
+    "items.type.projectile": "Projectile",
     "items.type.offhand": "Offhand",
     "items.type.mainhand": "Mainhand",
     "items.type.consumable": "Consumable",
