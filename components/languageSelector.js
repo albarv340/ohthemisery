@@ -8,7 +8,10 @@ const languageNames = {
     'en': "English",
     'it': "Italiano",
     'zh_tw': "繁體中文",
-    'zh_cn': "简体中文"
+    'zh_cn': "简体中文",
+    'hu': "Magyar",
+    'ru': "русский",
+    'fr': "Français"
 }
 
 function LanguageSelector() {

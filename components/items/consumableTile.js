@@ -1,6 +1,6 @@
-import CustomImage from './customImage'
-import Enchants from './enchants'
-import styles from '../../styles/Items.module.css'
+import CustomImage from './customImage';
+import styles from '../../styles/Items.module.css';
+import ConsumableFormatter from '../../utils/items/consumableFormatter';
 import TranslatableText from '../translatableText';
 
 function camelCase(str) {
@@ -19,6 +19,7 @@ function getItemType(item) {
 
 export default function ItemTile(data) {
     const item = data.item
+    let formattedEffects = ConsumableFormatter.formatEffects(item.effects);
     return (
         <div className={`${styles.itemTile} ${data.hidden ? styles.hidden : ""}`}>
             <div className={styles.imageIcon}>
@@ -35,12 +36,12 @@ export default function ItemTile(data) {
             </span>
             <span className={styles.infoText}><TranslatableText identifier={`items.type.${getItemType(item)}`}></TranslatableText>{` - ${item['base_item']} `}</span>
             {item['original_item'] ? <span className={styles.infoText}>{`Skin for ${item['original_item']} `}</span> : ""}
-            <Enchants item={item}></Enchants>
             <span>
                 <span className={styles.infoText}>{`${(item.region) ? item.region : ""} `}</span>
-                <span className={styles[camelCase(item.tier)]}>{item.tier}</span>
+                <span className={styles[camelCase(item.tier)]}>{(item.tier) ? item.tier : "Consumable"}</span>
             </span>
             <span className={styles[camelCase(item.location)]}>{item.location}</span>
+            {formattedEffects}
             {item.lore ? <span className={styles.infoText}>{item.lore}</span> : ""}
             {item.extras?.poi ? <p className={`${styles.infoText} m-0`}>{`Found in ${item.extras.poi}`}</p> : ""}
             {item.extras?.notes ? <p className={`${styles.infoText} m-0`}>{item.extras.notes}</p> : ""}

@@ -3,6 +3,7 @@ import styles from '../styles/Items.module.css';
 import ItemTile from '../components/items/itemTile';
 import MasterworkableItemTile from '../components/items/masterworkableItemTile';
 import CharmTile from '../components/items/charmTile';
+import ConsumableTile from '../components/items/consumableTile';
 import SearchForm from '../components/items/searchForm';
 import React from 'react';
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -10,12 +11,27 @@ import TranslatableText from '../components/translatableText';
 import Axios from 'axios';
 import AuthProvider from '../utils/authProvider';
 import Fs from 'fs/promises';
+import extras from '../public/items/extras.json';
 
 function getRelevantItems(data, itemData) {
     let items = Object.keys(itemData);
 
-    if (data.search) {
-        items = items.filter(name => name.toLowerCase().includes(data.search.toLowerCase()))
+    if (data.searchName) {
+        // Check if the user inputted any "|" to search for multiple item names at once.
+        let names = data.searchName.split("|").map(name => name.toLowerCase().trim());
+        items = items.filter(name => {
+            let result = false;
+            names.forEach(term => {
+                if (name.toLowerCase().includes(term)) {
+                    result = true;
+                    return;
+                }
+            })
+            return result;
+        });
+    }
+    if (data.searchLore) {
+        items = items.filter(name => itemData[name].lore?.toLowerCase().includes(data.searchLore.toLowerCase()))
     }
     if (data.regionSelect != "Any Region") {
         items = items.filter(name => itemData[name].region == data.regionSelect)
@@ -25,6 +41,9 @@ function getRelevantItems(data, itemData) {
     }
     if (data.locationSelect != "Any Location") {
         items = items.filter(name => itemData[name].location == data.locationSelect)
+    }
+    if (data.poiSelect != "Any POI") {
+        items = items.filter(name => itemData[name].extras?.poi && itemData[name].extras.poi == data.poiSelect)
     }
     if (data.classSelect != "Any Class") {
         items = items.filter(name => itemData[name].class_name == data.classSelect)
@@ -93,7 +112,7 @@ function getRelevantItems(data, itemData) {
     return items;
 }
 
-export default function Items({itemData}) {
+export default function Items({ itemData }) {
     const [relevantItems, setRelevantItems] = React.useState(Object.keys(itemData));
     const [itemsToShow, setItemsToShow] = React.useState(20)
     const itemsToLoad = 20;
@@ -117,7 +136,7 @@ export default function Items({itemData}) {
             </Head>
             <main className={styles.main}>
                 <h1>Monumenta Items</h1>
-                <SearchForm update={handleChange} />
+                <SearchForm update={handleChange} itemData={itemData} />
                 {
                     (relevantItems.length > 0) ?
                     <h4 className="mt-1">
@@ -143,6 +162,11 @@ export default function Items({itemData}) {
                                 <CharmTile key={name} name={itemData[name].name} item={itemData[name]}></CharmTile>
                             )
                         }
+                        if (itemData[name].type == "Consumable" && itemData[name].effects != undefined) {
+                            return (
+                                <ConsumableTile key={name} name={name} item={itemData[name]}></ConsumableTile>
+                            )
+                        }
                         return (
                             <ItemTile key={name} name={name} item={itemData[name]}></ItemTile>
                         )
@@ -160,6 +184,14 @@ export async function getServerSideProps(context) {
         itemData = response.data;
     } else {
         itemData = JSON.parse(await Fs.readFile('public/items/itemData.json'));
+    }
+
+    // Add OTM extra info based on item's name
+    // (so that it gets copied the same to each masterwork level)
+    for (const item in itemData) {
+        if (extras[itemData[item].name]) {
+            itemData[item].extras = extras[itemData[item].name];
+        }
     }
 
     return {

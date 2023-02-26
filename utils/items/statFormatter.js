@@ -28,7 +28,7 @@ const categories = {
         ...["second_wind", "inferno", "regicide", "aptitude", "triage", "trivium", "looting",
             "ice_aspect", "fire_aspect", "thunder_aspect", "wind_aspect", "earth_aspect"]
             .map(entry => ({ name: entry, format: Formats.ENCHANT })),
-        ...["intuition", "weightless", "radiant", "darksight", "void_tether", "resurrection"]
+        ...["intuition", "weightless", "radiant", "darksight", "void_tether", "resurrection", "infinity"]
             .map(entry => ({ name: entry, format: Formats.SINGLE_ENCHANT }))
     ],
     "prot": [
@@ -43,7 +43,7 @@ const categories = {
             .map(entry => ({ name: entry, format: Formats.ATTRIBUTE }))
     ],
     "health": [
-        ...["regen", "life_drain", "sustenance"]
+        ...["regeneration", "life_drain", "sustenance"]
             .map(entry => ({ name: entry, format: Formats.ENCHANT })),
         ...["max_health_flat", "max_health_percent"]
             .map(entry => ({ name: entry, format: Formats.ATTRIBUTE })),
@@ -53,21 +53,19 @@ const categories = {
     "tool": [
         ...["efficiency", "eruption", "sapper", "multitool", "fortune", "lure"]
             .map(entry => ({ name: entry, format: Formats.ENCHANT })),
-        ...["silk_touch", "infinity_tool", "jungle_s_nourishment", "excavator"]
+        ...["silk_touch", "jungles_nourishment", "excavator"]
             .map(entry => ({ name: entry, format: Formats.SINGLE_ENCHANT }))
     ],
     "epic": [
         ...["arcane_thrust", "worldly_protection"]
             .map(entry => ({ name: entry, format: Formats.ENCHANT })),
-        ...["ashes_of_eternity", "rage_of_the_keter"]
+        ...["ashes_of_eternity", "rage_of_the_keter", "liquid_courage", "temporal_bender", "intoxicating_warmth"]
             .map(entry => ({ name: entry, format: Formats.SINGLE_ENCHANT }))
     ],
     "ranged": [
         ...["quick_charge", "point_blank", "sniper", "multishot", "piercing", "retrieval",
             "punch", "recoil", "explosive", "multiload"]
-            .map(entry => ({ name: entry, format: Formats.ENCHANT })),
-        ...["infinity_bow"]
-            .map(entry => ({ name: entry, format: Formats.SINGLE_ENCHANT }))
+            .map(entry => ({ name: entry, format: Formats.ENCHANT }))
     ],
     "specialist": [
         ...["shielding", "poise", "inure", "steadfast", "ethereal", "reflexes", "evasion", "tempo",
@@ -80,7 +78,7 @@ const categories = {
         ...["curse_of_ineptitude", "curse_of_shrapnel", "curse_of_vanishing", "projectile_fragility", "melee_fragility",
             "magic_fragility", "blast_fragility", "fire_fragility"]
             .map(entry => ({ name: entry, format: Formats.CURSE })),
-        ...["curse_of_two_handed", "curse_of_corruption", "curse_of_irreparability"]
+        ...["two_handed", "curse_of_corruption", "curse_of_irreparability"]
             .map(entry => ({ name: entry, format: Formats.SINGLE_CURSE }))
     ],
     "water": [
@@ -96,13 +94,14 @@ const categories = {
             .map(entry => ({ name: entry, format: Formats.SINGLE_ENCHANT }))
     ],
     "defense": [
-        { name: "armor", format: Formats.ATTRIBUTE },
-        { name: "agility", format: Formats.ATTRIBUTE }
+        ...["armor", "agility", "armor_percent", "agility_percent"]
+            .map(entry => ({ name: entry, format: Formats.ATTRIBUTE }))
     ],
     "base_stats": [
         ...["spell_power_base"]
             .map(entry => ({ name: entry, format: Formats.ATTRIBUTE })),
-        ...["attack_damage_base", "attack_speed_base", "projectile_damage_base", "projectile_speed_base", "throw_rate_base"]
+        ...["attack_damage_base", "attack_speed_base", "projectile_damage_base", "projectile_speed_base", "throw_rate_base",
+            "potion_damage_flat", "potion_radius_flat"]
             .map(entry => ({ name: entry, format: Formats.BASE_STAT }))
     ]
 }
@@ -119,11 +118,7 @@ class StatFormatter {
         let humanStr = stat.name.split("_")
             .filter(part => (part != "m" && part != "p" && part != "bow" && part != "tool"))
             .map(part => part[0].toUpperCase() + part.substring(1))
-            .join(" ")
-            .replaceAll("Prot", "Protection")
-            .replaceAll("Protectionection", "Protection")
-            .replaceAll("Regen", "Regeneration")
-            .replace("Jungle S Nourishment", "Jungle's Nourishment");
+            .join(" ");
         switch (stat.format) {
             case Formats.ENCHANT: {
                 humanStr = `${humanStr} ${value}`;
@@ -138,15 +133,15 @@ class StatFormatter {
                 break;
             }
             case Formats.CURSE: {
-                humanStr = `Curse of ${humanStr} ${value}`;
+                humanStr = `${humanStr} ${value}`;
                 break;
             }
             case Formats.SINGLE_CURSE: {
-                humanStr = (humanStr != "Two Handed") ? `Curse of ${humanStr}` : humanStr;
+                // The level should not be displayed. humanStr is already good to go.
                 break;
             }
             case Formats.BASE_STAT: {
-                humanStr = `${value} ${humanStr.replace(" Base", "")}`;
+                humanStr = `${value} ${humanStr.replace(" Base", "").replace(" Flat", "")}`;
                 break;
             }
         }

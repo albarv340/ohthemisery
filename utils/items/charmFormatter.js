@@ -1,7 +1,5 @@
 import styles from '../../styles/Items.module.css';
 
-
-
 class CharmFormatter {
     static camelCase(str) {
         if (!str) return "";

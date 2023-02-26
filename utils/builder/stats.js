@@ -3,7 +3,7 @@ import Percentage from './percentage';
 const types = ["mainhand", "offhand", "helmet", "chestplate", "leggings", "boots"];
 
 class Stats {
-    constructor(itemData, formData, enabledBoxes) {
+    constructor(itemData, formData, enabledBoxes, extraStats) {
         this.enabledBoxes = enabledBoxes;
         this.itemNames = {
             "mainhand": formData.mainhand,
@@ -48,6 +48,30 @@ class Stats {
 
         this.currentHealthPercent = (formData.health) ? new Percentage(formData.health) : new Percentage(100);
 
+        this.extraDamageMultiplier = 1;
+        this.extraResistanceMultiplier = 1;
+        this.extraHealthMultiplier = 1;
+        this.extraSpeedMultiplier = 1;
+        if (extraStats) {
+            if (extraStats.damageMultipliers) {
+                this.extraDamageMultiplier = extraStats.damageMultipliers.map(percObject => percObject.val)
+                    .reduce((accumulator, val) => accumulator * val, 1);
+            }
+            if (extraStats.resistanceMultipliers) {
+                this.extraResistanceMultiplier = extraStats.resistanceMultipliers.map(percObject => percObject.val)
+                    .reduce((accumulator, val) => accumulator * val, 1);
+                this.extraResistanceMultiplier = Math.min(1.9999, this.extraResistanceMultiplier);
+            }
+            if (extraStats.healthMultipliers) {
+                this.extraHealthMultiplier = extraStats.healthMultipliers.map(percObject => percObject.val)
+                    .reduce((accumulator, val) => accumulator * val, 1);
+            }
+            if (extraStats.speedMultipliers) {
+                this.extraSpeedMultiplier = extraStats.speedMultipliers.map(percObject => percObject.val)
+                    .reduce((accumulator, val) => accumulator * val, 1);
+            }
+        }
+
         this.setDefaultValues();
         this.sumAllStats();
         this.adjustStats();
@@ -70,11 +94,9 @@ class Stats {
         // Melee Stats
         let attackDamage = this.sumNumberStat(this.itemStats.mainhand, "attack_damage_base", this.attackDamage)
             * this.attackDamagePercent.val
-            * ((this.enabledBoxes.strength) ? 1.1 : 1)
-            * ((this.enabledBoxes.fol) ? 1.15 : 1)
-            * ((this.enabledBoxes.clericblessing) ? 1.35 : 1)
             * (1 + 0.0075 * Number(this.vigor))
-            * ((this.currentHealthPercent.perc <= 50) ? 1 - 0.1 * this.crippling : 1);
+            * ((this.currentHealthPercent.perc <= 50) ? 1 - 0.1 * this.crippling : 1)
+            * this.extraDamageMultiplier;
         this.attackDamagePercent = this.attackDamagePercent.toFixedPerc(2);
         this.attackDamage = attackDamage.toFixed(2);
         let attackSpeed = (this.sumNumberStat(this.itemStats.mainhand, "attack_speed_base", this.attackSpeed) + this.attackSpeedFlatBonus) * this.attackSpeedPercent.val;
@@ -88,10 +110,8 @@ class Stats {
         // Projectile Stats
         let projectileDamage = this.sumNumberStat(this.itemStats.mainhand, "projectile_damage_base", this.projectileDamage)
             * this.projectileDamagePercent.val
-            * ((this.enabledBoxes.strength) ? 1.1 : 1)
-            * ((this.enabledBoxes.fol) ? 1.15 : 1)
-            * ((this.enabledBoxes.clericblessing) ? 1.35 : 1)
-            * (1 + 0.0075 * Number(this.focus));
+            * (1 + 0.0075 * Number(this.focus))
+            * this.extraDamageMultiplier;
         this.projectileDamagePercent = this.projectileDamagePercent.toFixedPerc(2);
         this.projectileDamage = projectileDamage.toFixed(2);
         let projectileSpeed = this.sumNumberStat(this.itemStats.mainhand, "projectile_speed_base", this.projectileSpeed) * this.projectileSpeedPercent.val;
@@ -106,9 +126,8 @@ class Stats {
         this.spellDamage = (
             this.spellPowerPercent.duplicate()
                 .mulP(this.magicDamagePercent)
-                .mul((this.enabledBoxes.strength) ? 1.1 : 1, false)
-                .mul((this.enabledBoxes.fol) ? 1.15 : 1, false)
                 .mul(1 + 0.0075 * Number(this.perspicacity), false)
+                .mul(this.extraDamageMultiplier, false)
         ).toFixedPerc(2);
         this.spellPowerPercent = this.spellPowerPercent.toFixedPerc(2);
         this.magicDamagePercent = this.magicDamagePercent.toFixedPerc(2);
@@ -174,10 +193,10 @@ class Stats {
 
         damageTaken.base = damageTaken.base
             * (1 - (this.tenacity * 0.005))
-            * ((this.enabledBoxes.resistance) ? 0.9 : 1);
+            * ((this.extraResistanceMultiplier == 1) ? 1 : 2 - this.extraResistanceMultiplier);
         damageTaken.secondwind = damageTaken.secondwind
             * (1 - (this.tenacity * 0.005))
-            * ((this.enabledBoxes.resistance) ? 0.9 : 1);
+            * ((this.extraResistanceMultiplier == 1) ? 1 : 2 - this.extraResistanceMultiplier);
 
         return damageTaken;
     }
@@ -214,7 +233,10 @@ class Stats {
         let guardSit = (this.situationals.guard.enabled) ? situationalArmor * this.situationals.guard.level : 0;
         let cloakedSit = (this.situationals.cloaked.enabled) ? situationalAgility * this.situationals.cloaked.level : 0;
 
-        let steadfastArmor = (1 - Math.max(0.2, this.currentHealthPercent.val)) * 0.33 *
+        let steadfastScaling = 0.33;
+        let steadfastMaxScaling = 20;
+        let steadfastLowerBound = 1 - (steadfastMaxScaling / steadfastScaling / 100);
+        let steadfastArmor = (1 - Math.max(steadfastLowerBound, Math.min(1, this.currentHealthPercent.val))) * steadfastScaling *
             Math.min(((this.situationals.adaptability.level > 0 && moreAgility) ? agility : (moreArmor) ? armor : (this.situationals.adaptability.level == 0) ? armor : 0), 30);
 
         let steadfastSit = (this.situationals.steadfast.enabled) ? steadfastArmor * this.situationals.steadfast.level : 0;
@@ -223,15 +245,25 @@ class Stats {
         let sumArmorSits = shieldingSit + poiseSit + inureSit + guardSit;
         let sumAgiSits = etherealSit + tempoSit + evasionSit + reflexesSit + cloakedSit;
 
-        let armorPlusSits = armor + ((this.situationals.adaptability.level > 0 && moreArmor) ?
-            sumSits : (this.situationals.adaptability.level > 0 && moreAgility) ?
-                armor : (this.situationals.adaptability.level == 0) ? sumArmorSits : 0);
-
+        let armorPlusSits = armor;
+        if (this.situationals.adaptability.level > 0) {
+            if (moreArmor) {
+                armorPlusSits += sumSits;
+            }
+        } else {
+            armorPlusSits += sumArmorSits;
+        }
         let armorPlusSitsSteadfast = armorPlusSits + steadfastSit;
 
-        let agilityPlusSits = agility + ((this.situationals.adaptability.level > 0 && moreAgility) ?
-            sumSits : (this.situationals.adaptability.level > 0 && moreArmor) ?
-                agility : (this.situationals.adaptability.level == 0) ? sumAgiSits : 0);
+        let agilityPlusSits = agility;
+        if (this.situationals.adaptability.level > 0) {
+            if (moreAgility) {
+                agilityPlusSits += sumSits;
+            }
+        } else {
+            agilityPlusSits += sumAgiSits;
+        }
+
         let halfArmor = armorPlusSitsSteadfast / 2;
         let halfAgility = agilityPlusSits / 2;
 
@@ -271,16 +303,14 @@ class Stats {
         Minor calculations to adjust the stat values
         */
         // Calculate final health
-        this.healthFinal = this.healthFlat * this.healthPercent.val * (1 + 0.01 * Number(this.vitality));
+        this.healthFinal = this.healthFlat * this.healthPercent.val * (1 + 0.01 * Number(this.vitality)) * this.extraHealthMultiplier;
         // Current health (percentage of max health based on player input)
         this.currentHealth = this.healthFinal * this.currentHealthPercent.val;
         // Fix speed percentage to account for base speed
         this.speedPercent = this.speedPercent
             .mul((this.speedFlat) / 0.1, false)
-            .mul(((this.enabledBoxes.speed) ? 1.1 : 1), false)
-            .mul(((this.enabledBoxes.fol) ? 1.15 : 1), false)
-            .mul(((this.enabledBoxes.clericblessing) ? 1.2 : 1), false)
             .mul(((this.currentHealthPercent.perc <= 50) ? 1 - 0.1 * this.crippling : 1), false)
+            .mul(this.extraSpeedMultiplier, false)
             .toFixedPerc(2);
 
         // Fix knockback resistance to be percentage and cap at 100
@@ -324,16 +354,16 @@ class Stats {
                 this.fireTickDamage += this.sumNumberStat(itemStats, "inferno");
 
                 this.healingRate
-                    .add(this.sumEnchantmentStat(itemStats, "anemia", -10))
+                    .add(this.sumEnchantmentStat(itemStats, "curse_of_anemia", -10))
                     .add(this.sumEnchantmentStat(itemStats, "sustenance", 10));
-                this.regenPerSec += this.sumEnchantmentStat(itemStats, "regen", 1);
+                this.regenPerSec += this.sumEnchantmentStat(itemStats, "regeneration", 1);
                 this.lifeDrainOnCrit += this.sumEnchantmentStat(itemStats, "life_drain", 1);
 
-                this.meleeProt += this.sumNumberStat(itemStats, "melee_prot");
-                this.projectileProt += this.sumNumberStat(itemStats, "projectile_prot");
-                this.magicProt += this.sumNumberStat(itemStats, "magic_prot");
-                this.blastProt += this.sumNumberStat(itemStats, "blast_prot");
-                this.fireProt += this.sumNumberStat(itemStats, "fire_prot");
+                this.meleeProt += this.sumNumberStat(itemStats, "melee_protection");
+                this.projectileProt += this.sumNumberStat(itemStats, "projectile_protection");
+                this.magicProt += this.sumNumberStat(itemStats, "magic_protection");
+                this.blastProt += this.sumNumberStat(itemStats, "blast_protection");
+                this.fireProt += this.sumNumberStat(itemStats, "fire_protection");
                 this.fallProt += this.sumNumberStat(itemStats, "feather_falling");
 
                 this.meleeFragility += this.sumNumberStat(itemStats, "melee_fragility");
@@ -369,8 +399,8 @@ class Stats {
                 this.situationals.adaptability.level += this.sumNumberStat(itemStats, "adaptability");
                 this.situationals.secondwind.level += this.sumNumberStat(itemStats, "second_wind");
 
-                this.crippling += this.sumNumberStat(itemStats, "crippling");
-                this.corruption += this.sumNumberStat(itemStats, "corruption");
+                this.crippling += this.sumNumberStat(itemStats, "curse_of_crippling");
+                this.corruption += this.sumNumberStat(itemStats, "curse_of_corruption");
             }
         });
     }

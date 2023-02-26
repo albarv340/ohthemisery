@@ -3,7 +3,7 @@ import CheckboxWithLabel from './checkboxWithLabel'
 import styles from '../../styles/Items.module.css'
 import React from 'react'
 import TranslatableText from '../translatableText'
-import items from '../../public/items/itemData.json'
+import extras from '../../public/items/extras.json';
 
 const charmClasses = ["Any Class", "Alchemist", "Mage", "Warlock", "Rogue", "Warrior", "Cleric", "Scout", "Generalist"]
 
@@ -11,6 +11,7 @@ let sortableStats = ["-"];
 let regions = ["Any Region"];
 let tiers = ["Any Tier"];
 let locations = ["Any Location"];
+let pois = ["Any POI"];
 let charmStats = ["Any Stat"];
 let baseItems = ["Any Item"];
 
@@ -23,36 +24,36 @@ function getResetKey(name) {
     return name + new Date()
 }
 
-function generateSortableItemStats() {
+function generateSortableItemStats(itemData) {
     sortableStats = ["-"];
-    let itemNames = Object.keys(items).filter(item => items[item].type != "Charm");
+    let itemNames = Object.keys(itemData).filter(item => itemData[item].type != "Charm");
     let uniqueItemStats = {};
     for (let itemName of itemNames) {
-        if (items[itemName].stats) {
-            Object.keys(items[itemName].stats).forEach(stat => {
+        if (itemData[itemName].stats) {
+            Object.keys(itemData[itemName].stats).forEach(stat => {
                 uniqueItemStats[stat] = 1;
             });
         }
     }
     Object.keys(uniqueItemStats).forEach(stat => {
-        sortableStats.push(stat.split("_").map(part => part[0].toUpperCase() + part.substring(1)).join(" ").replace(" Flat", "").replace(" Percent", " %"));
+        sortableStats.push(stat.split("_").map(part => part[0].toUpperCase() + part.substring(1)).join(" "));
     });
 }
 
 
-function generateRegions() {
-    regions = ["Any Region"]
+function generateRegions(itemData) {
+    regions = ["Any Region"];
     let uniqueRegions = {};
-    Object.keys(items).map(item => items[item].region).filter(regionName => regionName != undefined).forEach(regionName => {
+    Object.keys(itemData).map(item => itemData[item].region).filter(regionName => regionName != undefined).forEach(regionName => {
         uniqueRegions[regionName] = 1;
     });
     Object.keys(uniqueRegions).forEach(regionName => regions.push(regionName));
 }
 
-function generateTiers() {
-    tiers = ["Any Tier"]
+function generateTiers(itemData) {
+    tiers = ["Any Tier"];
     let uniqueTiers = {};
-    Object.keys(items).map(item => items[item].tier).filter(tierName => tierName != undefined).forEach(tierName => {
+    Object.keys(itemData).map(item => itemData[item].tier).filter(tierName => tierName != undefined).forEach(tierName => {
         uniqueTiers[tierName] = 1;
     });
     // Remove the Charm tier since there is a checkbox for it.
@@ -60,12 +61,12 @@ function generateTiers() {
     Object.keys(uniqueTiers).forEach(tierName => tiers.push(tierName));
 }
 
-function generateSortableCharmStats() {
+function generateSortableCharmStats(itemData) {
     charmStats = ["Any Stat"];
-    let charmNames = Object.keys(items).filter(item => items[item].type == "Charm");
+    let charmNames = Object.keys(itemData).filter(item => itemData[item].type == "Charm");
     let uniqueCharmAttributes = {};
     for (let charmName of charmNames) {
-        Object.keys(items[charmName].stats).forEach(attribute => {
+        Object.keys(itemData[charmName].stats).forEach(attribute => {
             uniqueCharmAttributes[attribute] = 1;
         });
     }
@@ -74,40 +75,51 @@ function generateSortableCharmStats() {
     });
 }
 
-function generateLocations() {
-    locations = ["Any Location"]
+function generateLocations(itemData) {
+    locations = ["Any Location"];
     let uniqueLocations = {};
-    Object.keys(items).map(item => items[item].location).filter(locationName => locationName != undefined).forEach(locationName => {
+    Object.keys(itemData).map(item => itemData[item].location).filter(locationName => locationName != undefined).forEach(locationName => {
         uniqueLocations[locationName] = 1;
     });
     Object.keys(uniqueLocations).forEach(locationName => locations.push(locationName));
 }
 
-function generateBaseItems() {
-    baseItems = ["Any Item"]
+function generatePOIs() {
+    pois = ["Any POI"];
+    let uniquePois = {};
+    Object.keys(extras).filter(extra => extras[extra].poi != undefined).map(extra => extras[extra].poi).forEach(poiName => {
+        uniquePois[poiName] = 1;
+    });
+    Object.keys(uniquePois).forEach(poiName => pois.push(poiName));
+}
+
+function generateBaseItems(itemData) {
+    baseItems = ["Any Item"];
     let uniqueBaseItems = {};
-    Object.keys(items).map(item => items[item].base_item).filter(baseItemName => baseItemName != undefined).forEach(baseItemName => {
+    Object.keys(itemData).map(item => itemData[item].base_item).filter(baseItemName => baseItemName != undefined).forEach(baseItemName => {
         uniqueBaseItems[baseItemName] = 1;
     });
     Object.keys(uniqueBaseItems).forEach(baseItemName => baseItems.push(baseItemName));
 }
 
-export default function SearchForm({ update }) {
+export default function SearchForm({ update, itemData }) {
     const [searchKey, setSearchKey] = React.useState(getResetKey("search"))
     const [regionKey, setRegionKey] = React.useState(getResetKey("region"))
     const [tierKey, setTierKey] = React.useState(getResetKey("tier"))
     const [locationKey, setLocationKey] = React.useState(getResetKey("location"))
+    const [poiKey, setPoiKey] = React.useState(getResetKey("poi"))
     const [classKey, setClassKey] = React.useState(getResetKey("class"))
     const [charmStatKey, setCharmStatKey] = React.useState(getResetKey("charmStat"))
     const [baseItemKey, setBaseItemKey] = React.useState(getResetKey("baseItem"))
     const form = React.useRef()
 
-    generateSortableItemStats();
-    generateRegions();
-    generateTiers();
-    generateSortableCharmStats();
-    generateLocations();
-    generateBaseItems();
+    generateSortableItemStats(itemData);
+    generateRegions(itemData);
+    generateTiers(itemData);
+    generateSortableCharmStats(itemData);
+    generateLocations(itemData);
+    generatePOIs();
+    generateBaseItems(itemData);
 
     function sendUpdate(event = {}) {
         if (event.type === "submit") {
@@ -126,6 +138,7 @@ export default function SearchForm({ update }) {
         setRegionKey(getResetKey("region"))
         setTierKey(getResetKey("tier"))
         setLocationKey(getResetKey("location"))
+        setPoiKey(getResetKey("poi"))
         setClassKey(getResetKey("class"))
         setCharmStatKey(getResetKey("charmStat"))
         setBaseItemKey(getResetKey("baseItem"))
@@ -207,6 +220,7 @@ export default function SearchForm({ update }) {
                         <CheckboxWithLabel name="Crossbow" translatableName="items.type.crossbow" checked={true} />
                         <CheckboxWithLabel name="Snowball" translatableName="items.type.snowball" checked={true} />
                         <CheckboxWithLabel name="Trident" translatableName="items.type.trident" checked={true} />
+                        <CheckboxWithLabel name="Projectile" translatableName="items.type.projectile" checked={true} />
                     </div>
                     <div className={styles.checkboxSubgroup}>
                         <CheckboxWithLabel name="Offhand Shield" translatableName="items.type.offhandShield" checked={true} />
@@ -241,6 +255,10 @@ export default function SearchForm({ update }) {
                         <SelectInput key={locationKey} name="locationSelect" sortableStats={locations} />
                     </div>
                     <div className={styles.selects}>
+                        <TranslatableText identifier="items.searchForm.poi"></TranslatableText>
+                        <SelectInput key={poiKey} name="poiSelect" sortableStats={pois} />
+                    </div>
+                    <div className={styles.selects}>
                         <TranslatableText identifier="items.searchForm.charmClass"></TranslatableText>
                         <SelectInput key={classKey} name="classSelect" sortableStats={charmClasses} />
                     </div>
@@ -256,7 +274,8 @@ export default function SearchForm({ update }) {
 
             </div>
             <TranslatableText identifier="items.searchForm.search"></TranslatableText>
-            <input type="text" name="search" placeholder="Search" />
+            <input type="text" name="searchName" placeholder="Search Name" />
+            <input type="text" name="searchLore" placeholder="Search Lore" />
             <div>
                 <input className={styles.submitButton} type="submit" />
                 <input className={styles.warningButton} type="reset" />

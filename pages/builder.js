@@ -1,10 +1,11 @@
 import Head from 'next/head'
 import React from 'react';
-import UpdateForm from '../components/builder/updateForm'
+import BuildForm from '../components/builder/buildForm'
 import TranslatableText from '../components/translatableText';
 import Axios from 'axios';
 import AuthProvider from '../utils/authProvider';
 import Fs from 'fs/promises';
+import extras from '../public/items/extras.json';
 
 function getLinkPreviewDescription(build, itemData) {
     if (!build) return ""
@@ -125,7 +126,7 @@ export default function Builder({ build, itemData }) {
                         <h1 className="text-center">Monumenta Builder</h1>
                     </div>
                 </div>
-                <UpdateForm update={change} build={build} parentLoaded={parentLoaded}></UpdateForm>
+                <BuildForm update={change} build={build} parentLoaded={parentLoaded} itemData={itemData}></BuildForm>
                 <div className="row justify-content-center mb-2">
                     <div className="col-auto text-center border border-dark mx-2 py-2">
                         <h5 className="text-center fw-bold mb-0"><TranslatableText identifier="builder.statCategories.misc"></TranslatableText></h5>
@@ -238,6 +239,14 @@ export async function getServerSideProps(context) {
         itemData = JSON.parse(await Fs.readFile('public/items/itemData.json'));
     }
     let build = context.query?.build ? context.query.build : null;
+
+    // Add OTM extra info based on item's name
+    // (so that it gets copied the same to each masterwork level)
+    for (const item in itemData) {
+        if (extras[itemData[item].name]) {
+            itemData[item].extras = extras[itemData[item].name];
+        }
+    }
 
     return {
         props: {
