@@ -4,7 +4,7 @@ class AuthProvider {
     static loadAuthData() {
         let authData;
         try {
-            authData = JSON.parse(Fs.readFileSync(".../auth.json"));
+            authData = JSON.parse(Fs.readFileSync("auth.json"));
         } catch (error) {
             return null;
         }
@@ -16,7 +16,7 @@ class AuthProvider {
         if (authData == null) {
             return null;
         }
-        let dataString = `${username}:${password}`;
+        let dataString = `${authData.username}:${authData.password}`;
         return `Basic ${Buffer.from(dataString).toString('base64')}`;
     }
 
