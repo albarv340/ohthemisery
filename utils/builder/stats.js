@@ -49,7 +49,7 @@ class Stats {
         this.currentHealthPercent = (formData.health) ? new Percentage(formData.health) : new Percentage(100);
 
         this.extraDamageMultiplier = 1;
-        this.extraResistanceMultiplier = 1;
+        this.extraResistanceMultiplier = new Percentage(100);
         this.extraHealthMultiplier = 1;
         this.extraSpeedMultiplier = 1;
         if (extraStats) {
@@ -58,9 +58,9 @@ class Stats {
                     .reduce((accumulator, val) => accumulator * val, 1);
             }
             if (extraStats.resistanceMultipliers) {
-                this.extraResistanceMultiplier = extraStats.resistanceMultipliers.map(percObject => percObject.val)
-                    .reduce((accumulator, val) => accumulator * val, 1);
-                this.extraResistanceMultiplier = Math.min(1.9999, this.extraResistanceMultiplier);
+                extraStats.resistanceMultipliers.map(percObject => percObject.val)
+                    .forEach(val => this.extraResistanceMultiplier.preciseMul(2 - val, false));
+                console.log(this.extraResistanceMultiplier.perc);
             }
             if (extraStats.healthMultipliers) {
                 this.extraHealthMultiplier = extraStats.healthMultipliers.map(percObject => percObject.val)
@@ -193,10 +193,11 @@ class Stats {
 
         damageTaken.base = damageTaken.base
             * (1 - (this.tenacity * 0.005))
-            * ((this.extraResistanceMultiplier == 1) ? 1 : 2 - this.extraResistanceMultiplier);
+            * (this.extraResistanceMultiplier.val);
+        console.log("DR mult: ", this.extraResistanceMultiplier.val);
         damageTaken.secondwind = damageTaken.secondwind
             * (1 - (this.tenacity * 0.005))
-            * ((this.extraResistanceMultiplier == 1) ? 1 : 2 - this.extraResistanceMultiplier);
+            * (this.extraResistanceMultiplier.val);
 
         return damageTaken;
     }

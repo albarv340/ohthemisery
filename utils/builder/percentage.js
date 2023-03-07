@@ -61,6 +61,18 @@ class Percentage {
         return this;
     }
 
+    preciseMul(value, percent) {
+        // Mul function with a standalone value
+        if (this.isPercent(percent)) {
+            this.perc = Number((this.perc * (Number(value) / 100)).toFixed(4));
+            this.val = Number((this.val * (Number(value) / 100)).toFixed(4));
+        } else {
+            this.perc = Number((this.perc * Number(value)).toFixed(4));
+            this.val = Number((this.val * Number(value)).toFixed(4));
+        }
+        return this;
+    }
+
     duplicate() {
         return new Percentage(this.perc);
     }
