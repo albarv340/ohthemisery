@@ -154,7 +154,7 @@ export default function Items({ itemData }) {
                     {relevantItems.slice(0, itemsToShow).map(name => {
                         if (typeof name == "object") {
                             return (
-                                <MasterworkableItemTile key={name[0].name} name={name[0].name} item={name}></MasterworkableItemTile>
+                                <MasterworkableItemTile key={`${name[0].name}-${name[0].masterwork}`} name={name[0].name} item={name}></MasterworkableItemTile>
                             )
                         }
                         if (itemData[name].type == "Charm") {
