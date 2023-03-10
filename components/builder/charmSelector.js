@@ -10,7 +10,6 @@ export default function CharmSelector({ update, translatableName, urlCharms, upd
     const inputRef = React.useRef();
 
     const maxPower = 12;
-    console.log("Got charms", urlCharms);
     React.useEffect(() => {
         if (updateLoaded && urlCharms) {
             let powerCount = 0;

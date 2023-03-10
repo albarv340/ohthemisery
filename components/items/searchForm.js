@@ -174,7 +174,7 @@ export default function SearchForm({ update, itemData }) {
         if (interestingElement.type != "checkbox") {
             interestingElement = event.target.firstChild;
         }
-        console.log(event.target.localName);
+        
         if (interestingElement && (interestingElement.type == "checkbox" || event.target.localName == "div")) {
             checkboxLongTouch.timer = setTimeout(() => {
                 interestingElement.checked = true;

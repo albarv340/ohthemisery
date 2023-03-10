@@ -60,7 +60,6 @@ class Stats {
             if (extraStats.resistanceMultipliers) {
                 extraStats.resistanceMultipliers.map(percObject => percObject.val)
                     .forEach(val => this.extraResistanceMultiplier.preciseMul(2 - val, false));
-                console.log(this.extraResistanceMultiplier.perc);
             }
             if (extraStats.healthMultipliers) {
                 this.extraHealthMultiplier = extraStats.healthMultipliers.map(percObject => percObject.val)
@@ -194,7 +193,7 @@ class Stats {
         damageTaken.base = damageTaken.base
             * (1 - (this.tenacity * 0.005))
             * (this.extraResistanceMultiplier.val);
-        console.log("DR mult: ", this.extraResistanceMultiplier.val);
+        
         damageTaken.secondwind = damageTaken.secondwind
             * (1 - (this.tenacity * 0.005))
             * (this.extraResistanceMultiplier.val);
