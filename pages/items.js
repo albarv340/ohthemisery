@@ -13,7 +13,7 @@ import AuthProvider from '../utils/authProvider';
 import Fs from 'fs/promises';
 import extras from '../public/items/extras.json';
 
-function getRelevantItems(data, itemData) {
+function getRelevantItems(data, itemData, exaltedNameList) {
     let items = Object.keys(itemData);
 
     if (data.searchName) {
@@ -186,17 +186,34 @@ export async function getServerSideProps(context) {
         itemData = JSON.parse(await Fs.readFile('public/items/itemData.json'));
     }
 
+    let exaltedNameList = [];
+
     // Add OTM extra info based on item's name
     // (so that it gets copied the same to each masterwork level)
     for (const item in itemData) {
-        if (extras[itemData[item].name]) {
-            itemData[item].extras = extras[itemData[item].name];
+        let itemStats = itemData[item];
+        // Extras
+        if (extras[itemStats.name]) {
+            itemData[item].extras = extras[itemStats.name];
+        }
+        // Exalted
+        if (itemStats.masterwork) {
+            // If an item with the base, non-masterwork name exists, as a key
+            if (itemData[itemStats.name]) {
+                // Modify its name to have an "EX" at the start
+                let exName = `EX ${itemStats.name}`;
+                let mwExName = `${exName}-${itemData[item].masterwork}`;
+                itemData[mwExName] = itemData[item];
+                itemData[mwExName].name = exName;
+                delete itemData[item];
+            }
         }
     }
 
     return {
         props: {
-            itemData
+            itemData,
+            exaltedNameList
         }
     };
 }

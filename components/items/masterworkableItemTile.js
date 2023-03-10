@@ -62,6 +62,24 @@ function getItemWithMasterwork(items, masterwork) {
     return undiscoveredItem;
 }
 
+function random(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function animate(star, index, starIntervals) {
+    if (star.current) {
+        star.current.style.setProperty("--star-left", `${random(-20, 80)}%`);
+        star.current.style.setProperty("--star-top", `${random(-50, 70)}%`);
+    
+        // Use DOM Reflow to restart the animation
+        star.current.style.animation = "none";
+        star.current.offsetHeight;
+        star.current.style.animation = "";
+    } else {
+        clearTimeout(starIntervals[index]);
+    }
+}
+
 export default function MasterworkableItemTile(data) {
     // This is an array
     const item = data.item;
@@ -81,20 +99,63 @@ export default function MasterworkableItemTile(data) {
             data.update(tempActiveItem, tempActiveItem.type);
         }
     }
+
+    const star1 = React.useRef();
+    const star2 = React.useRef();
+    const star3 = React.useRef();
+    const star4 = React.useRef();
+    const stars = [star1, star2, star3, star4];
+    const starIntervals = ["", "", "", ""];
+    const [starsAnimated, setStarsAnimated] = React.useState(false);
+
+    React.useEffect(() => {
+        if (activeItem.name.includes("EX ") && !starsAnimated) {
+            let index = 0;
+            let interval = 2000;
+            for (let i = 0; i < stars.length; i++) {
+                setTimeout(() => {
+                    animate(stars[i], i, starIntervals);
+                    starIntervals[i] = setInterval(() => {
+                        animate(stars[i], i, starIntervals);
+                    }, interval)
+                }, index++ * (interval / 4));
+            }
+    
+            setStarsAnimated(true);
+        }
+    }, []);
+
     
     return (
         <div className={`${styles.itemTile} ${data.hidden ? styles.hidden : ""}`}>
             <div className={styles.imageIcon}>
                 <CustomImage key={data.name}
                     alt={data.name}
-                    src={`/items/monumenta_icons/items/${activeItem.name.replace(/\(.*\)/g, '').trim().replaceAll(" ", "_").replaceAll("'", "").replaceAll(".","")}.png`}//.substring(0, activeItem.name)
+                    src={`/items/monumenta_icons/items/${activeItem.name.replace(/\(.*\)/g, '').trim().replaceAll(" ", "_").replaceAll("'", "").replaceAll(".","")}.png`}
                     width={64}
                     height={64}
                     altsrc={`/items/vanilla_icons/${activeItem['base_item'].replaceAll(" ", "_").toLowerCase()}.png`}
                 />
             </div>
             <span className={`${styles[camelCase(activeItem.location)]} ${styles[camelCase(activeItem.tier)]} ${styles.name}`}>
-                <a href={`https://monumentammo.fandom.com/wiki/${activeItem.name.replace(/\(.*\)/g, '').trim().replaceAll(" ", "_",)}`} target="_blank" rel="noreferrer">{activeItem.name}</a>
+                {
+                    (activeItem.name.includes("EX ")) ? <span className={styles.exalted}>
+                        <span className={styles["exalted-star"]} ref={star1}>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">{/*! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc.*/}<path d="M316.9 18C311.6 7 300.4 0 288.1 0s-23.4 7-28.8 18L195 150.3 51.4 171.5c-12 1.8-22 10.2-25.7 21.7s-.7 24.2 7.9 32.7L137.8 329 113.2 474.7c-2 12 3 24.2 12.9 31.3s23 8 33.8 2.3l128.3-68.5 128.3 68.5c10.8 5.7 23.9 4.9 33.8-2.3s14.9-19.3 12.9-31.3L438.5 329 542.7 225.9c8.6-8.5 11.7-21.2 7.9-32.7s-13.7-19.9-25.7-21.7L381.2 150.3 316.9 18z"/></svg>
+                        </span>
+                        <span className={styles["exalted-star"]} ref={star2}>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">{/*! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc.*/}<path d="M316.9 18C311.6 7 300.4 0 288.1 0s-23.4 7-28.8 18L195 150.3 51.4 171.5c-12 1.8-22 10.2-25.7 21.7s-.7 24.2 7.9 32.7L137.8 329 113.2 474.7c-2 12 3 24.2 12.9 31.3s23 8 33.8 2.3l128.3-68.5 128.3 68.5c10.8 5.7 23.9 4.9 33.8-2.3s14.9-19.3 12.9-31.3L438.5 329 542.7 225.9c8.6-8.5 11.7-21.2 7.9-32.7s-13.7-19.9-25.7-21.7L381.2 150.3 316.9 18z"/></svg>
+                        </span>
+                        <span className={styles["exalted-star"]} ref={star3}>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">{/*! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc.*/}<path d="M316.9 18C311.6 7 300.4 0 288.1 0s-23.4 7-28.8 18L195 150.3 51.4 171.5c-12 1.8-22 10.2-25.7 21.7s-.7 24.2 7.9 32.7L137.8 329 113.2 474.7c-2 12 3 24.2 12.9 31.3s23 8 33.8 2.3l128.3-68.5 128.3 68.5c10.8 5.7 23.9 4.9 33.8-2.3s14.9-19.3 12.9-31.3L438.5 329 542.7 225.9c8.6-8.5 11.7-21.2 7.9-32.7s-13.7-19.9-25.7-21.7L381.2 150.3 316.9 18z"/></svg>
+                        </span>
+                        <span className={styles["exalted-star"]} ref={star4}>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">{/*! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc.*/}<path d="M316.9 18C311.6 7 300.4 0 288.1 0s-23.4 7-28.8 18L195 150.3 51.4 171.5c-12 1.8-22 10.2-25.7 21.7s-.7 24.2 7.9 32.7L137.8 329 113.2 474.7c-2 12 3 24.2 12.9 31.3s23 8 33.8 2.3l128.3-68.5 128.3 68.5c10.8 5.7 23.9 4.9 33.8-2.3s14.9-19.3 12.9-31.3L438.5 329 542.7 225.9c8.6-8.5 11.7-21.2 7.9-32.7s-13.7-19.9-25.7-21.7L381.2 150.3 316.9 18z"/></svg>
+                        </span>
+                        <span className={styles["exalted-text"]}>EX</span>
+                    </span> : ""
+                }
+                <a href={`https://monumentammo.fandom.com/wiki/${activeItem.name.replace(/\(.*\)/g, '').trim().replaceAll(" ", "_",)}`} target="_blank" rel="noreferrer">{activeItem.name.replace("EX ", "")}</a>
             </span>
             <span className={styles.infoText}><TranslatableText identifier={`items.type.${camelCase(activeItem.type.replace("<M>", ""))}`}></TranslatableText>{` - ${activeItem['base_item']} `}</span>
             {activeItem['original_item'] ? <span className={styles.infoText}>{`Skin for ${activeItem['original_item']} `}</span> : ""}
