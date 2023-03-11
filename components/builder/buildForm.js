@@ -2,6 +2,7 @@ import SelectInput from '../items/selectInput';
 import CheckboxWithLabel from '../items/checkboxWithLabel';
 import ItemTile from '../items/itemTile';
 import MasterworkableItemTile from '../items/masterworkableItemTile';
+import styles from '../../styles/Items.module.css'
 import React from 'react';
 import { useRouter } from 'next/router';
 
@@ -27,7 +28,7 @@ const enabledBoxes = {
     cloaked: false,
     secondwind: false,
     // Other Buffs
-    scout: false
+    versatile: false
 };
 
 const extraStats = {
@@ -305,7 +306,7 @@ export default function BuildForm({ update, build, parentLoaded, itemData }) {
                 <CheckboxWithLabel name="Evasion" checked={false} onChange={checkboxChanged} />
                 <CheckboxWithLabel name="Tempo" checked={false} onChange={checkboxChanged} />
                 <CheckboxWithLabel name="Cloaked" checked={false} onChange={checkboxChanged} />
-                <CheckboxWithLabel name="Scout" checked={false} onChange={checkboxChanged} />
+                <CheckboxWithLabel name="Versatile" checked={false} onChange={checkboxChanged} />
             </div>
             <div className="row justify-content-center my-2">
                 <div className="col text-center">
@@ -359,18 +360,18 @@ export default function BuildForm({ update, build, parentLoaded, itemData }) {
                 </div>
             </div>
             <div className="row justify-content-center">
-                <div className="col-4 col-md-3 col-lg-1 text-center">
-                    <button type="submit" className="btn btn-dark" value="Recalculate">
+                <div className="col-4 col-md-3 col-lg-2 text-center">
+                    <button type="submit" className={styles.recalcButton} value="Recalculate">
                         <TranslatableText identifier="builder.buttons.recalculate"></TranslatableText>
                     </button>
                 </div>
-                <div className="col-4 col-md-3 col-lg-1 text-center">
-                    <button type="button" className="btn btn-dark" id="share" onClick={copyBuild}>
+                <div className="col-4 col-md-3 col-lg-2 text-center">
+                    <button type="button" className={styles.shareButton} id="share" onClick={copyBuild}>
                         <TranslatableText identifier="builder.buttons.share"></TranslatableText>
                     </button>
                 </div>
-                <div className="col-4 col-md-3 col-lg-1 text-center">
-                    <input type="reset" className="btn btn-danger" />
+                <div className="col-4 col-md-3 col-lg-2 text-center">
+                    <input type="reset" className={styles.resetButton} />
                 </div>
             </div>
             <div className="row justify-content-center mb-2">

@@ -83,7 +83,7 @@ class Stats {
     }
 
     calculateOffenseStats() {
-        if (this.enabledBoxes.scout) {
+        if (this.enabledBoxes.versatile) {
             let extraAttackDamagePercent = (this.projectileDamagePercent.perc - 100) * 0.5;
             let extraProjectileDamagePercent = (this.attackDamagePercent.perc - 100) * 0.4;
             this.attackDamagePercent.add(extraAttackDamagePercent);

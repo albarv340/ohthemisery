@@ -174,7 +174,7 @@ export default function SearchForm({ update, itemData }) {
         if (interestingElement.type != "checkbox") {
             interestingElement = event.target.firstChild;
         }
-        
+
         if (interestingElement && (interestingElement.type == "checkbox" || event.target.localName == "div")) {
             checkboxLongTouch.timer = setTimeout(() => {
                 interestingElement.checked = true;
@@ -273,9 +273,8 @@ export default function SearchForm({ update, itemData }) {
                 </div>
 
             </div>
-            <TranslatableText identifier="items.searchForm.search"></TranslatableText>
-            <input type="text" name="searchName" placeholder="Search Name" />
-            <input type="text" name="searchLore" placeholder="Search Lore" />
+            <input type="text" name="searchName" className={styles.searchField} placeholder="Search Name" />
+            <input type="text" name="searchLore" className={styles.searchField} placeholder="Search Lore" />
             <div>
                 <input className={styles.submitButton} type="submit" />
                 <input className={styles.warningButton} type="reset" />

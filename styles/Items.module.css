@@ -80,18 +80,6 @@
     padding-left: 3px;
 }
 
-.submitButton {
-    width: 70%;
-    background-color: darkslateblue;
-    border-color: darkslateblue;
-}
-
-.warningButton {
-    width: 30%;
-    background-color: crimson;
-    border-color: crimson;
-}
-
 .imageIcon {
     display: flex;
     justify-content: center;
@@ -544,7 +532,7 @@
 .exalted > .exalted-star > svg {
     display: block;
     opacity: 0.7;
-    animation: rotateStar 2000ms linear infinite;
+    animation: rotateStar 1900ms linear infinite;
 }
 
 .exalted > .exalted-star > svg > path {
@@ -575,5 +563,122 @@
 
     to {
         transform: rotate(180deg);
+    }
+}
+
+.searchField {
+    background-color: black;
+    border: none;
+    border-bottom: 1px solid #999999;
+    color: #bababa;
+    height: 4vh;
+    margin-block: 0.5vh;
+    padding-inline: 1vw;
+    font-size: 18px;
+    transition-duration: 500ms;
+}
+
+.searchField:hover {
+    border-bottom: 1px solid #ffffff;
+    color: #ffffff;
+}
+
+.searchField:focus {
+    border-bottom: 1px solid #ffffff;
+    color: #ffffff;
+    box-shadow: 0px 4px 2px -2px #ffffff;
+    outline: none;
+}
+
+.submitButton {
+    margin-block: 0.5vh;
+    margin-right: 1%;
+    padding: 0.5vh;
+    width: 69%;
+    animation: background-pan 5s linear infinite;
+    background: linear-gradient(
+        to right,
+        #3d3286,
+        #2f4187,
+        #3d3286
+    );
+    background-size: 200%;
+    border: 3px solid #3d3286;
+    transition-duration: 600ms;
+}
+
+.submitButton:hover {
+    transform: scale(1.02);
+}
+
+.warningButton {
+    margin-block: 0.5vh;
+    margin-left: 1%;
+    padding: 0.5vh;
+    width: 29%;
+    animation: background-pan 5s linear infinite;
+    background: linear-gradient(
+        to right,
+        #8c0b25,
+        #a82a2a,
+        #8c0b25
+    );
+    background-size: 200%;
+    border: 3px solid #8c0b25;
+    transition-duration: 600ms;
+}
+
+.warningButton:hover {
+    transform: scale(1.02);
+}
+
+.recalcButton, .shareButton {
+    margin-block: 0.5vh;
+    margin-inline: 0.25vw;
+    padding: 0.5vh;
+    width: 100%;
+    animation: background-pan 5s linear infinite;
+    background: linear-gradient(
+        to right,
+        #3d3286,
+        #2f4187,
+        #3d3286
+    );
+    background-size: 200%;
+    border: 3px solid #3d3286;
+    transition-duration: 600ms;
+}
+
+.recalcButton:hover, .shareButton:hover {
+    transform: scale(1.02);
+}
+
+.resetButton {
+    margin-block: 0.5vh;
+    margin-inline: 0.25vw;
+    padding: 0.5vh;
+    width: 100%;
+    animation: background-pan 5s linear infinite;
+    background: linear-gradient(
+        to right,
+        #8c0b25,
+        #a82a2a,
+        #8c0b25
+    );
+    background-size: 200%;
+    border: 3px solid #8c0b25;
+    transition-duration: 600ms;
+}
+
+.resetButton:hover {
+    transform: scale(1.02);
+}
+
+@keyframes background-pan {
+    from {
+        background-position: 0% center;
+    }
+    to {
+        background-position: -200% center;
     }
 }
