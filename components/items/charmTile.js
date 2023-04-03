@@ -20,9 +20,9 @@ function makeClassString(className) {
 
 function getImageName(charmTier, charmClass, charmPower) {
     if (charmTier == "Epic") {
-        return `epic_charm_${charmPower}`;
+        return `Epic_Charm_${charmPower}`;
     }
-    return `${(charmClass == "Alchemist") ? "alch" : (charmClass == "Generalist") ? "gen" : charmClass.toLowerCase()}_charm${(charmTier == "Base") ? "" : `_${charmTier.toLowerCase()}`}_${charmPower}`;
+    return `${(charmClass == "Alchemist") ? "Alch" : (charmClass == "Generalist") ? "Gen" : charmClass}_Charm${(charmTier == "Base") ? "" : `_${charmTier}`}_${charmPower}`;
 }
 
 export default function CharmTile(data) {
@@ -40,7 +40,7 @@ export default function CharmTile(data) {
                 />
             </div>
             <span className={`${styles[camelCase(item.location)]} ${styles[camelCase(item.tier)]} ${styles.name}`}>
-                <a href={`https://monumentammo.fandom.com/wiki/${item.name.replace(/\(.*\)/g, '').trim().replaceAll(" ", "_",)}`} target="_blank" rel="noreferrer">{item.name}</a>
+                <a href={`https://monumenta.wiki.gg/wiki/${item.name.replace(/\(.*\)/g, '').trim().replaceAll(" ", "_",)}`} target="_blank" rel="noreferrer">{item.name}</a>
             </span>
             <span className={styles.infoText}><TranslatableText identifier="items.type.charm"></TranslatableText>{` - ${item['base_item']} `}</span>
             {item['original_item'] ? <span className={styles.infoText}>{`Skin for ${item['original_item']} `}</span> : ""}

@@ -155,7 +155,7 @@ export default function MasterworkableItemTile(data) {
                         <span className={styles["exalted-text"]}>EX</span>
                     </span> : ""
                 }
-                <a href={`https://monumentammo.fandom.com/wiki/${activeItem.name.replace(/\(.*\)/g, '').trim().replaceAll(" ", "_",)}`} target="_blank" rel="noreferrer">{activeItem.name.replace("EX ", "")}</a>
+                <a href={`https://monumenta.wiki.gg/wiki/${activeItem.name.replace(/\(.*\)/g, '').trim().replaceAll(" ", "_",)}`} target="_blank" rel="noreferrer">{activeItem.name.replace("EX ", "")}</a>
             </span>
             <span className={styles.infoText}><TranslatableText identifier={`items.type.${camelCase(activeItem.type.replace("<M>", ""))}`}></TranslatableText>{` - ${activeItem['base_item']} `}</span>
             {activeItem['original_item'] ? <span className={styles.infoText}>{`Skin for ${activeItem['original_item']} `}</span> : ""}
