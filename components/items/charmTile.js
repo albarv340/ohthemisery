@@ -33,7 +33,7 @@ export default function CharmTile(data) {
             <div className={styles.imageIcon}>
                 <CustomImage key={data.name}
                     alt={data.name}
-                    src={`/items/monumenta_icons/charms/${item.name.toLowerCase().replaceAll(" ", "_").replaceAll("'", "")}.png`}
+                    src={`/items/monumenta_icons/charms/${item.name.toLowerCase().replaceAll(" ", "_").replaceAll("-", "_").replaceAll("'", "").trim()}.png`}
                     width={64}
                     height={64}
                     altsrc={`/items/monumenta_icons/charms/${getImageName(item.tier, item.class_name, item.power)}.png`}

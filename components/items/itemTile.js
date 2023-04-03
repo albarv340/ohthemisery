@@ -24,7 +24,7 @@ export default function ItemTile(data) {
             <div className={styles.imageIcon}>
                 <CustomImage key={data.name}
                     alt={data.name}
-                    src={`/items/monumenta_icons/items/${item.name.replace(/\(.*\)/g, '').trim().replaceAll(" ", "_")}.png`}
+                    src={`/items/monumenta_icons/items/${item.name.replace(/\(.*\)/g, '').replaceAll(" ", "_").replaceAll("-", "_").replaceAll("'", "").trim()}.png`}
                     width={64}
                     height={64}
                     altsrc={`/items/vanilla_icons/${item['base_item'].replaceAll(" ", "_").toLowerCase()}.png`}

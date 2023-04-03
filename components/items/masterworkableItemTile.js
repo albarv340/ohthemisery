@@ -131,7 +131,7 @@ export default function MasterworkableItemTile(data) {
             <div className={styles.imageIcon}>
                 <CustomImage key={data.name}
                     alt={data.name}
-                    src={`/items/monumenta_icons/items/${activeItem.name.replace(/\(.*\)/g, '').trim().replaceAll(" ", "_").replaceAll("'", "").replaceAll(".","")}.png`}
+                    src={`/items/monumenta_icons/items/${activeItem.name.replace(/\(.*\)/g, '').replaceAll(" ", "_").replaceAll("-", "_").replaceAll("'", "").replaceAll(".","").trim()}.png`}
                     width={64}
                     height={64}
                     altsrc={`/items/vanilla_icons/${activeItem['base_item'].replaceAll(" ", "_").toLowerCase()}.png`}
