@@ -1,4 +1,3 @@
-import CustomImage from './customImage';
 import styles from '../../styles/Items.module.css';
 import ConsumableFormatter from '../../utils/items/consumableFormatter';
 import TranslatableText from '../translatableText';

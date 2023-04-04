@@ -1,4 +1,3 @@
-import CustomImage from './customImage'
 import styles from '../../styles/Items.module.css'
 import CharmFormatter from '../../utils/items/charmFormatter'
 import TranslatableText from '../translatableText';

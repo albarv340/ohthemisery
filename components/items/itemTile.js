@@ -1,8 +1,6 @@
-import CustomImage from './customImage';
 import Enchants from './enchants';
 import styles from '../../styles/Items.module.css';
 import TranslatableText from '../translatableText';
-import Document from 'next/document';
 import React from 'react';
 
 function camelCase(str) {
