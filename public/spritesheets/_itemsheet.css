@@ -1,5 +1,5 @@
 .monumenta-items {
-	background-image: url(itemsheet.png);
+	background-image: url('itemsheet.png');
 	background-repeat: no-repeat;
 	display: inline-block;
 	vertical-align: middle;
