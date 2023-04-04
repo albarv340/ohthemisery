@@ -89,7 +89,7 @@ function doesStyleExist(className) {
     let styleSheetsLength = styleSheets.length;
     for (let i = 0; i < styleSheetsLength; i++){
         let classes = styleSheets[i].cssRules;
-        if (!classes || classes.item(0).selectorText != ".monumenta-items") {
+        if (!classes) {
             continue;
         }
         
@@ -128,8 +128,6 @@ export default function MasterworkableItemTile(data) {
     const star2 = React.useRef();
     const star3 = React.useRef();
     const star4 = React.useRef();
-    const stars = [star1, star2, star3, star4];
-    const starIntervals = ["", "", "", ""];
     const [starsAnimated, setStarsAnimated] = React.useState(false);
 
     React.useEffect(() => {
@@ -139,6 +137,9 @@ export default function MasterworkableItemTile(data) {
             setBaseBackgroundClass("minecraft");
             setCssClass(`minecraft-${activeItem['base_item'].replaceAll(" ", "-").replaceAll("_", "-").toLowerCase()}`);
         }
+
+        const stars = [star1, star2, star3, star4];
+        const starIntervals = ["", "", "", ""];
 
         if (activeItem.name.includes("EX ") && !starsAnimated) {
             let index = 0;
@@ -154,7 +155,7 @@ export default function MasterworkableItemTile(data) {
     
             setStarsAnimated(true);
         }
-    }, [activeItem, starIntervals, stars, starsAnimated]);
+    }, [activeItem, starsAnimated]);
 
     
     return (

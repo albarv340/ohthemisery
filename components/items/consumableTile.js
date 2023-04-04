@@ -27,7 +27,7 @@ function doesStyleExist(className) {
     let styleSheetsLength = styleSheets.length;
     for (let i = 0; i < styleSheetsLength; i++){
         let classes = styleSheets[i].cssRules;
-        if (!classes || classes.item(0).selectorText != ".monumenta-items") {
+        if (!classes) {
             continue;
         }
         

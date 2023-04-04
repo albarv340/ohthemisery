@@ -35,7 +35,7 @@ function doesStyleExist(className) {
     let styleSheetsLength = styleSheets.length;
     for (let i = 0; i < styleSheetsLength; i++){
         let classes = styleSheets[i].cssRules;
-        if (!classes || classes.item(0).selectorText != ".monumenta-charms") {
+        if (!classes) {
             continue;
         }
         
@@ -59,7 +59,7 @@ export default function CharmTile(data) {
             // The charm doesn't have its own texture on the spritesheet, and must be defaulted to the default charms.
             setCssClass(`monumenta-${getImageName(item.tier, item.class_name, item.power)}`);
         }
-    }, [item.name, item.class_name, item.power]);
+    }, [item.name, item.tier, item.class_name, item.power]);
 
     return (
         <div className={`${styles.itemTile} ${data.hidden ? styles.hidden : ""}`}>
