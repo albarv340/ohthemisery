@@ -2,6 +2,7 @@ import CustomImage from './customImage';
 import styles from '../../styles/Items.module.css';
 import ConsumableFormatter from '../../utils/items/consumableFormatter';
 import TranslatableText from '../translatableText';
+import React from 'react';
 
 function camelCase(str) {
     if (!str) return "";
@@ -17,19 +18,48 @@ function getItemType(item) {
     return "misc";
 }
 
+function getItemsheetClass(itemName) {
+    return `monumenta-${itemName.replace(/\(.*\)/g, '').replaceAll(" ", "-").replaceAll("_", "-").replaceAll("'", "").trim()}`;
+}
+
+function doesStyleExist(className) {
+
+    let styleSheets = document.styleSheets;
+    let styleSheetsLength = styleSheets.length;
+    for (let i = 0; i < styleSheetsLength; i++){
+        let classes = styleSheets[i].cssRules;
+        if (!classes || classes.item(0).selectorText != ".monumenta-items") {
+            continue;
+        }
+        
+        for (let x = 0; x < classes.length; x++) {
+            if (classes[x].selectorText == `.${className}`) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 export default function ConsumableTile(data) {
     const item = data.item
     let formattedEffects = ConsumableFormatter.formatEffects(item.effects);
+
+    const [cssClass, setCssClass] = React.useState(getItemsheetClass(item.name));
+    const [baseBackgroundClass, setBaseBackgroundClass] = React.useState("monumenta-items");
+
+    React.useEffect(() => {
+        if (!doesStyleExist(getItemsheetClass(item.name))) {
+            // The consumable doesn't have its own texture on the spritesheet, and must be defaulted to a minecraft texture.
+            setBaseBackgroundClass("minecraft");
+            setCssClass(`minecraft-${item['base_item'].replaceAll(" ", "-").replaceAll("_", "-").toLowerCase()}`);
+        }
+    }, []);
+
     return (
         <div className={`${styles.itemTile} ${data.hidden ? styles.hidden : ""}`}>
             <div className={styles.imageIcon}>
-                <CustomImage key={data.name}
-                    alt={data.name}
-                    src={`/items/monumenta_icons/items/${item.name.replace(/\(.*\)/g, '').replaceAll(" ", "_").replaceAll("-", "_").replaceAll("'", "").trim()}.png`}
-                    width={64}
-                    height={64}
-                    altsrc={`/items/vanilla_icons/${item['base_item'].replaceAll(" ", "_").toLowerCase()}.png`}
-                />
+                <div className={[baseBackgroundClass, cssClass].join(" ")}></div>
             </div>
             <span className={`${styles[camelCase(item.location)]} ${(item.tier == "Tier 3" && item.region == "Ring") ? styles["tier5"] : styles[camelCase(item.tier)]} ${styles.name}`}>
                 <a href={`https://monumenta.wiki.gg/wiki/${item.name.replace(/\(.*\)/g, '').trim().replaceAll(" ", "_",)}`} target="_blank" rel="noreferrer">{item.name}</a>

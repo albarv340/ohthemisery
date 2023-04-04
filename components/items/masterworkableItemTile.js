@@ -80,6 +80,29 @@ function animate(star, index, starIntervals) {
     }
 }
 
+function getItemsheetClass(itemName) {
+    return `monumenta-${itemName.replace(/\(.*\)/g, '').replaceAll(" ", "-").replaceAll("_", "-").replaceAll("'", "").trim()}`;
+}
+
+function doesStyleExist(className) {
+
+    let styleSheets = document.styleSheets;
+    let styleSheetsLength = styleSheets.length;
+    for (let i = 0; i < styleSheetsLength; i++){
+        let classes = styleSheets[i].cssRules;
+        if (!classes || classes.item(0).selectorText != ".monumenta-items") {
+            continue;
+        }
+        
+        for (let x = 0; x < classes.length; x++) {
+            if (classes[x].selectorText == `.${className}`) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 export default function MasterworkableItemTile(data) {
     // This is an array
     const item = data.item;
@@ -90,6 +113,8 @@ export default function MasterworkableItemTile(data) {
         defaultItem = getLowestMasterworkItem(item);
     }
     const [activeItem, setActiveItem] = React.useState(defaultItem);
+    const [cssClass, setCssClass] = React.useState(getItemsheetClass(activeItem.name));
+    const [baseBackgroundClass, setBaseBackgroundClass] = React.useState("monumenta-items");
 
     function spanClicked(event) {
         let masterworkClicked = Number(event.target.id.split("-")[1]);
@@ -109,6 +134,13 @@ export default function MasterworkableItemTile(data) {
     const [starsAnimated, setStarsAnimated] = React.useState(false);
 
     React.useEffect(() => {
+        console.log("Item class", getItemsheetClass(activeItem.name));
+        if (!doesStyleExist(getItemsheetClass(activeItem.name))) {
+            // The item doesn't have its own texture on the spritesheet, and must be defaulted to a minecraft texture.
+            setBaseBackgroundClass("minecraft");
+            setCssClass(`minecraft-${activeItem['base_item'].replaceAll(" ", "-").replaceAll("_", "-").toLowerCase()}`);
+        }
+
         if (activeItem.name.includes("EX ") && !starsAnimated) {
             let index = 0;
             let interval = 2000;
@@ -129,13 +161,7 @@ export default function MasterworkableItemTile(data) {
     return (
         <div className={`${styles.itemTile} ${data.hidden ? styles.hidden : ""}`}>
             <div className={styles.imageIcon}>
-                <CustomImage key={data.name}
-                    alt={data.name}
-                    src={`/items/monumenta_icons/items/${activeItem.name.replace(/\(.*\)/g, '').replaceAll(" ", "_").replaceAll("-", "_").replaceAll("'", "").replaceAll(".","").trim()}.png`}
-                    width={64}
-                    height={64}
-                    altsrc={`/items/vanilla_icons/${activeItem['base_item'].replaceAll(" ", "_").toLowerCase()}.png`}
-                />
+                <div className={[baseBackgroundClass, cssClass].join(" ")}></div>
             </div>
             <span className={`${styles[camelCase(activeItem.location)]} ${styles[camelCase(activeItem.tier)]} ${styles.name}`}>
                 {

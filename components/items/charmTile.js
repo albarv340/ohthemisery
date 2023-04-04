@@ -2,6 +2,7 @@ import CustomImage from './customImage'
 import styles from '../../styles/Items.module.css'
 import CharmFormatter from '../../utils/items/charmFormatter'
 import TranslatableText from '../translatableText';
+import React from 'react';
 
 function camelCase(str) {
     if (!str) return "";
@@ -22,22 +23,49 @@ function getImageName(charmTier, charmClass, charmPower) {
     if (charmTier == "Epic") {
         return `Epic_Charm_${charmPower}`;
     }
-    return `${(charmClass == "Alchemist") ? "Alch" : (charmClass == "Generalist") ? "Gen" : charmClass}_Charm${(charmTier == "Base") ? "" : `_${charmTier}`}_${charmPower}`;
+    return `${(charmClass == "Alchemist") ? "Alch" : (charmClass == "Generalist") ? "Gen" : charmClass}-Charm${(charmTier == "Base") ? "" : `-${charmTier}`}-${charmPower}`;
+}
+
+function getCharmSheetClass(charmName) {
+    return `monumenta-${charmName.replaceAll(" ", "-").replaceAll("_", "-").replaceAll("'", "").trim()}`
+}
+
+function doesStyleExist(className) {
+
+    let styleSheets = document.styleSheets;
+    let styleSheetsLength = styleSheets.length;
+    for (let i = 0; i < styleSheetsLength; i++){
+        let classes = styleSheets[i].cssRules;
+        if (!classes || classes.item(0).selectorText != ".monumenta-charms") {
+            continue;
+        }
+        
+        for (let x = 0; x < classes.length; x++) {
+            if (classes[x].selectorText == `.${className}`) {
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 export default function CharmTile(data) {
     const item = data.item;
+    const [cssClass, setCssClass] = React.useState(getCharmSheetClass(item.name));
+    
     let formattedCharm = CharmFormatter.formatCharm(item.stats);
+
+    React.useEffect(() => {
+        if (!doesStyleExist(getCharmSheetClass(item.name))) {
+            // The charm doesn't have its own texture on the spritesheet, and must be defaulted to the default charms.
+            setCssClass(`monumenta-${getImageName(item.tier, item.class_name, item.power)}`);
+        }
+    }, []);
+
     return (
         <div className={`${styles.itemTile} ${data.hidden ? styles.hidden : ""}`}>
             <div className={styles.imageIcon}>
-                <CustomImage key={data.name}
-                    alt={data.name}
-                    src={`/items/monumenta_icons/charms/${item.name.toLowerCase().replaceAll(" ", "_").replaceAll("-", "_").replaceAll("'", "").trim()}.png`}
-                    width={64}
-                    height={64}
-                    altsrc={`/items/monumenta_icons/charms/${getImageName(item.tier, item.class_name, item.power)}.png`}
-                />
+                <div className={["monumenta-charms", cssClass].join(" ")}></div>
             </div>
             <span className={`${styles[camelCase(item.location)]} ${styles[camelCase(item.tier)]} ${styles.name}`}>
                 <a href={`https://monumenta.wiki.gg/wiki/${item.name.replace(/\(.*\)/g, '').trim().replaceAll(" ", "_",)}`} target="_blank" rel="noreferrer">{item.name}</a>
