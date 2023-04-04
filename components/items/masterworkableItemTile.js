@@ -154,7 +154,7 @@ export default function MasterworkableItemTile(data) {
     
             setStarsAnimated(true);
         }
-    }, activeItem, starIntervals, stars, starsAnimated);
+    }, [activeItem, starIntervals, stars, starsAnimated]);
 
     
     return (

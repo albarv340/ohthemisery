@@ -53,7 +53,7 @@ export default function ConsumableTile(data) {
             setBaseBackgroundClass("minecraft");
             setCssClass(`minecraft-${item['base_item'].replaceAll(" ", "-").replaceAll("_", "-").toLowerCase()}`);
         }
-    }, item);
+    }, [item]);
 
     return (
         <div className={`${styles.itemTile} ${data.hidden ? styles.hidden : ""}`}>
