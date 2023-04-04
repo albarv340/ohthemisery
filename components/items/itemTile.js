@@ -51,7 +51,7 @@ export default function ItemTile(data) {
             setBaseBackgroundClass("minecraft");
             setCssClass(`minecraft-${item['base_item'].replaceAll(" ", "-").replaceAll("_", "-").toLowerCase()}`);
         }
-    }, []);
+    }, item);
 
     return (
         <div className={`${styles.itemTile} ${data.hidden ? styles.hidden : ""}`}>

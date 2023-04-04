@@ -27,7 +27,7 @@ function LanguageSelector() {
         let cookieLang = getCookie("lang");
         cookieLang = (cookieLang) ? cookieLang : 'en';
         setLang(cookieLang);
-    }, []);
+    }, setLang);
     
     return (
         <div>
