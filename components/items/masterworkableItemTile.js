@@ -80,7 +80,7 @@ function animate(star, index, starIntervals) {
 }
 
 function getItemsheetClass(itemName) {
-    return `monumenta-${itemName.replace(/\(.*\)/g, '').replaceAll(" ", "-").replaceAll("_", "-").replaceAll("'", "").trim()}`;
+    return `monumenta-${itemName.replace(/\(.*\)/g, '').replace("EX ", "").replaceAll(" ", "-").replaceAll("_", "-").replaceAll("'", "").trim()}`;
 }
 
 function doesStyleExist(className) {
@@ -131,7 +131,6 @@ export default function MasterworkableItemTile(data) {
     const [starsAnimated, setStarsAnimated] = React.useState(false);
 
     React.useEffect(() => {
-        console.log("Item class", getItemsheetClass(activeItem.name));
         if (!doesStyleExist(getItemsheetClass(activeItem.name))) {
             // The item doesn't have its own texture on the spritesheet, and must be defaulted to a minecraft texture.
             setBaseBackgroundClass("minecraft");
