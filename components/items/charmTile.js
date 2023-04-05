@@ -20,7 +20,7 @@ function makeClassString(className) {
 
 function getImageName(charmTier, charmClass, charmPower) {
     if (charmTier == "Epic") {
-        return `Epic_Charm_${charmPower}`;
+        return `Epic-Charm-${charmPower}`;
     }
     return `${(charmClass == "Alchemist") ? "Alch" : (charmClass == "Generalist") ? "Gen" : charmClass}-Charm${(charmTier == "Base") ? "" : `-${charmTier}`}-${charmPower}`;
 }
