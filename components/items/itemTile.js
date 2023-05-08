@@ -40,6 +40,15 @@ function doesStyleExist(className) {
     return false;
 }
 
+function doesNameContainNonASCII(name) {
+    for (let i = 0; i < name.length; i++) {
+        if (name.charCodeAt(i) > 127) {
+            return true;
+        }
+    }
+    return false;
+}
+
 export default function ItemTile(data) {
     const item = data.item
     const [cssClass, setCssClass] = React.useState(getItemsheetClass(item.name));
@@ -52,6 +61,12 @@ export default function ItemTile(data) {
             setCssClass(`minecraft-${item['base_item'].replaceAll(" ", "-").replaceAll("_", "-").toLowerCase()}`);
         }
     }, [item]);
+
+    // If the item name has accented characters, they are actually not present in the item's name property,
+    // but they are present in the item's key. In that case, set the name to the key.
+    if (doesNameContainNonASCII(data.name)) {
+        item.name = data.name;
+    }
 
     return (
         <div className={`${styles.itemTile} ${data.hidden ? styles.hidden : ""}`}>

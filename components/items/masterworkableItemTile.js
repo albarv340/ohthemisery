@@ -102,9 +102,28 @@ function doesStyleExist(className) {
     return false;
 }
 
+function doesNameContainNonASCII(name) {
+    for (let i = 0; i < name.length; i++) {
+        if (name.charCodeAt(i) > 127) {
+            return true;
+        }
+    }
+    return false;
+}
+
 export default function MasterworkableItemTile(data) {
     // This is an array
+    console.log(data.name);
     const item = data.item;
+
+    // If the item name has accented characters, they are actually not present in the item's name property,
+    // but they are present in the item's key. In that case, set the name to the key.
+    if (doesNameContainNonASCII(data.name)) {
+        for (let masterworkItem of data.item) {
+            masterworkItem.name = data.name;
+        }
+    }
+
     let defaultItem;
     if (data.default) {
         defaultItem = getItemWithMasterwork(item, data.default);
