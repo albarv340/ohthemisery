@@ -3,10 +3,10 @@ import styles from '../../styles/Items.module.css'
 import React from 'react'
 import TranslatableText from '../translatableText';
 
-function camelCase(str) {
+function camelCase(str, upper) {
     if (!str) return "";
     return str.replaceAll('\'', '').replace(/(?:^\w|[A-Z]|\b\w)/g, function (word, index) {
-        return index == 0 ? word.toLowerCase() : word.toUpperCase();
+        return index == 0 && !upper ? word.toLowerCase() : word.toUpperCase();
     }).replace(/\s+/g, '');
 }
 
@@ -80,7 +80,7 @@ function animate(star, index, starIntervals) {
 }
 
 function getItemsheetClass(itemName) {
-    return `monumenta-${itemName.replace(/\(.*\)/g, '').replace("EX ", "").replaceAll(" ", "-").replaceAll("_", "-").replaceAll("'", "").trim()}`;
+    return `monumenta-${camelCase(itemName.replace(/\(.*\)/g, '').replace("EX ", "").replaceAll("'", "").replaceAll(".", "").trim().replaceAll(" ", "-").replaceAll("_", "-").toLowerCase(), true)}`;
 }
 
 function doesStyleExist(className) {
