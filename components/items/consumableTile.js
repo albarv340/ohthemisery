@@ -3,6 +3,8 @@ import ConsumableFormatter from '../../utils/items/consumableFormatter';
 import TranslatableText from '../translatableText';
 import React from 'react';
 
+const MAX_FISH_QUALITY = 5;
+
 function camelCase(str) {
     if (!str) return "";
     return str.replaceAll('\'', '').replace(/(?:^\w|[A-Z]|\b\w)/g, function (word, index) {
@@ -22,7 +24,6 @@ function getItemsheetClass(itemName) {
 }
 
 function doesStyleExist(className) {
-
     let styleSheets = document.styleSheets;
     let styleSheetsLength = styleSheets.length;
     for (let i = 0; i < styleSheetsLength; i++){
@@ -38,6 +39,10 @@ function doesStyleExist(className) {
         }
     }
     return false;
+}
+
+function getFishQualityElement(fishQuality) {
+    return <span><span>Fish Quality : </span><span className={styles[`fish${fishQuality}`]}>{"★".repeat(fishQuality) + "☆".repeat(MAX_FISH_QUALITY - fishQuality)}</span></span>
 }
 
 export default function ConsumableTile(data) {
@@ -60,9 +65,12 @@ export default function ConsumableTile(data) {
             <div className={styles.imageIcon}>
                 <div className={[baseBackgroundClass, cssClass].join(" ")}></div>
             </div>
-            <span className={`${styles[camelCase(item.location)]} ${(item.tier == "Tier 3" && item.region == "Ring") ? styles["tier5"] : styles[camelCase(item.tier)]} ${styles.name}`}>
-                <a href={`https://monumenta.wiki.gg/wiki/${item.name.replace(/\(.*\)/g, '').trim().replaceAll(" ", "_",)}`} target="_blank" rel="noreferrer">{item.name}</a>
+            <span className={`${styles[camelCase(item.location)]} ${styles[camelCase(item.tier)]} ${styles.name}`}>
+                <a href={`https://monumenta.wiki.gg/wiki/${item.name.replace(/\(.*\)/g, '').trim().replaceAll(" ", "_",)}`} target="_blank" rel="noreferrer" className={item.fish_quality == 5 ? styles["underline"] : ""}>{item.name}</a>
             </span>
+            {
+                (item.fish_quality) ? getFishQualityElement(item.fish_quality) : ""
+            }
             <span className={styles.infoText}><TranslatableText identifier={`items.type.${getItemType(item)}`}></TranslatableText>{` - ${item['base_item']} `}</span>
             {item['original_item'] ? <span className={styles.infoText}>{`Skin for ${item['original_item']} `}</span> : ""}
             <span>

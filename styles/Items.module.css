@@ -114,6 +114,18 @@
     color: #545454;
 }
 
+.fish1, .fish2, .fish3, .fish4 {
+    color: #1dcc9a;
+}
+
+.fish5 {
+    color: #28facc;
+}
+
+.fish {
+    color: #1dcc9a;
+}
+
 .uncommon {
     color: #bebebe;
 }
@@ -148,6 +160,10 @@
 
 .name {
     font-weight: bold;
+}
+
+.underline {
+    text-decoration: underline;
 }
 
 .name.tier1, .name.tier2, .name.tier3, .name.tier4, .name.tier5 {
