@@ -60,7 +60,6 @@ export default function ItemTile(data) {
         item.name = data.name;
     }
 
-    console.log("Name", item.name, "Item Sheet Class", getItemsheetClass(item.name));
     React.useEffect(() => {
         if (!doesStyleExist(getItemsheetClass(item.name))) {
             // The item doesn't have its own texture on the spritesheet, and must be defaulted to a minecraft texture.

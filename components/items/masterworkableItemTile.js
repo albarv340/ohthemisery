@@ -113,7 +113,6 @@ function doesNameContainNonASCII(name) {
 
 export default function MasterworkableItemTile(data) {
     // This is an array
-    console.log(data.name);
     const item = data.item;
 
     // If the item name has accented characters, they are actually not present in the item's name property,
