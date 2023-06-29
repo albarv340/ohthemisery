@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
-import GitHubIcon from '@material-ui/icons/GitHub';
+import GitHubIcon from '@mui/icons-material/GitHub';
 
 
 export default function Footer() {
