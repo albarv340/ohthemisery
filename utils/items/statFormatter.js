@@ -78,7 +78,7 @@ const categories = {
         ...["ineptitude", "curse_of_shrapnel", "curse_of_vanishing", "projectile_fragility", "melee_fragility",
             "magic_fragility", "blast_fragility", "fire_fragility"]
             .map(entry => ({ name: entry, format: Formats.CURSE })),
-        ...["two_handed", "curse_of_corruption", "curse_of_irreparability"]
+        ...["two_handed", "curse_of_corruption", "curse_of_irreparability", "cumbersome"]
             .map(entry => ({ name: entry, format: Formats.SINGLE_CURSE }))
     ],
     "water": [
