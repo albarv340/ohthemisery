@@ -13,8 +13,14 @@ import AuthProvider from '../utils/authProvider';
 import Fs from 'fs/promises';
 import extras from '../public/items/extras.json';
 
+function extractFilterValues(data, baseKey) {
+    return Object.keys(data).filter(key => key.includes(baseKey)).map(key => data[key]);
+}
+
 function getRelevantItems(data, itemData, exaltedNameList) {
     let items = Object.keys(itemData);
+
+    console.log("Data", data);
 
     if (data.searchName) {
         // Check if the user inputted any "|" to search for multiple item names at once.
@@ -33,42 +39,62 @@ function getRelevantItems(data, itemData, exaltedNameList) {
     if (data.searchLore) {
         items = items.filter(name => itemData[name].lore?.toLowerCase().includes(data.searchLore.toLowerCase()))
     }
-    if (data.regionSelect != "Any Region") {
-        items = items.filter(name => itemData[name].region == data.regionSelect)
+
+    let wantedItemTypes = extractFilterValues(data, "itemTypeSelect");
+    if (wantedItemTypes.length > 0) {
+        items = items.filter(name => wantedItemTypes.includes(itemData[name].type));
     }
-    if (data.tierSelect != "Any Tier") {
-        items = items.filter(name => itemData[name].tier == data.tierSelect)
+    
+    let wantedRegions = extractFilterValues(data, "regionSelect");
+    if (wantedRegions.length > 0) {
+        items = items.filter(name => wantedRegions.includes(itemData[name].region));
     }
-    if (data.locationSelect != "Any Location") {
-        items = items.filter(name => itemData[name].location == data.locationSelect)
+    
+    let wantedTiers = extractFilterValues(data, "tierSelect");
+    if (wantedTiers.length > 0) {
+        items = items.filter(name => wantedTiers.includes(itemData[name].tier));
     }
-    if (data.poiSelect != "Any POI") {
-        items = items.filter(name => itemData[name].extras?.poi && itemData[name].extras.poi == data.poiSelect)
+    
+    let wantedLocations = extractFilterValues(data, "locationSelect");
+    if (wantedLocations.length > 0) {
+        items = items.filter(name => wantedLocations.includes(itemData[name].location));
     }
-    if (data.classSelect != "Any Class") {
-        items = items.filter(name => itemData[name].class_name == data.classSelect)
+    
+    let wantedPois = extractFilterValues(data, "poiSelect");
+    if (wantedPois.length > 0) {
+        items = items.filter(name => itemData[name].extras?.poi && wantedPois.includes(itemData[name].extras.poi));
     }
-    if (data.charmStatSelect != "Any Stat") {
-        let attributeName = data.charmStatSelect.split(" ").map(part => part.toLowerCase()).join("_");
-        attributeName = (attributeName.includes("_%")) ? attributeName.replace("_%", "_percent") : attributeName += "_flat";
-        items = items.filter(name => (itemData[name].type == "Charm" && itemData[name].stats[attributeName] != undefined));
-        items = items.sort((item1, item2) => ((itemData[item2].stats[attributeName] || 0)  - (itemData[item1].stats[attributeName] || 0)))
-    }
-    if (data.baseItemSelect != "Any Item") {
-        items = items.filter(name => itemData[name]["base_item"] == data.baseItemSelect)
-    }
-    if (data.sortSelect != "-") {
-        items = items.filter(name => (itemData[name]["stats"] != undefined && typeof (itemData[name]["stats"][data.sortSelect.toLowerCase().replaceAll(" ", "_")]) != "undefined"))
-        items = items.sort((item1, item2) => (itemData[item2]["stats"][data.sortSelect.toLowerCase().replaceAll(" ", "_")]) - (itemData[item1]["stats"][data.sortSelect.toLowerCase().replaceAll(" ", "_")]))
-    }
-    let includedTypes = []
-    for (const key in data) {
-        if (data[key] == "on") {
-            includedTypes.push(key)
-        }
+    
+    let wantedClasses = extractFilterValues(data, "classSelect");
+    if (wantedClasses.length > 0) {
+        items = items.filter(name => wantedClasses.includes(itemData[name].class_name));
     }
 
-    items = items.filter(name => includedTypes.includes(itemData[name].type.toLowerCase().replace(/<.*>/, "").trim()))
+    let wantedBaseItems = extractFilterValues(data, "baseItemSelect");
+    if (wantedBaseItems.length > 0) {
+        items = items.filter(name => wantedBaseItems.includes(itemData[name].base_item));
+    }
+
+    // Reverse to give higher sorting priority to the earliest filters
+    let wantedCharmStats = extractFilterValues(data, "charmStatSelect").reverse();
+    if (wantedCharmStats.length > 0) {
+        wantedCharmStats.forEach(stat => {
+            let attributeName = stat.split(" ").map(part => part.toLowerCase()).join("_");
+            attributeName = (attributeName.includes("_%")) ? attributeName.replace("_%", "_percent") : attributeName += "_flat";
+            items = items.filter(name => itemData[name].type == "Charm" && itemData[name].stats[attributeName] != undefined);
+            items = items.sort((item1, item2) => ((itemData[item2].stats[attributeName] || 0)  - (itemData[item1].stats[attributeName] || 0)));
+        });
+    }
+
+    // Reverse to give higher sorting priority to the earliest filters
+    let wantedItemStats = extractFilterValues(data, "itemStatSelect").reverse();
+    if (wantedItemStats.length > 0) {
+        wantedItemStats.forEach(stat => {
+            let attributeName = stat.toLowerCase().replaceAll(" ", "_");
+            items = items.filter(name => (itemData[name].stats != undefined && typeof (itemData[name].stats[attributeName]) != "undefined"))
+            items = items.sort((item1, item2) => (itemData[item2].stats[attributeName]) - (itemData[item1].stats[attributeName]))
+        });
+    }
 
     // Group up masterwork tiers by their name using an object, removing them from items.
     let masterworkItems = {};
@@ -136,7 +162,8 @@ export default function Items({ itemData }) {
             </Head>
             <main className={styles.main}>
                 <h1>Monumenta Items</h1>
-                <SearchForm update={handleChange} itemData={itemData} />
+                {/*<LegacySearchForm update={handleChange} itemData={itemData} />*/}
+                <SearchForm update={handleChange} itemData={itemData}></SearchForm>
                 {
                     (relevantItems.length > 0) ?
                     <h4 className="mt-1">
