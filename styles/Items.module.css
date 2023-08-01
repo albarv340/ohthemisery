@@ -4,49 +4,6 @@
     align-items: center;
 }
 
-.searchForm {
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    display: flex;
-    flex-direction: column;
-}
-
-.inputs {
-    display: flex;
-}
-
-.selects {
-    width: 400px;
-    padding-left: 10px;
-}
-
-@media only screen and (max-width: 800px) {
-    .inputs {
-        display: unset;
-    }
-
-    .selects {
-        width: auto;
-        padding-left: 0;
-    }
-}
-
-.checkboxes {
-    display: flex;
-    flex-direction: column;
-}
-
-.checkboxSubgroup {
-    display: flex;
-}
-
-.select {
-    color: white;
-    background-color: #2a2a2a;
-}
-
 .hidden {
     display: none !important;
 }
@@ -76,7 +33,7 @@
     height: 40px;
 }
 
-.checkboxWithLabel>* {
+.checkboxWithLabel >* {
     padding-left: 3px;
 }
 
@@ -580,72 +537,6 @@
     to {
         transform: rotate(180deg);
     }
-}
-
-.searchField {
-    background-color: black;
-    border: none;
-    border-bottom: 1px solid #999999;
-    color: #bababa;
-    height: 4vh;
-    margin-block: 0.5vh;
-    padding-inline: 1vw;
-    font-size: 18px;
-    transition-duration: 500ms;
-}
-
-.searchField:hover {
-    border-bottom: 1px solid #ffffff;
-    color: #ffffff;
-}
-
-.searchField:focus {
-    border-bottom: 1px solid #ffffff;
-    color: #ffffff;
-    box-shadow: 0px 4px 2px -2px #ffffff;
-    outline: none;
-}
-
-.submitButton {
-    margin-block: 0.5vh;
-    margin-right: 1%;
-    padding: 0.5vh;
-    width: 69%;
-    animation: background-pan 5s linear infinite;
-    background: linear-gradient(
-        to right,
-        #3d3286,
-        #2f4187,
-        #3d3286
-    );
-    background-size: 200%;
-    border: 3px solid #3d3286;
-    transition-duration: 600ms;
-}
-
-.submitButton:hover {
-    transform: scale(1.02);
-}
-
-.warningButton {
-    margin-block: 0.5vh;
-    margin-left: 1%;
-    padding: 0.5vh;
-    width: 29%;
-    animation: background-pan 5s linear infinite;
-    background: linear-gradient(
-        to right,
-        #8c0b25,
-        #a82a2a,
-        #8c0b25
-    );
-    background-size: 200%;
-    border: 3px solid #8c0b25;
-    transition-duration: 600ms;
-}
-
-.warningButton:hover {
-    transform: scale(1.02);
 }
 
 .recalcButton, .shareButton {

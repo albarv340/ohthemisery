@@ -1,8 +1,34 @@
 import Select from 'react-select';
 import React from 'react';
+import { useLanguageContext } from '../../pages/_app';
+import SupportedLanguages from '../../utils/translation/languages';
 
-export default function SelectInput(data) {
-    const options = data.sortableStats.map(item => { return (typeof item == "object") ? item : { "value": item, "label": item } });
+function convertItemNameForTranslationString(item) {
+    if (!item) return "";
+    return item.replaceAll('\'', '').replace(/(?:^\w|[A-Z]|\b\w)/g, function (word, index) {
+        return index == 0  ? word.toLowerCase() : word.toUpperCase();
+    }).replace(/\s+/g, '');
+}
+
+const SelectInput = (data) => {
+    const { lang } = useLanguageContext();
+    const options = data.sortableStats.map(
+        item => {
+            if (typeof item == "object") {
+                return item;
+            }
+
+            if (!data.baseTranslationString) {
+                return { "value": item, "label": item };
+            }
+
+            let translationString = `${data.baseTranslationString}.${convertItemNameForTranslationString(item)}`;
+            return {
+                "value": item,
+                "label": SupportedLanguages[lang][translationString] ? SupportedLanguages[lang][translationString] : item
+            };
+        }
+    );
     
     if (data.noneOption) {
         options.unshift({ "value": "None", "label": "None" });
@@ -31,3 +57,5 @@ export default function SelectInput(data) {
         </div>
     )
 }
+
+export default SelectInput;
