@@ -62,8 +62,7 @@ export default function CharmTile(data) {
             // The charm doesn't have its own texture on the spritesheet, and must be defaulted to the default charms.
             setCssClass(`monumenta-${getImageName(item.tier, item.class_name, item.power)}`);
         } else {
-            setBaseBackgroundClass("monumenta-items");
-            setCssClass(getItemsheetClass(item.name));
+            setCssClass(getCharmSheetClass(item.name));
         }
     }, [item.name, item.tier, item.class_name, item.power]);
 
