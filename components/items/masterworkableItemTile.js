@@ -156,6 +156,9 @@ export default function MasterworkableItemTile(data) {
             // The item doesn't have its own texture on the spritesheet, and must be defaulted to a minecraft texture.
             setBaseBackgroundClass("minecraft");
             setCssClass(`minecraft-${activeItem['base_item'].replaceAll(" ", "-").replaceAll("_", "-").toLowerCase()}`);
+        } else {
+            setBaseBackgroundClass("monumenta-items");
+            setCssClass(getItemsheetClass(activeItem.name));
         }
 
         const stars = [star1, star2, star3, star4];

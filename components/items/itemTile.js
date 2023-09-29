@@ -68,6 +68,9 @@ export default function ItemTile(data) {
             // The item doesn't have its own texture on the spritesheet, and must be defaulted to a minecraft texture.
             setBaseBackgroundClass("minecraft");
             setCssClass(`minecraft-${item['base_item'].replaceAll(" ", "-").replaceAll("_", "-").toLowerCase()}`);
+        } else {
+            setBaseBackgroundClass("monumenta-items");
+            setCssClass(getItemsheetClass(item.name));
         }
     }, [item]);
 
