@@ -150,6 +150,7 @@
     "items.enchant.fireFragility": "Tűz által kapott sebzés növelése: 1 - 0.96 ^ (-2 * szint).",
     "builder.misc.situationals": "Szituációsok",
     "builder.misc.maxHealthPercent": "Max Életerő Százalék",
+    "builder.misc.situationalCap": "Situational Cap",
     "builder.buttons.recalculate": "Újraszámolás",
     "builder.buttons.share": "Megosztás",
     "builder.charms.select": "Select Charms",

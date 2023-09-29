@@ -152,6 +152,7 @@
     "items.enchant.fireFragility": "Aumenta il danno preso dal fuoco di 1 - 0.96 ^ (-2 * livello).",
     "builder.misc.situationals": "Modificatori Situazionali",
     "builder.misc.maxHealthPercent": "Percentuale Vita Massima",
+    "builder.misc.situationalCap": "Cap dei Situazionali",
     "builder.buttons.recalculate": "Ricalcola",
     "builder.buttons.share": "Condividi",
     "builder.charms.select": "Seleziona Amuleti",

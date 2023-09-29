@@ -150,6 +150,7 @@
     "items.enchant.fireFragility": "Увеличивает получаемый урон от огня на 1 - 0.96 ^ (-2 * уровень).",
     "builder.misc.situationals": "Ситуативные Зачарования",
     "builder.misc.maxHealthPercent": "Процент Макс. Здоровья",
+    "builder.misc.situationalCap": "Situational Cap",
     "builder.buttons.recalculate": "Перерасчитать",
     "builder.buttons.share": "Поделиться",
     "builder.charms.select": "Выберите Амулеты",

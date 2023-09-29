@@ -150,6 +150,7 @@
     "items.enchant.fireFragility": "Augmente les dégâts de combustion par 1 à 0,96 ^ (-2 * niveau).",
     "builder.misc.situationals": "Situationnel",
     "builder.misc.maxHealthPercent": "Pourcentage Maximum de Vie",
+    "builder.misc.situationalCap": "Situational Cap",
     "builder.buttons.recalculate": "Recalculer",
     "builder.buttons.share": "Partager",
     "builder.charms.select": "Sélectionner un charme",

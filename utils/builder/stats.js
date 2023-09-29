@@ -47,6 +47,7 @@ class Stats {
         this.perspicacity = (formData.perspicacity) ? formData.perspicacity : 0;
 
         this.currentHealthPercent = (formData.health) ? new Percentage(formData.health) : new Percentage(100);
+        this.situationalCap = (formData.situationalCap) ? formData.situationalCap : 30;
 
         this.extraDamageMultiplier = 1;
         this.extraResistanceMultiplier = new Percentage(100);
@@ -219,9 +220,9 @@ class Stats {
         let hasNothing = (hasEqual && armor == 0);
 
         // For situationals with 20% in mind.
-        // Capped at a total of 30 armor/agility effectiveness for r2.
-        let situationalArmor = (this.situationals.adaptability.level > 0) ? Math.min(Math.max(agility, armor), 30) * 0.2 : Math.min(armor, 30) * 0.2;
-        let situationalAgility = (this.situationals.adaptability.level > 0) ? Math.min(Math.max(agility, armor), 30) * 0.2 : Math.min(agility, 30) * 0.2;
+        // Capped at a total of this.situationalCap armor/agility effectiveness (20 in r1, 30 in r2-r3).
+        let situationalArmor = (this.situationals.adaptability.level > 0) ? Math.min(Math.max(agility, armor), this.situationalCap) * 0.2 : Math.min(armor, this.situationalCap) * 0.2;
+        let situationalAgility = (this.situationals.adaptability.level > 0) ? Math.min(Math.max(agility, armor), this.situationalCap) * 0.2 : Math.min(agility, this.situationalCap) * 0.2;
 
         let etherealSit = (this.situationals.ethereal.enabled) ? situationalAgility * this.situationals.ethereal.level : 0;
         let tempoSit = (this.situationals.tempo.enabled) ? situationalAgility * this.situationals.tempo.level : 0;
@@ -237,7 +238,7 @@ class Stats {
         let steadfastMaxScaling = 20;
         let steadfastLowerBound = 1 - (steadfastMaxScaling / steadfastScaling / 100);
         let steadfastArmor = (1 - Math.max(steadfastLowerBound, Math.min(1, this.currentHealthPercent.val))) * steadfastScaling *
-            Math.min(((this.situationals.adaptability.level > 0 && moreAgility) ? agility : (moreArmor) ? armor : (this.situationals.adaptability.level == 0) ? armor : 0), 30);
+            Math.min(((this.situationals.adaptability.level > 0 && moreAgility) ? agility : (moreArmor) ? armor : (this.situationals.adaptability.level == 0) ? armor : 0), this.situationalCap);
 
         let steadfastSit = (this.situationals.steadfast.enabled) ? steadfastArmor * this.situationals.steadfast.level : 0;
 

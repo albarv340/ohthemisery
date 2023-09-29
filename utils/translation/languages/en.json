@@ -157,6 +157,7 @@
 
     "builder.misc.situationals": "Situationals",
     "builder.misc.maxHealthPercent": "Max Health Percent",
+    "builder.misc.situationalCap": "Situational Cap",
 
     "builder.buttons.recalculate": "Recalculate",
     "builder.buttons.share": "Share",

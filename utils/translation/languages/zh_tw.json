@@ -150,6 +150,7 @@
     "items.enchant.fireFragility": "使玩家受到的火焰傷害增加 [1 - 0.96 ^ (2 * 附魔等級數)]。",
     "builder.misc.situationals": "情境/二級附魔及效果",
     "builder.misc.maxHealthPercent": "生命值比例",
+    "builder.misc.situationalCap": "Situational Cap",
     "builder.buttons.recalculate": "重新計算",
     "builder.buttons.share": "分享",
     "builder.charms.select": "Select Charms",

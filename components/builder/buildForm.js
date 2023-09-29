@@ -310,6 +310,12 @@ export default function BuildForm({ update, build, parentLoaded, itemData }) {
             </div>
             <div className="row justify-content-center my-2">
                 <div className="col text-center">
+                    <p className="mb-1"><TranslatableText identifier="builder.misc.situationalCap"></TranslatableText></p>
+                    <input type="number" name="situationalCap" placeholder="Situational Cap" min="1" defaultValue="30" className=""></input>
+                </div>
+            </div>
+            <div className="row justify-content-center my-2">
+                <div className="col text-center">
                     <p className="mb-1"><TranslatableText identifier="builder.misc.maxHealthPercent"></TranslatableText></p>
                     <input type="number" name="health" min="1" defaultValue="100" className="" />
                 </div>
